@@ -30,3 +30,12 @@
 *.exe
 *.out
 *.app
+
+# Codeblocks
+*.layout
+*.depend
+*.out
+
+# UML
+*.uml
+*.~ml
