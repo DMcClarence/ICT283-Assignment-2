@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="TestProgram" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/TestProgram" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/TestProgram" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="../includes/Date.h" />
+		<Unit filename="../includes/PrintToFileMenuOption.h" />
+		<Unit filename="../includes/SolarRadiationMenuOption.h" />
+		<Unit filename="../includes/StatsCalcs.h" />
+		<Unit filename="../includes/TemperatureMenuOption.h" />
+		<Unit filename="../includes/Time.h" />
+		<Unit filename="../includes/Vector.h" />
+		<Unit filename="../includes/WeatherMenu.h" />
+		<Unit filename="../includes/WeatherMenuContext.h" />
+		<Unit filename="../includes/WeatherMenuStrategy.h" />
+		<Unit filename="../includes/WeatherRec.h" />
+		<Unit filename="../includes/WeatherRecIO.h" />
+		<Unit filename="../includes/WeatherRecUtilities.h" />
+		<Unit filename="../includes/WindSpeedMenuOption.h" />
+		<Unit filename="../src/Date.cpp" />
+		<Unit filename="../src/PrintToFileMenuOption.cpp" />
+		<Unit filename="../src/SolarRadiationMenuOption.cpp" />
+		<Unit filename="../src/StatsCalcs.cpp" />
+		<Unit filename="../src/TemperatureMenuOption.cpp" />
+		<Unit filename="../src/Time.cpp" />
+		<Unit filename="../src/WeatherMenu.cpp" />
+		<Unit filename="../src/WeatherMenuContext.cpp" />
+		<Unit filename="../src/WeatherMenuStrategy.cpp" />
+		<Unit filename="../src/WeatherRecIO.cpp" />
+		<Unit filename="../src/WeatherRecUtilities.cpp" />
+		<Unit filename="../src/WindSpeedMenuOption.cpp" />
+		<Unit filename="DateTest.cpp" />
+		<Unit filename="DateTest.h" />
+		<Unit filename="MenuTest.cpp" />
+		<Unit filename="MenuTest.h" />
+		<Unit filename="StatsCalcsTest.cpp" />
+		<Unit filename="StatsCalcsTest.h" />
+		<Unit filename="TimeTest.cpp" />
+		<Unit filename="TimeTest.h" />
+		<Unit filename="VectorTest.cpp" />
+		<Unit filename="VectorTest.h" />
+		<Unit filename="WeatherRecUtilitiesTest.cpp" />
+		<Unit filename="WeatherRecUtilitiesTest.h" />
+		<Unit filename="main.cpp" />
+		<Unit filename="weatherRecIOTest.cpp" />
+		<Unit filename="weatherRecIOTest.h" />
+		<Extensions>
+			<debugger />
+			<code_completion />
+			<envvars />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
