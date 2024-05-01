@@ -7,6 +7,7 @@
 //---------------------------------------------------------------------------------
 
 #include "WeatherRec.h"
+#include <new>
 
 //---------------------------------------------------------------------------------
 
@@ -20,6 +21,10 @@
 	 * @author 34085068
 	 * @version 01
 	 * @date 17/04/2024 Started
+     *
+	 * @author 34085068
+	 * @version 02
+	 * @date 29/04/2024 Override operator new and operator new[] to prevent dynamic memory allocation.
 	 */
 class WeatherMenuStrategy
 {
@@ -41,6 +46,30 @@ class WeatherMenuStrategy
              * @return virtual void
              */
         virtual void Execute(WeatherLogType &weatherLog) = 0;
+
+            /**
+             * @brief  Creates a WeatherMenuStrategy on the Heap.
+             *
+             * In the WeatherMenuStrategy, the new operator is deleted to prevent
+             * WeatherMenuStrategy objects from being allocated on the Heap.
+             *
+             *
+             * @param size - The amount of memory in bytes.
+             * @return void*
+             */
+        void* operator new(std::size_t size) = delete;
+
+            /**
+             * @brief  Creates a WeatherMenuStrategy on the Heap.
+             *
+             * In the WeatherMenuStrategy, the new operator is deleted to prevent
+             * WeatherMenuStrategy objects from being allocated on the Heap.
+             *
+             *
+             * @param size - The amount of memory in bytes.
+             * @return void*
+             */
+        void* operator new[](std::size_t size) = delete;
 };
 
 //---------------------------------------------------------------------------------
