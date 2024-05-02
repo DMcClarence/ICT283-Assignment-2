@@ -8,6 +8,7 @@
 
 #include "WeatherMenuStrategy.h"
 #include "WeatherRec.h"
+#include <functional>
 
 //---------------------------------------------------------------------------------
 
@@ -32,13 +33,6 @@ class WeatherMenuContext
              */
         WeatherMenuContext();
 
-            /**
-             * @brief  Destructor for WeatherMenuContext Object.
-             *
-             *
-             */
-        ~WeatherMenuContext();
-
             /// Copy Constructor
             /// Deleted from Class as Object of this Class are not Designed to be Copied.
         WeatherMenuContext(const WeatherMenuContext& menu) = delete;
@@ -48,13 +42,13 @@ class WeatherMenuContext
         WeatherMenuContext& operator=(const WeatherMenuContext& menu) = delete;
 
             /**
-             * @brief  Sets the WeatherMenuStrategy to be used.
+             * @brief  Sets the Menu Option to be used.
              *
              *
-             * @param menuOption - The Address of an Object of a Type Derived from the WeatherMenuStrategy Abstract Class
+             * @param menuOption - The Menu Option to be Executed
              * @return bool - Returns true if Set Successful. Returns false if Set Failed.
              */
-        bool SetWeatherMenuStrategy(WeatherMenuStrategy *menuOption);
+        bool SetWeatherMenuStrategy(std::function<void(WeatherLogType&)> option);
 
             /**
              * @brief  Executes the WeatherMenuStrategy Object.
@@ -65,8 +59,8 @@ class WeatherMenuContext
              */
         bool ExecuteWeatherMenuOption(WeatherLogType &weatherLog);
     private:
-            /// A Pointer to an Object of a Type Derived from the WeatherMenyStrategy Abstract Class.
-        WeatherMenuStrategy *m_menuOption;
+            /// The Menu Option to be Executed.
+        std::function<void(WeatherLogType&)> m_menuOption;
 };
 
 //---------------------------------------------------------------------------------

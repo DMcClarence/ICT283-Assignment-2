@@ -11,6 +11,7 @@
 // Includes
 
 #include "../includes/WeatherMenuContext.h"
+//#include <functional>
 
 //----------------------------------------------------------------------------
 // Global variables/defines
@@ -23,21 +24,16 @@
 
 WeatherMenuContext::WeatherMenuContext()
 {
-    m_menuOption = nullptr;
 }
 
 //----------------------------------------------------------------------------
-WeatherMenuContext::~WeatherMenuContext()
+bool WeatherMenuContext::SetWeatherMenuStrategy(std::function<void(WeatherLogType&)> option)
 {
-    m_menuOption = nullptr;
-}
-
-//----------------------------------------------------------------------------
-bool WeatherMenuContext::SetWeatherMenuStrategy(WeatherMenuStrategy *option)
-{
-    m_menuOption = option;
-
-    if(m_menuOption == nullptr)
+    try
+    {
+        m_menuOption = option;
+    }
+    catch(...)
     {
         return false;
     }
@@ -48,13 +44,16 @@ bool WeatherMenuContext::SetWeatherMenuStrategy(WeatherMenuStrategy *option)
 //----------------------------------------------------------------------------
 bool WeatherMenuContext::ExecuteWeatherMenuOption(WeatherLogType &weatherLog)
 {
-    if(m_menuOption != nullptr)
+    try
     {
-        m_menuOption->Execute(weatherLog);
-        return true;
+        m_menuOption(weatherLog);
+    }
+    catch(std::bad_function_call& bfc)
+    {
+        return false;
     }
 
-    return false;
+    return true;
 }
 
 //----------------------------------------------------------------------------

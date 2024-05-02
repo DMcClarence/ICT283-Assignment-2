@@ -11,10 +11,7 @@
 // Includes
 
 #include "../includes/WeatherMenu.h"
-#include "../includes/WindSpeedMenuOption.h"
-#include "../includes/TemperatureMenuOption.h"
-#include "../includes/SolarRadiationMenuOption.h"
-#include "../includes/PrintToFileMenuOption.h"
+#include "../includes/WeatherMenuOptions.h"
 
 #include <iostream>
 
@@ -28,29 +25,21 @@
 void DisplayWeatherMenu();
 
     // Dedicated to Executing the Weather Menu Option selected by the User
-void ExecuteSelection(int selection, WeatherMenuContext &progMenu, const Vector<WeatherMenuStrategy*> &menuOptions, WeatherLogType &weatherLog);
+void ExecuteSelection(int selection, WeatherMenuContext &progMenu, const Vector<std::function<void(WeatherLogType&)>> &menuOptions, WeatherLogType &weatherLog);
 
 //----------------------------------------------------------------------------
 // Function implementations
 
 void RunWeatherMenu(WeatherLogType &weatherLog)
 {
-    Vector<WeatherMenuStrategy*> menuOptions;
-    WindSpeedMenuOption windSpeedOption;
-    menuOptions.PushBack(&windSpeedOption);
-
-    TemperatureMenuOption tempOption;
-    menuOptions.PushBack(&tempOption);
-
-    SolarRadiationMenuOption solarRadOption;
-    menuOptions.PushBack(&solarRadOption);
-
-    PrintToFileMenuOption ptfOption;
-    menuOptions.PushBack(&ptfOption);
+    Vector<std::function<void(WeatherLogType&)>> menuOptions;
+    menuOptions.PushBack(WindSpeedMenuOption);
+    menuOptions.PushBack(TemperatureMenuOption);
+    menuOptions.PushBack(SolarRadiationMenuOption);
+    menuOptions.PushBack(PrintToFileMenuOption);
 
     WeatherMenuContext progMenu;
     int selection;
-
     do
     {
         DisplayWeatherMenu();
@@ -77,7 +66,7 @@ void DisplayWeatherMenu()
 }
 
 //----------------------------------------------------------------------------
-void ExecuteSelection(int selection, WeatherMenuContext &progMenu, const Vector<WeatherMenuStrategy*> &menuOptions, WeatherLogType &weatherLog)
+void ExecuteSelection(int selection, WeatherMenuContext &progMenu, const Vector<std::function<void(WeatherLogType&)>> &menuOptions, WeatherLogType &weatherLog)
 {
     if(selection == 5)
     {
