@@ -100,11 +100,11 @@ class Time
         void SetSeconds(int secs);
 
             /**
-             * @brief  Compares dates for equality.
+             * @brief  Compares Times for equality.
              *
              *
              * @param right - Time object to be compared against
-             * @return bool - Returns true if Dates are Equal. Otherwise returns false.
+             * @return bool - Returns true if Times are Equal. Otherwise returns false.
              */
         bool operator==(Time &right) const;
 
@@ -149,7 +149,7 @@ class Time
              *
              *
              * @param right - Time object to be compared against
-             * @return bool - Returns true if Dates are not Equal. Otherwise returns false.
+             * @return bool - Returns true if Times are not Equal. Otherwise returns false.
              */
         bool operator!=(Time &right) const;
 
