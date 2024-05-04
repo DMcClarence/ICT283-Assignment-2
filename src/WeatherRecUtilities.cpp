@@ -10,6 +10,7 @@
 //----------------------------------------------------------------------------
 // Includes
 
+#include "../includes/VectorUtilities.h"
 #include "../includes/WeatherRecUtilities.h"
 
 #include <string>
@@ -84,12 +85,22 @@ bool operator==(WeatherRecType &left, WeatherRecType &right)
 //----------------------------------------------------------------------------
 bool operator<(WeatherRecType &left, WeatherRecType &right)
 {
-    if((left.m_date < right.m_date) || (left.m_time < right.m_time))
+    bool isLessThan = false;
+
+    if(left.m_date < right.m_date)
     {
-        return true;
+        isLessThan = true;
     }
 
-    return false;
+    if(left.m_date == right.m_date)
+    {
+        if(left.m_time < right.m_time)
+        {
+            isLessThan = true;
+        }
+    }
+
+    return isLessThan;
 }
 
 //----------------------------------------------------------------------------
@@ -106,12 +117,22 @@ bool operator<=(WeatherRecType &left, WeatherRecType &right)
 //----------------------------------------------------------------------------
 bool operator>(WeatherRecType &left, WeatherRecType &right)
 {
-    if((left.m_date > right.m_date) || (left.m_time > right.m_time))
+    bool isGreaterThan = false;
+
+    if(left.m_date > right.m_date)
     {
-        return true;
+        isGreaterThan = true;
     }
 
-    return false;
+    if(left.m_date == right.m_date)
+    {
+        if(left.m_time > right.m_time)
+        {
+            isGreaterThan = true;
+        }
+    }
+
+    return isGreaterThan;
 }
 
 //----------------------------------------------------------------------------
@@ -126,3 +147,20 @@ bool operator>=(WeatherRecType &left, WeatherRecType &right)
 }
 
 //----------------------------------------------------------------------------
+void RemoveDuplicatesFromWeatherLog(WeatherLogType &log)
+{
+    MergeSortVector(log, 0, log.GetSize() - 1);
+
+    int i = 0;
+    while(i < log.GetSize() - 1)
+    {
+        if(log[i] == log[i + 1])
+        {
+            RemoveFromVector(log, i + 1);
+        }
+        else
+        {
+            i++;
+        }
+    }
+}

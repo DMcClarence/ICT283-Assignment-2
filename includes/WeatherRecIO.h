@@ -79,6 +79,12 @@ bool GetDataFileNameFromSrcFile(Stack<string> &fileNameStack);
 		 */
 bool ReadWeatherDataFromFile(string &filename, WeatherLogType &weatherLog);
 
+std::ostream& operator<<(std::ostream& output, Date &d);
+
+std::ostream& operator<<(std::ostream& output, Time &t);
+
+std::ostream& operator<<(std::ostream& output, WeatherRecType &rec);
+
 //---------------------------------------------------------------------------------
 
 #endif // WEATHERRECIO_H_INCLUDED

@@ -187,7 +187,7 @@ bool IsLeapYear(int y)
 //----------------------------------------------------------------------------
 bool Date::operator==(Date &right) const
 {
-    if(m_day == right.m_day && m_month == right.m_month && m_year == right.m_year)
+    if((m_day == right.m_day) && (m_month == right.m_month) && (m_year == right.m_year))
     {
         return true;
     }
@@ -198,12 +198,30 @@ bool Date::operator==(Date &right) const
 //----------------------------------------------------------------------------
 bool Date::operator<(Date &right) const
 {
-    if(m_day < right.m_day || m_month < right.m_month || m_year < right.m_year)
+    bool isLessThan = false;
+
+    if(m_year < right.m_year)
     {
-        return true;
+        isLessThan = true;
     }
 
-    return false;
+    if(m_year == right.m_year)
+    {
+        if(m_month < right.m_month)
+        {
+            isLessThan = true;
+        }
+
+        if(m_month == right.m_month)
+        {
+            if(m_day < right.m_day)
+            {
+                isLessThan = true;
+            }
+        }
+    }
+
+    return isLessThan;
 }
 
 //----------------------------------------------------------------------------
@@ -220,12 +238,30 @@ bool Date::operator<=(Date &right) const
 //----------------------------------------------------------------------------
 bool Date::operator>(Date &right) const
 {
-    if(m_day > right.m_day || m_month > right.m_month || m_year > right.m_year)
+    bool isGreaterThan = false;
+
+    if(m_year > right.m_year)
     {
-        return true;
+        isGreaterThan = true;
     }
 
-    return false;
+    if(m_year == right.m_year)
+    {
+        if(m_month > right.m_month)
+        {
+            isGreaterThan = true;
+        }
+
+        if(m_month == right.m_month)
+        {
+            if(m_day > right.m_day)
+            {
+                isGreaterThan = true;
+            }
+        }
+    }
+
+    return isGreaterThan;
 }
 
 //----------------------------------------------------------------------------

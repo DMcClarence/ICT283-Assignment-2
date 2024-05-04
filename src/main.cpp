@@ -44,12 +44,16 @@ int main()
             ReadWeatherDataFromFile(fileName, weatherLog);
         }
     }
+
+    std::cout << weatherLog.GetSize() << std::endl;
         // Checks weatherLog isn't empty before running Weather Menu
     if(weatherLog.GetSize() > 0)
     {
-        MergeSortVector(weatherLog, 0, weatherLog.GetSize() - 1);
+        RemoveDuplicatesFromWeatherLog(weatherLog);
         RunWeatherMenu(weatherLog);
     }
+
+    std::cout << weatherLog.GetSize() << std::endl;
 
     return 0;
 }

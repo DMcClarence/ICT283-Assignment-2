@@ -132,6 +132,8 @@ bool operator>(WeatherRecType &left, WeatherRecType &right);
      *                  or Weather Records Date and Times are equal. Otherwise returns false.
      */
 bool operator>=(WeatherRecType &left, WeatherRecType &right);
+
+void RemoveDuplicatesFromWeatherLog(WeatherLogType &log);
 //---------------------------------------------------------------------------------
 
 #endif // WEATHERRECUTILITIES_H_INCLUDED

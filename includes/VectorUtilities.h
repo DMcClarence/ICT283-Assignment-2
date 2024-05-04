@@ -9,6 +9,7 @@
 #include "Vector.h"
 #include <algorithm>
 #include <iostream>
+#include "WeatherRecIO.h"
 
 //---------------------------------------------------------------------------------
 
@@ -34,26 +35,26 @@
 //     */
 //template <class T>
 //bool InsertToVector(Vector<T> &vec, const T value, int location);
-//
-//    /**
-//     * @brief Removes a value at a specified location in a Vector.
-//     *
-//     *
-//     * @param vec - The Vector for the value to be removed from
-//     * @param location - The index of the array
-//     * @return void
-//     */
-//template <class T>
-//void RemoveFromVector(Vector<T> &vec, int location);
+
+    /**
+     * @brief Removes a value at a specified location in a Vector.
+     *
+     *
+     * @param vec - The Vector for the value to be removed from
+     * @param location - The index of the array
+     * @return void
+     */
+template <class T>
+void RemoveFromVector(Vector<T> &vec, int location);
 
 //template <class T>
 //bool SortVector(Vector<T> &vec);
 
 template <class T>
-bool MergeSortVector(Vector<T> &vec, int first, int last);
+void MergeSortVector(Vector<T> &vec, int first, int last);
 
 template <class T>
-bool MergeVector(Vector<T> &vec, int first, int middle, int last);
+void MergeVector(Vector<T> &vec, int first, int middle, int last);
 
 //---------------------------------------------------------------------------------
 
@@ -92,31 +93,30 @@ bool MergeVector(Vector<T> &vec, int first, int middle, int last);
 //}
 //
 ////---------------------------------------------------------------------------------
-//template <class T>
-//void RemoveFromVector(Vector<T> &vec, int location)
-//{
-//        // Creates new Vector to add old Values without Value from Specified Location
-//    int newVecSize = vec.GetSize() - 1;
-//    Vector<T> temp(newVecSize);
-//
-//    for(int i = 0; i < newVecSize; i++)
-//    {
-//            // Adds all old Values before Specified Location
-//        if(i < location)
-//        {
-//            temp.PushBack(vec[i]);
-//        }
-//            // Adds all old Values after Specified Location
-//        else
-//        {
-//            temp.PushBack(vec[i + 1]);
-//        }
-//    }
-//
-//        // Deletes Old Vector and Copies new One into vec to return New Vector
+template <class T>
+void RemoveFromVector(Vector<T> &vec, int location)
+{
+        // Creates new Vector to add old Values without Value from Specified Location
+    Vector<T> temp;
+
+    for(int i = 0; i < vec.GetSize() - 1; i++)
+    {
+            // Adds all old Values before Specified Location
+        if(i < location)
+        {
+            temp.PushBack(vec[i]);
+        }
+            // Adds all old Values after Specified Location
+        else
+        {
+            temp.PushBack(vec[i + 1]);
+        }
+    }
+
+        // Deletes Old Vector and Copies new One into vec to return New Vector
 //    vec.~Vector();
-//    vec = temp;
-//}
+    vec = temp;
+}
 
 //---------------------------------------------------------------------------------
 //template <class T>
@@ -135,23 +135,21 @@ bool MergeVector(Vector<T> &vec, int first, int middle, int last);
 //}
 //---------------------------------------------------------------------------------
 template <class T>
-bool MergeSortVector(Vector<T> &vec, int first, int last)
+void MergeSortVector(Vector<T> &vec, int first, int last)
 {
     if(first >= last)
     {
-        return true;
+        return;
     }
 
-    int middle = (first + last) / 2;
+    int middle = first + (last - first) / 2;
     MergeSortVector(vec, first, middle);
     MergeSortVector(vec, middle + 1, last);
     MergeVector(vec, first, middle, last);
-
-    return false;
 }
 
 template <class T>
-bool MergeVector(Vector<T> &vec, int first, int middle, int last)
+void MergeVector(Vector<T> &vec, int first, int middle, int last)
 {
     int leftVecSize = (middle - first) + 1;
     int rightVecSize = last - middle;
@@ -199,6 +197,13 @@ bool MergeVector(Vector<T> &vec, int first, int middle, int last)
         j++;
         k++;
     }
+
+//    std::cout << "Merged: ";
+//    for(int idx = first; idx <= last; idx++)
+//    {
+//        std::cout << vec[idx] << " ";
+//    }
+//    std::cout << std::endl;
 }
 //---------------------------------------------------------------------------------
 
