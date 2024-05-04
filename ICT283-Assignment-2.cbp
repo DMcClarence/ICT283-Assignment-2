@@ -39,7 +39,6 @@
 		<Unit filename="includes/TemperatureMenuOption.h" />
 		<Unit filename="includes/Time.h" />
 		<Unit filename="includes/Vector.h" />
-		<Unit filename="includes/VectorUtilities.h" />
 		<Unit filename="includes/WeatherMenu.h" />
 		<Unit filename="includes/WeatherMenuContext.h" />
 		<Unit filename="includes/WeatherMenuStrategy.h" />
