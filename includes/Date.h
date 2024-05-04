@@ -18,6 +18,10 @@
 	 * @author 34085068
 	 * @version 01
 	 * @date 21/03/2024 Started
+     *
+	 * @author 34085068
+	 * @version 02
+	 * @date 04/05/2024 Add comparison operator overloads as Dates have a natural order.
 	 */
 class Date {
     public:
@@ -94,6 +98,60 @@ class Date {
              * @return void
              */
         void SetYear(int y);
+
+            /**
+             * @brief  Compares dates for equality.
+             *
+             *
+             * @param right - Date object to be compared against
+             * @return bool - Returns true if Dates are Equal. Otherwise returns false.
+             */
+        bool operator==(Date &right) const;
+
+            /**
+             * @brief  Checks if Date is less than another Date
+             *
+             *
+             * @param right - Date object to be compared against
+             * @return bool - Returns true if Date is less than another Date. Otherwise returns false.
+             */
+        bool operator<(Date &right) const;
+
+            /**
+             * @brief  Checks if Date is less than or equal to another Date.
+             *
+             *
+             * @param right - Date object to be compared against
+             * @return bool - Returns true if Date is less than or equal too another Date. Otherwise returns false.
+             */
+        bool operator<=(Date &right) const;
+
+            /**
+             * @brief  Checks if Date is greater than another Date.
+             *
+             *
+             * @param right - Date object to be compared against
+             * @return bool - Returns true if Date is greater than another Date. Otherwise returns false.
+             */
+        bool operator>(Date &right) const;
+
+            /**
+             * @brief  Checks if Date is greater than or equal to another Date.
+             *
+             *
+             * @param right - Date object to be compared against
+             * @return bool - Returns true if Date is less than or equal too another Date. Otherwise returns false.
+             */
+        bool operator>=(Date &right) const;
+
+            /**
+             * @brief  Compares dates for inequality.
+             *
+             *
+             * @param right - Date object to be compared against
+             * @return bool - Returns true if Dates are not Equal. Otherwise returns false.
+             */
+        bool operator!=(Date &right) const;
 
     private:
             /// The Day
