@@ -12,6 +12,8 @@
 
 #include "../includes/WeatherMenu.h"
 #include "../includes/WeatherRecIO.h"
+#include "../includes/VectorUtilities.h"
+#include "../includes/WeatherRecUtilities.h"
 // #include "../includes/Stack.h"
 
 #include <iostream>
@@ -45,6 +47,7 @@ int main()
         // Checks weatherLog isn't empty before running Weather Menu
     if(weatherLog.GetSize() > 0)
     {
+        MergeSortVector(weatherLog, 0, weatherLog.GetSize() - 1);
         RunWeatherMenu(weatherLog);
     }
 
