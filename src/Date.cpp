@@ -5,6 +5,8 @@
 // Version
 // 01 21/03/2024 34085068
 //      Started
+// 02 04/05/2024 34085068
+//      Add comparison operator overloads as Dates have a natural order.
 //---------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
@@ -183,4 +185,69 @@ bool IsLeapYear(int y)
 }
 
 //----------------------------------------------------------------------------
+bool Date::operator==(Date &right) const
+{
+    if(m_day == right.m_day && m_month == right.m_month && m_year == right.m_year)
+    {
+        return true;
+    }
 
+    return false;
+}
+
+//----------------------------------------------------------------------------
+bool Date::operator<(Date &right) const
+{
+    if(m_day < right.m_day || m_month < right.m_month || m_year < right.m_year)
+    {
+        return true;
+    }
+
+    return false;
+}
+
+//----------------------------------------------------------------------------
+bool Date::operator<=(Date &right) const
+{
+    if((*this < right) || (*this == right))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+//----------------------------------------------------------------------------
+bool Date::operator>(Date &right) const
+{
+    if(m_day > right.m_day || m_month > right.m_month || m_year > right.m_year)
+    {
+        return true;
+    }
+
+    return false;
+}
+
+//----------------------------------------------------------------------------
+bool Date::operator>=(Date &right) const
+{
+    if((*this > right) || (*this == right))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+//----------------------------------------------------------------------------
+bool Date::operator!=(Date &right) const
+{
+    if(*this == right)
+    {
+        return false;
+    }
+
+    return true;
+}
+
+//----------------------------------------------------------------------------
