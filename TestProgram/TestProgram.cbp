@@ -35,6 +35,7 @@
 		<Unit filename="../includes/Date.h" />
 		<Unit filename="../includes/PrintToFileMenuOption.h" />
 		<Unit filename="../includes/SolarRadiationMenuOption.h" />
+		<Unit filename="../includes/Stack.h" />
 		<Unit filename="../includes/StatsCalcs.h" />
 		<Unit filename="../includes/TemperatureMenuOption.h" />
 		<Unit filename="../includes/Time.h" />
@@ -62,6 +63,8 @@
 		<Unit filename="DateTest.h" />
 		<Unit filename="MenuTest.cpp" />
 		<Unit filename="MenuTest.h" />
+		<Unit filename="StackTest.cpp" />
+		<Unit filename="StackTest.h" />
 		<Unit filename="StatsCalcsTest.cpp" />
 		<Unit filename="StatsCalcsTest.h" />
 		<Unit filename="TimeTest.cpp" />

@@ -14,6 +14,7 @@
 #include "../includes/WeatherRecIO.h"
 #include "../includes/VectorUtilities.h"
 #include "../includes/WeatherRecUtilities.h"
+// #include "../includes/Stack.h"
 
 #include <iostream>
 #include <string>
@@ -30,13 +31,18 @@
 int main()
 {
     bool readSuccessful = false;
-    std::string dataFileName;
+    Stack<std::string> fileStack;
     WeatherLogType weatherLog;
 
-    readSuccessful = GetDataFileNameFromSrcFile(dataFileName);
+    readSuccessful = GetDataFileNameFromSrcFile(fileStack);
     if(readSuccessful)
     {
-        ReadWeatherDataFromFile(dataFileName, weatherLog);
+        while(!fileStack.IsEmpty())
+        {
+            std::string fileName;
+            fileStack.Pop(fileName);
+            ReadWeatherDataFromFile(fileName, weatherLog);
+        }
     }
         // Checks weatherLog isn't empty before running Weather Menu
     if(weatherLog.GetSize() > 0)

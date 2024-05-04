@@ -7,6 +7,7 @@
 //---------------------------------------------------------------------------------
 
 #include "WeatherRec.h"
+#include "Stack.h"
 #include <iostream>
 #include <string>
 
@@ -66,7 +67,7 @@ istream& operator>>(istream& input, WeatherLogType& data);
 		 * @param dataFileName - String variable to store the name of the Data File
 		 * @return bool - Returns true if Successful. Returns False if Failed.
 		 */
-bool GetDataFileNameFromSrcFile(string &dataFileName);
+bool GetDataFileNameFromSrcFile(Stack<string> &fileNameStack);
 
         /**
 		 * @brief  Reads the Data file into a Vector of WeatherRecType Objects.
@@ -76,7 +77,7 @@ bool GetDataFileNameFromSrcFile(string &dataFileName);
 		 * @param weatherLog - The Vector to Read the Data into
 		 * @return bool - Returns true if Successful. Returns False if Failed.
 		 */
-bool ReadWeatherDataFromFile(const string &filename, WeatherLogType &weatherLog);
+bool ReadWeatherDataFromFile(string &filename, WeatherLogType &weatherLog);
 
 //---------------------------------------------------------------------------------
 
