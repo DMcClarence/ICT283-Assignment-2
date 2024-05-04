@@ -12,7 +12,6 @@
 
 #include "../includes/WeatherMenu.h"
 #include "../includes/weatherRecIO.h"
-#include "../includes/VectorUtilities.h"
 
 #include <iostream>
 #include <string>
