@@ -7,8 +7,6 @@
 //---------------------------------------------------------------------------------
 
 #include "Vector.h"
-#include <algorithm>
-#include <iostream>
 #include "WeatherRecIO.h"
 
 //---------------------------------------------------------------------------------
@@ -118,7 +116,7 @@ void MergeVector(Vector<T> &vec, int first, int middle, int last);
 //    return true;
 //}
 //
-////---------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
 template <class T>
 void RemoveFromVector(Vector<T> &vec, int location)
 {
@@ -141,6 +139,16 @@ void RemoveFromVector(Vector<T> &vec, int location)
 
         // Copies new Vector into original Vector
     vec = temp;
+}
+
+//---------------------------------------------------------------------------------
+template <class T>
+void MergeSortVector(Vector<T> &vec)
+{
+    int first = 0;
+    int last = vec.GetSize() - 1;
+
+    MergeSortVector(vec, first, last);
 }
 
 //---------------------------------------------------------------------------------
