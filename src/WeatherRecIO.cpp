@@ -302,24 +302,4 @@ bool CheckStringToFloatConversion(float &value, const string &strValue)
     return false;
 }
 
-std::ostream& operator<<(std::ostream& output, Date &d)
-{
-    output << d.GetDay() << "/" << d.GetMonth() << "/" << d.GetYear();
-
-    return output;
-}
-
-std::ostream& operator<<(std::ostream& output, Time &t)
-{
-    output << t.GetHours() << ":" << t.GetMinutes();
-
-    return output;
-}
-
-std::ostream& operator<<(std::ostream& output, WeatherRecType &rec)
-{
-    output << rec.m_date << " " << rec.m_time;
-    return output;
-}
-
 //----------------------------------------------------------------------------

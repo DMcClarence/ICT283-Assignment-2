@@ -45,15 +45,12 @@ int main()
         }
     }
 
-    std::cout << weatherLog.GetSize() << std::endl;
         // Checks weatherLog isn't empty before running Weather Menu
     if(weatherLog.GetSize() > 0)
     {
         RemoveDuplicatesFromWeatherLog(weatherLog);
         RunWeatherMenu(weatherLog);
     }
-
-    std::cout << weatherLog.GetSize() << std::endl;
 
     return 0;
 }

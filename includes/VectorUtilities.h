@@ -119,21 +119,6 @@ void RemoveFromVector(Vector<T> &vec, int location)
 }
 
 //---------------------------------------------------------------------------------
-//template <class T>
-//bool SortVector(Vector<T> &vec);
-//{
-//    try
-//    {
-//        std::sort(VectorIteratorBegin, VectorIteratorEnd);
-//    }
-//    catch(...)
-//    {
-//        return false;
-//    }
-//
-//    return true;
-//}
-//---------------------------------------------------------------------------------
 template <class T>
 void MergeSortVector(Vector<T> &vec, int first, int last)
 {
@@ -197,13 +182,6 @@ void MergeVector(Vector<T> &vec, int first, int middle, int last)
         j++;
         k++;
     }
-
-//    std::cout << "Merged: ";
-//    for(int idx = first; idx <= last; idx++)
-//    {
-//        std::cout << vec[idx] << " ";
-//    }
-//    std::cout << std::endl;
 }
 //---------------------------------------------------------------------------------
 
