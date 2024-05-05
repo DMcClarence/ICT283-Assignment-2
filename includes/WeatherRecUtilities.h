@@ -133,6 +133,13 @@ bool operator>(WeatherRecType &left, WeatherRecType &right);
      */
 bool operator>=(WeatherRecType &left, WeatherRecType &right);
 
+    /**
+     * @brief  Removes duplicate Weather Records from a Weather Log
+     *
+     *
+     * @param log - The Weather Log
+     * @return void
+     */
 void RemoveDuplicatesFromWeatherLog(WeatherLogType &log);
 //---------------------------------------------------------------------------------
 

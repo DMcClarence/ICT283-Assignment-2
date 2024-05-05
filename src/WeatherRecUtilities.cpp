@@ -149,7 +149,7 @@ bool operator>=(WeatherRecType &left, WeatherRecType &right)
 //----------------------------------------------------------------------------
 void RemoveDuplicatesFromWeatherLog(WeatherLogType &log)
 {
-    MergeSortVector(log, 0, log.GetSize() - 1);
+    MergeSortVector(log);
 
     int i = 0;
     while(i < log.GetSize() - 1)
