@@ -22,8 +22,6 @@ template <class T>
 class Stack
 {
 public:
-    Stack();
-
         /**
          * @brief Pushes a value onto the top of the Stack.
          *
@@ -56,19 +54,13 @@ private:
 
 //---------------------------------------------------------------------------------
 template <class T>
-Stack<T>::Stack()
-{
-}
-
-//---------------------------------------------------------------------------------
-template <class T>
 bool Stack<T>::Push(T &data)
 {
     try
     {
         m_stack.push(data);
     }
-    catch(std::bad_alloc& ba)
+    catch(...)
     {
         return false;
     }
