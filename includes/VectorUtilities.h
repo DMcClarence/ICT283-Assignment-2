@@ -178,17 +178,17 @@ void MergeVector(Vector<T> &vec, int first, int middle, int last)
     int leftVecSize = (middle - first) + 1;
     int rightVecSize = last - middle;
 
-    Vector<T> left;
-    Vector<T> right;
+    T *left = new T[leftVecSize];
+    T *right = new T[rightVecSize];
 
         // Populate the two subvectors
     for(int i = 0; i < leftVecSize; i++)
     {
-        left.PushBack(vec[first + i]);
+        left[i] = vec[first + i];
     }
     for(int j = 0; j < rightVecSize; j++)
     {
-        right.PushBack(vec[middle + 1 + j]);
+        right[j] = vec[middle + 1 + j];
     }
 
     int i = 0;
@@ -224,6 +224,9 @@ void MergeVector(Vector<T> &vec, int first, int middle, int last)
         j++;
         k++;
     }
+
+    delete [] left;
+    delete [] right;
 }
 //---------------------------------------------------------------------------------
 
