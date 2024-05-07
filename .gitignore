@@ -39,3 +39,7 @@
 # UML
 *.uml
 *.~ml
+
+# Documents
+*.docx
+*.doc

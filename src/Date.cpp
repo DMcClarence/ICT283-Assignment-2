@@ -5,6 +5,8 @@
 // Version
 // 01 21/03/2024 34085068
 //      Started
+// 02 04/05/2024 34085068
+//      Add comparison operator overloads as Dates have a natural order.
 //---------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
@@ -183,4 +185,105 @@ bool IsLeapYear(int y)
 }
 
 //----------------------------------------------------------------------------
+bool Date::operator==(Date &right) const
+{
+    if((m_day == right.m_day) && (m_month == right.m_month) && (m_year == right.m_year))
+    {
+        return true;
+    }
 
+    return false;
+}
+
+//----------------------------------------------------------------------------
+bool Date::operator<(Date &right) const
+{
+    bool isLessThan = false;
+
+    if(m_year < right.m_year)
+    {
+        isLessThan = true;
+    }
+
+    if(m_year == right.m_year)
+    {
+        if(m_month < right.m_month)
+        {
+            isLessThan = true;
+        }
+
+        if(m_month == right.m_month)
+        {
+            if(m_day < right.m_day)
+            {
+                isLessThan = true;
+            }
+        }
+    }
+
+    return isLessThan;
+}
+
+//----------------------------------------------------------------------------
+bool Date::operator<=(Date &right) const
+{
+    if((*this < right) || (*this == right))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+//----------------------------------------------------------------------------
+bool Date::operator>(Date &right) const
+{
+    bool isGreaterThan = false;
+
+    if(m_year > right.m_year)
+    {
+        isGreaterThan = true;
+    }
+
+    if(m_year == right.m_year)
+    {
+        if(m_month > right.m_month)
+        {
+            isGreaterThan = true;
+        }
+
+        if(m_month == right.m_month)
+        {
+            if(m_day > right.m_day)
+            {
+                isGreaterThan = true;
+            }
+        }
+    }
+
+    return isGreaterThan;
+}
+
+//----------------------------------------------------------------------------
+bool Date::operator>=(Date &right) const
+{
+    if((*this > right) || (*this == right))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+//----------------------------------------------------------------------------
+bool Date::operator!=(Date &right) const
+{
+    if(*this == right)
+    {
+        return false;
+    }
+
+    return true;
+}
+
+//----------------------------------------------------------------------------

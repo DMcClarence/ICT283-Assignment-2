@@ -12,6 +12,7 @@
 
 #include "../includes/WeatherRecIO.h"
 #include "../includes/WeatherRecUtilities.h"
+#include "../includes/Stack.h"
 
 #include <fstream>
 #include <sstream>
@@ -133,7 +134,7 @@ istream& operator>>(istream& input, WeatherLogType& data)
         getline(input, line);
         if(line.empty())
         {
-            break;
+            continue;
         }
         istringstream colStream(line);
 
@@ -153,22 +154,28 @@ istream& operator>>(istream& input, WeatherLogType& data)
 }
 
 //----------------------------------------------------------------------------
-bool GetDataFileNameFromSrcFile(string &dataFileName)
+bool GetDataFileNameFromSrcFile(Stack<string> &fileNameStack)
 {
     ifstream dataSource("data/data_source.txt");
+    string fileName;
     if(dataSource.rdstate() != 0)
     {
         cout << "Failed To Read File" << endl;
         return false;
     }
-    getline(dataSource, dataFileName);
+
+    while(dataSource.eof() == 0)
+    {
+        getline(dataSource, fileName);
+        fileNameStack.Push(fileName);
+    }
     dataSource.close();
 
     return true;
 }
 
 //----------------------------------------------------------------------------
-bool ReadWeatherDataFromFile(const string &filename, WeatherLogType &weatherLog)
+bool ReadWeatherDataFromFile(string &filename, WeatherLogType &weatherLog)
 {
     ifstream dataFile("data/" + filename);
     if(dataFile.rdstate() != 0)
