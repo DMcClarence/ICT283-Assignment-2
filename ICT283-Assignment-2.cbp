@@ -32,6 +32,7 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="includes/BST.h" />
 		<Unit filename="includes/Date.h" />
 		<Unit filename="includes/PrintToFileMenuOption.h" />
 		<Unit filename="includes/SolarRadiationMenuOption.h" />
@@ -48,6 +49,7 @@
 		<Unit filename="includes/WeatherRecIO.h" />
 		<Unit filename="includes/WeatherRecUtilities.h" />
 		<Unit filename="includes/WindSpeedMenuOption.h" />
+		<Unit filename="src/BST.cpp" />
 		<Unit filename="src/Date.cpp" />
 		<Unit filename="src/PrintToFileMenuOption.cpp" />
 		<Unit filename="src/SolarRadiationMenuOption.cpp" />
