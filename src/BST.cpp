@@ -27,21 +27,27 @@ intBst& intBst::operator=(const intBst& bst)
 //----------------------------------------------------------------------------
 void intBst::Insert(int data)
 {
-    if(*this == nullptr)
+    Insert(data, m_root);
+}
+
+//----------------------------------------------------------------------------
+void intBst::Insert(int data, IntTreeNode *node)
+{
+    if(node == nullptr)
     {
-        *this = new IntTreeNode(data);
+        node = new IntTreeNode(data);
         return;
     }
 
     if(data < m_data)
     {
-        m_left.Insert(data);
+        Insert(data, node.m_left);
         return;
     }
 
     if(data >= m_data)
     {
-        m_right.Insert(data);
+        Insert(data, node.m_right);
         return;
     }
 }
