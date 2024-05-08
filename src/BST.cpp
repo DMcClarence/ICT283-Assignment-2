@@ -2,6 +2,14 @@
 #include <iostream>
 
 //----------------------------------------------------------------------------
+IntTreeNode::IntTreeNode(int data, IntTreeNode *left, IntTreeNode *right)
+{
+    m_data = data;
+    m_left = left;
+    m_right = right;
+}
+
+//----------------------------------------------------------------------------
 intBst::intBst()
 {
     m_root = nullptr;
@@ -17,11 +25,33 @@ intBst::~intBst()
 //----------------------------------------------------------------------------
 intBst::intBst(const intBst& bst)
 {
+    Copy(m_root, bst.m_root);
 }
 
 //----------------------------------------------------------------------------
 intBst& intBst::operator=(const intBst& bst)
 {
+    if(this != &bst)
+    {
+        Copy(m_root, bst.m_root);
+    }
+
+    return *this;
+}
+
+//----------------------------------------------------------------------------
+void intBst::Copy(IntTreeNode *newRoot, IntTreeNode *node)
+{
+    if(node == nullptr)
+    {
+        newRoot = nullptr;
+    }
+    else
+    {
+        newRoot = new IntTreeNode(node->m_data);
+        Copy(newRoot->m_left, node->m_left);
+        Copy(newRoot->m_right, node->m_right);
+    }
 }
 
 //----------------------------------------------------------------------------
@@ -31,7 +61,7 @@ void intBst::Insert(int data)
 }
 
 //----------------------------------------------------------------------------
-void intBst::Insert(int data, IntTreeNode *node)
+void intBst::Insert(int data, IntTreeNode *&node)
 {
     if(node == nullptr)
     {
@@ -39,15 +69,15 @@ void intBst::Insert(int data, IntTreeNode *node)
         return;
     }
 
-    if(data < m_data)
+    if(data < node->m_data)
     {
-        Insert(data, node.m_left);
+        Insert(data, node->m_left);
         return;
     }
 
-    if(data >= m_data)
+    if(data >= node->m_data)
     {
-        Insert(data, node.m_right);
+        Insert(data, node->m_right);
         return;
     }
 }
@@ -55,52 +85,70 @@ void intBst::Insert(int data, IntTreeNode *node)
 //----------------------------------------------------------------------------
 void intBst::InOrder()
 {
-    if(*this == nullptr)
-    {
-        return;
-    }
-
-    m_left.InOrder();
-    std::cout << data << std::endl;
-    m_right.InOrder();
+    InOrder(m_root);
 }
 
 //----------------------------------------------------------------------------
-void intBst::PreOrder()
-{
-    if(*this == nullptr)
-    {
-        return;
-    }
-
-    std::cout << data << std::endl;
-    m_left.InOrder();
-    m_right.InOrder();
-}
-
-//----------------------------------------------------------------------------
-void intBst::PostOrder()
-{
-    if(*this == nullptr)
-    {
-        return;
-    }
-
-    m_left.InOrder();
-    m_right.InOrder();
-    std::cout << data << std::endl;
-}
-
-//----------------------------------------------------------------------------
-void intBst::Delete(IntTreeNode *node)
+void intBst::InOrder(IntTreeNode *node)
 {
     if(node == nullptr)
     {
         return;
     }
 
-    Delete(m_left);
-    Delete(m_right);
+    InOrder(node->m_left);
+    std::cout << node->m_data << std::endl;
+    InOrder(node->m_right);
+}
+
+//----------------------------------------------------------------------------
+void intBst::PreOrder()
+{
+    PreOrder(m_root);
+}
+
+//----------------------------------------------------------------------------
+void intBst::PreOrder(IntTreeNode *node)
+{
+    if(node == nullptr)
+    {
+        return;
+    }
+
+    std::cout << node->m_data << std::endl;
+    InOrder(node->m_left);
+    InOrder(node->m_right);
+}
+
+//----------------------------------------------------------------------------
+void intBst::PostOrder()
+{
+    PostOrder(m_root);
+}
+
+//----------------------------------------------------------------------------
+void intBst::PostOrder(IntTreeNode *node)
+{
+    if(node == nullptr)
+    {
+        return;
+    }
+
+    InOrder(node->m_left);
+    InOrder(node->m_right);
+    std::cout << node->m_data << std::endl;
+}
+
+//----------------------------------------------------------------------------
+void intBst::Delete(IntTreeNode *&node)
+{
+    if(node == nullptr)
+    {
+        return;
+    }
+
+    Delete(node->m_left);
+    Delete(node->m_right);
     delete node;
     node = nullptr;
 }

@@ -15,6 +15,7 @@
 #include "../includes/VectorUtilities.h"
 #include "../includes/WeatherRecUtilities.h"
 // #include "../includes/Stack.h"
+#include "../includes/BST.h"
 
 #include <iostream>
 #include <string>

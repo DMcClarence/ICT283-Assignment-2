@@ -23,17 +23,10 @@ struct IntTreeNode
 private:
     IntTreeNode(int data, IntTreeNode *left = nullptr, IntTreeNode *right = nullptr);
     int m_data;
-    IntTreeNode* m_left;
-    IntTreeNode* m_right;
+    IntTreeNode *m_left;
+    IntTreeNode *m_right;
     friend class intBst;
 };
-
-IntTreeNode::IntTreeNode(int data, IntTreeNode *left, IntTreeNode *right)
-{
-    m_data = data;
-    m_left = left;
-    m_right = right;
-}
 
     /**
 	 * @class intBst
@@ -117,11 +110,23 @@ public:
          */
     void PostOrder();
 private:
+        /// Copy Tree Method
+    void Copy(IntTreeNode *newNode, IntTreeNode *node);
+
         /// Delete Tree Method
-    void Delete();
+    void Delete(IntTreeNode *&node);
 
         /// Insert Node to Tree
-    void Insert(int data, IntTreeNode *node);
+    void Insert(int data, IntTreeNode *&node);
+
+        /// In-order Traversal
+    void InOrder(IntTreeNode *node);
+
+        /// Pre-order Traversal
+    void PreOrder(IntTreeNode *node);
+
+        /// Post-order Traversal
+    void PostOrder(IntTreeNode *node);
 
         /// Root Node of the Tree
     IntTreeNode* m_root;
