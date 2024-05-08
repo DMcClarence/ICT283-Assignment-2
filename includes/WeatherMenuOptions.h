@@ -3,6 +3,11 @@
 
 #include "../includes/WeatherRec.h"
 
+    /**
+    * @todo Documentation
+    * @todo Encapsulate each menu in own namespace.
+    */
+
 void WindSpeedMenuOption(WeatherLogType &weatherLog);
 void TemperatureMenuOption(WeatherLogType &weatherLog);
 void SolarRadiationMenuOption(WeatherLogType &weatherLog);

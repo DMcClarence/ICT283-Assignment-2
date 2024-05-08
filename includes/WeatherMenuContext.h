@@ -22,6 +22,10 @@
 	 * @author 34085068
 	 * @version 01
 	 * @date 18/04/2024 Started
+	 *
+	 * @author 34085068
+	 * @version 01
+	 * @date 18/04/2024 Modify to pass functions instead of objects
 	 */
 class WeatherMenuContext
 {
