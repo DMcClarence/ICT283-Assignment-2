@@ -21,12 +21,19 @@
 struct IntTreeNode
 {
 private:
-    IntTreeNode(m_left = nullptr, m_right = nullptr);
+    IntTreeNode(int data, IntTreeNode *left = nullptr, IntTreeNode *right = nullptr);
     int m_data;
     IntTreeNode* m_left;
     IntTreeNode* m_right;
-    friend intBst;
+    friend class intBst;
 };
+
+IntTreeNode::IntTreeNode(int data, IntTreeNode *left, IntTreeNode *right)
+{
+    m_data = data;
+    m_left = left;
+    m_right = right;
+}
 
     /**
 	 * @class intBst
@@ -78,7 +85,7 @@ public:
          * @param data - The data to store in the new node.
          * @return bool - Returns true if Insert Successful. Otherwise returns false.
          */
-    bool Insert(int data);
+    void Insert(int data);
 
         /**
          * @brief  Executes In-Order Traversal.
@@ -88,7 +95,7 @@ public:
          *
          * @return bool - Returns true if traversal successful. Otherwise returns false.
          */
-    bool InOrder();
+    void InOrder();
 
         /**
          * @brief  Executes Pre-Order Traversal.
@@ -98,7 +105,7 @@ public:
          *
          * @return bool - Returns true if traversal successful. Otherwise returns false.
          */
-    bool PreOrder();
+    void PreOrder();
 
         /**
          * @brief  Executes Post-Order Traversal.
@@ -108,10 +115,13 @@ public:
          *
          * @return bool - Returns true if traversal successful. Otherwise returns false.
          */
-    bool PostOrder();
+    void PostOrder();
 private:
         /// Delete Tree Method
-    bool Delete();
+    void Delete();
+
+        /// Insert Node to Tree
+    void Insert(int data, IntTreeNode *node);
 
         /// Root Node of the Tree
     IntTreeNode* m_root;

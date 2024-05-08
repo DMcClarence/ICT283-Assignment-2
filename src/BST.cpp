@@ -1,4 +1,4 @@
-#include "../../includes/BST.h"
+#include "../includes/BST.h"
 #include <iostream>
 
 //----------------------------------------------------------------------------
@@ -10,7 +10,7 @@ intBst::intBst()
 //----------------------------------------------------------------------------
 intBst::~intBst()
 {
-    Delete();
+    Delete(m_root);
     m_root = nullptr;
 }
 
@@ -89,6 +89,20 @@ void intBst::PostOrder()
     m_left.InOrder();
     m_right.InOrder();
     std::cout << data << std::endl;
+}
+
+//----------------------------------------------------------------------------
+void intBst::Delete(IntTreeNode *node)
+{
+    if(node == nullptr)
+    {
+        return;
+    }
+
+    Delete(m_left);
+    Delete(m_right);
+    delete node;
+    node = nullptr;
 }
 
 //----------------------------------------------------------------------------
