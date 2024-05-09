@@ -58,7 +58,7 @@ void PrintSolarRadToFile(WeatherLogType &weatherLog, int month, int year, ofstre
 //----------------------------------------------------------------------------
 // Function implementations
 
-void WindSpeedMenuOption(WeatherLogType &weatherLog)
+void WindSpeedMenu::WindSpeedMenuOption(WeatherLogType &weatherLog)
 {
     int year;
     int month;
@@ -77,7 +77,7 @@ void WindSpeedMenuOption(WeatherLogType &weatherLog)
 }
 
 //----------------------------------------------------------------------------
-void TemperatureMenuOption(WeatherLogType &weatherLog)
+void TemperatureMenu::TemperatureMenuOption(WeatherLogType &weatherLog)
 {
     int year;
 
@@ -95,7 +95,7 @@ void TemperatureMenuOption(WeatherLogType &weatherLog)
 }
 
 //----------------------------------------------------------------------------
-void SolarRadiationMenuOption(WeatherLogType &weatherLog)
+void SolarRadiationMenu::SolarRadiationMenuOption(WeatherLogType &weatherLog)
 {
     int year;
 
@@ -113,7 +113,7 @@ void SolarRadiationMenuOption(WeatherLogType &weatherLog)
 }
 
 //----------------------------------------------------------------------------
-void PrintToFileMenuOption(WeatherLogType &weatherLog)
+void PrintToFileMenu::PrintToFileMenuOption(WeatherLogType &weatherLog)
 {
     ofstream output("WindSolarTemp.csv");
     int year;

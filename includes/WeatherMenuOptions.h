@@ -5,12 +5,28 @@
 
     /**
     * @todo Documentation
-    * @todo Encapsulate each menu in own namespace.
+    * @todo Encapsulate each menu in own namespace. Maybe separate into files with helper functions
     */
 
-void WindSpeedMenuOption(WeatherLogType &weatherLog);
-void TemperatureMenuOption(WeatherLogType &weatherLog);
-void SolarRadiationMenuOption(WeatherLogType &weatherLog);
-void PrintToFileMenuOption(WeatherLogType &weatherLog);
+namespace WindSpeedMenu
+{
+    void WindSpeedMenuOption(WeatherLogType &weatherLog);
+}
+
+namespace TemperatureMenu
+{
+    void TemperatureMenuOption(WeatherLogType &weatherLog);
+}
+
+namespace SolarRadiationMenu
+{
+    void SolarRadiationMenuOption(WeatherLogType &weatherLog);
+}
+
+namespace PrintToFileMenu
+{
+    void PrintToFileMenuOption(WeatherLogType &weatherLog);
+}
+
 
 #endif // WEATHERMENUOPTIONS_H_INCLUDED
