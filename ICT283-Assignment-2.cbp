@@ -49,7 +49,6 @@
 		<Unit filename="includes/WeatherRecIO.h" />
 		<Unit filename="includes/WeatherRecUtilities.h" />
 		<Unit filename="includes/WindSpeedMenuOption.h" />
-		<Unit filename="src/BST.cpp" />
 		<Unit filename="src/Date.cpp" />
 		<Unit filename="src/PrintToFileMenuOption.cpp" />
 		<Unit filename="src/SolarRadiationMenuOption.cpp" />
