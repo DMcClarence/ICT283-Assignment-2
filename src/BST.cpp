@@ -1,4 +1,5 @@
 #include "../includes/BST.h"
+#include <assert.h>
 #include <iostream>
 
 //----------------------------------------------------------------------------
@@ -58,6 +59,7 @@ void intBst::Copy(IntTreeNode *newRoot, IntTreeNode *node)
 void intBst::Insert(int data)
 {
     Insert(data, m_root);
+    MaintainRI(m_root);
 }
 
 //----------------------------------------------------------------------------
@@ -183,6 +185,36 @@ void intBst::Delete(IntTreeNode *&node)
     Delete(node->m_right);
     delete node;
     node = nullptr;
+}
+
+//----------------------------------------------------------------------------
+void intBst::MaintainRI(IntTreeNode *node)
+{
+    if(node == nullptr)
+    {
+        return;
+    }
+
+    bool leftValid = true;
+    bool rightValid = true;
+    if(node->m_left != nullptr)
+    {
+        leftValid = (node->m_left->m_data < node->m_data);
+    }
+
+    if(node->m_right != nullptr)
+    {
+        rightValid = (node->m_right->m_data > node->m_data);
+    }
+
+    if(!leftValid || !rightValid)
+    {
+        Delete(m_root);
+        assert(!leftValid || !rightValid);
+    }
+
+    MaintainRI(node->m_left);
+    MaintainRI(node->m_right);
 }
 
 //----------------------------------------------------------------------------

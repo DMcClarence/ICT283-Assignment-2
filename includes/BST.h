@@ -139,6 +139,9 @@ private:
         /// Search Tree
     void Search(int item, IntTreeNode *node, bool &found);
 
+        /// Maintain Representation Invariant
+    void MaintainRI(IntTreeNode *node);
+
         /// Root Node of the Tree
     IntTreeNode* m_root;
 };
