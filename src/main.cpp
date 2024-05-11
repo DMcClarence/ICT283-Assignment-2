@@ -46,14 +46,14 @@ int main()
 //        }
 //    }
 //
-//         // Checks weatherLog isn't empty before running Weather Menu
+//        // Checks weatherLog isn't empty before running Weather Menu
 //    if(weatherLog.GetSize() > 0)
 //    {
 //        RemoveDuplicatesFromWeatherLog(weatherLog);
 //        RunWeatherMenu(weatherLog);
 //    }
 //
-    BST<int> intTree;
+    intBst intTree;
     intTree.Insert(4);
     intTree.Insert(2);
     intTree.Insert(6);
@@ -64,6 +64,11 @@ int main()
     std::cout << std::endl;
     intTree.PostOrder();
     std::cout << std::endl;
+    bool found;
+    found = intTree.Search(6);
+    std::cout << found << std::endl;
+    found = intTree.Search(15);
+    std::cout << found << std::endl;
 //
 //    BST<float> floatTree;
 //    floatTree.Insert(4);

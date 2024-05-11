@@ -132,6 +132,14 @@ public:
          * @return void
          */
     void PostOrder();
+
+        /**
+         * @brief  Searches BST for the existence of an item.
+         *
+         *
+         * @return bool - Returns true if item is found. Otherwise returns false.
+         */
+    bool Search(int item);
 private:
         /// Copy Tree Method
     void Copy(TreeNode<T> *newNode, TreeNode<T> *node);
@@ -150,6 +158,12 @@ private:
 
         /// Post-order Traversal
     void PostOrder(TreeNode<T> *node);
+
+        /// Search Tree
+    void Search(int item, IntTreeNode *node, bool &found);
+
+        /// Maintain Representation Invariant
+    void MaintainRI(IntTreeNode *node);
 
         /// Root Node of the Tree
     TreeNode<T>* m_root;
