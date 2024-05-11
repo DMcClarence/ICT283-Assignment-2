@@ -140,6 +140,38 @@ void intBst::PostOrder(IntTreeNode *node)
 }
 
 //----------------------------------------------------------------------------
+bool intBst::Search(int item)
+{
+    bool found = false;
+    Search(item, m_root, found);
+    return found;
+}
+
+//----------------------------------------------------------------------------
+void intBst::Search(int item, IntTreeNode *node, bool &found)
+{
+    if(found == true || node == nullptr)
+    {
+        return;
+    }
+
+    if(node->m_data == item)
+    {
+        found = true;
+        return;
+    }
+
+    if(item < node->m_data)
+    {
+        Search(item, node->m_left, found);
+    }
+    else
+    {
+        Search(item, node->m_right, found);
+    }
+}
+
+//----------------------------------------------------------------------------
 void intBst::Delete(IntTreeNode *&node)
 {
     if(node == nullptr)

@@ -31,28 +31,44 @@
 
 int main()
 {
-    bool readSuccessful = false;
-    Stack<std::string> fileStack;
-    WeatherLogType weatherLog;
+//    bool readSuccessful = false;
+//    Stack<std::string> fileStack;
+//    WeatherLogType weatherLog;
+//
+//    readSuccessful = GetDataFileNameFromSrcFile(fileStack);
+//    if(readSuccessful)
+//    {
+//        while(!fileStack.IsEmpty())
+//        {
+//            std::string fileName;
+//            fileStack.Pop(fileName);
+//            ReadWeatherDataFromFile(fileName, weatherLog);
+//        }
+//    }
+//
+//        // Checks weatherLog isn't empty before running Weather Menu
+//    if(weatherLog.GetSize() > 0)
+//    {
+//        RemoveDuplicatesFromWeatherLog(weatherLog);
+//        RunWeatherMenu(weatherLog);
+//    }
 
-    readSuccessful = GetDataFileNameFromSrcFile(fileStack);
-    if(readSuccessful)
-    {
-        while(!fileStack.IsEmpty())
-        {
-            std::string fileName;
-            fileStack.Pop(fileName);
-            ReadWeatherDataFromFile(fileName, weatherLog);
-        }
-    }
-
-        // Checks weatherLog isn't empty before running Weather Menu
-    if(weatherLog.GetSize() > 0)
-    {
-        RemoveDuplicatesFromWeatherLog(weatherLog);
-        RunWeatherMenu(weatherLog);
-    }
-
+    intBst intTree;
+    intTree.Insert(4);
+    intTree.Insert(2);
+    intTree.Insert(6);
+    intTree.Insert(5);
+    intTree.InOrder();
+    std::cout << std::endl;
+    intTree.PreOrder();
+    std::cout << std::endl;
+    intTree.PostOrder();
+    std::cout << std::endl;
+    bool found;
+    found = intTree.Search(6);
+    std::cout << found << std::endl;
+    found = intTree.Search(15);
+    std::cout << found << std::endl;
     return 0;
 }
 

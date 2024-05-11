@@ -109,6 +109,14 @@ public:
          * @return bool - Returns true if traversal successful. Otherwise returns false.
          */
     void PostOrder();
+
+        /**
+         * @brief  Searches BST for the existence of an item.
+         *
+         *
+         * @return bool - Returns true if item is found. Otherwise returns false.
+         */
+    bool Search(int item);
 private:
         /// Copy Tree Method
     void Copy(IntTreeNode *newNode, IntTreeNode *node);
@@ -127,6 +135,9 @@ private:
 
         /// Post-order Traversal
     void PostOrder(IntTreeNode *node);
+
+        /// Search Tree
+    void Search(int item, IntTreeNode *node, bool &found);
 
         /// Root Node of the Tree
     IntTreeNode* m_root;
