@@ -6,7 +6,7 @@
 
 //---------------------------------------------------------------------------------
 
-
+#include <assert.h>
 
 //---------------------------------------------------------------------------------
     /**
@@ -21,6 +21,10 @@
 	 * @author 34085068
 	 * @version 02
 	 * @date 09/05/2024 Templated and Renamed Class to be reusable with different types.
+	 *
+	 * @todo Remove Public Traversal Methods
+	 * @todo Modify Private Traversal Methods to take function pointers
+	 * @todo Modify Methods that Require Traversal to use private Traversal Methods with Function Pointers
 	 */
 template <class T>
 struct TreeNode
@@ -101,7 +105,7 @@ public:
          * @param data - The data to store in the new node.
          * @return void
          */
-    void Insert(T data);
+    void Insert(const T& data);
 
         /**
          * @brief  Executes In-Order Traversal.
@@ -139,7 +143,7 @@ public:
          *
          * @return bool - Returns true if item is found. Otherwise returns false.
          */
-    bool Search(int item);
+    bool Search(const T& item);
 private:
         /// Copy Tree Method
     void Copy(TreeNode<T> *newNode, TreeNode<T> *node);
@@ -148,7 +152,7 @@ private:
     void Delete(TreeNode<T> *&node);
 
         /// Insert Node to Tree
-    void Insert(T data, TreeNode<T> *&node);
+    void Insert(const T& data, TreeNode<T> *&node);
 
         /// In-order Traversal
     void InOrder(TreeNode<T> *node);
@@ -160,10 +164,10 @@ private:
     void PostOrder(TreeNode<T> *node);
 
         /// Search Tree
-    void Search(int item, IntTreeNode *node, bool &found);
+    void Search(const T& item, TreeNode<T> *node, bool &found);
 
         /// Maintain Representation Invariant
-    void MaintainRI(IntTreeNode *node);
+    void MaintainRI(TreeNode<T> *node);
 
         /// Root Node of the Tree
     TreeNode<T>* m_root;
@@ -221,14 +225,14 @@ void BST<T>::Copy(TreeNode<T> *newRoot, TreeNode<T> *node)
 
 //----------------------------------------------------------------------------
 template <class T>
-void BST<T>::Insert(T data)
+void BST<T>::Insert(const T& data)
 {
     Insert(data, m_root);
 }
 
 //----------------------------------------------------------------------------
 template <class T>
-void BST<T>::Insert(T data, TreeNode<T> *&node)
+void BST<T>::Insert(const T& data, TreeNode<T> *&node)
 {
     if(node == nullptr)
     {
@@ -314,6 +318,72 @@ void BST<T>::PostOrder(TreeNode<T> *node)
 
 //----------------------------------------------------------------------------
 template <class T>
+bool BST<T>::Search(const T& item)
+{
+    bool found = false;
+    Search(item, m_root, found);
+
+    return found;
+}
+
+//----------------------------------------------------------------------------
+template <class T>
+void BST<T>::Search(const T& item, TreeNode<T> *node, bool &found)
+{
+    if(found == true || node == nullptr)
+    {
+        return;
+    }
+
+    if(node->m_data == item)
+    {
+        found = true;
+        return;
+    }
+
+    if(item < node->m_data)
+    {
+        Search(item, node->m_left, found);
+    }
+    else
+    {
+        Search(item, node->m_right, found);
+    }
+}
+
+//----------------------------------------------------------------------------
+template <class T>
+void BST<T>::MaintainRI(TreeNode<T> *node)
+{
+    if(node == nullptr)
+    {
+        return;
+    }
+
+    bool leftValid = true;
+    bool rightValid = true;
+    if(node->m_left != nullptr)
+    {
+        leftValid = (node->m_left->m_data < node->m_data);
+    }
+
+    if(node->m_right != nullptr)
+    {
+        rightValid = (node->m_right->m_data > node->m_data);
+    }
+
+    if(!leftValid || !rightValid)
+    {
+        Delete(m_root);
+        assert(false);
+    }
+
+    MaintainRI(node->m_left);
+    MaintainRI(node->m_right);
+}
+
+//----------------------------------------------------------------------------
+template <class T>
 void BST<T>::Delete(TreeNode<T> *&node)
 {
     if(node == nullptr)
@@ -325,6 +395,8 @@ void BST<T>::Delete(TreeNode<T> *&node)
     Delete(node->m_right);
     delete node;
     node = nullptr;
+
+    // PostOrderTraversal(node, functionPtr);
 }
 
 //----------------------------------------------------------------------------
