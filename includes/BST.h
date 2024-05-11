@@ -21,10 +21,6 @@
 	 * @author 34085068
 	 * @version 02
 	 * @date 09/05/2024 Templated and Renamed Class to be reusable with different types.
-	 *
-	 * @todo Remove Public Traversal Methods
-	 * @todo Modify Private Traversal Methods to take function pointers
-	 * @todo Modify Methods that Require Traversal to use private Traversal Methods with Function Pointers
 	 */
 template <class T>
 struct TreeNode
@@ -62,6 +58,10 @@ TreeNode<T>::TreeNode(T data, TreeNode<T> *left, TreeNode<T> *right)
 	 * @author 34085068
 	 * @version 02
 	 * @date 09/05/2024 Templated and Renamed Class to be reusable with different types.
+     *
+	 * @todo Remove Public Traversal Methods
+	 * @todo Modify Private Traversal Methods to take function pointers
+	 * @todo Modify Methods that Require Traversal to use private Traversal Methods with Function Pointers
 	 */
 template <class T>
 class BST
