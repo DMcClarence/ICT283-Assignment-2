@@ -52,7 +52,7 @@ int main()
 //        RemoveDuplicatesFromWeatherLog(weatherLog);
 //        RunWeatherMenu(weatherLog);
 //    }
-
+//
     intBst intTree;
     intTree.Insert(4);
     intTree.Insert(2);
@@ -69,6 +69,19 @@ int main()
     std::cout << found << std::endl;
     found = intTree.Search(15);
     std::cout << found << std::endl;
+//
+//    BST<float> floatTree;
+//    floatTree.Insert(4);
+//    floatTree.Insert(2);
+//    floatTree.Insert(6);
+//    floatTree.Insert(5);
+//    floatTree.InOrder();
+//    std::cout << std::endl;
+//    floatTree.PreOrder();
+//    std::cout << std::endl;
+//    floatTree.PostOrder();
+//    std::cout << std::endl;
+
     return 0;
 }
 
