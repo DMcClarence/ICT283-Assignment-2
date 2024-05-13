@@ -127,7 +127,7 @@ public:
          *
          * @return void
          */
-    void PreOrder();
+
 
         /**
          * @brief  Searches BST for the existence of an item.
@@ -146,6 +146,8 @@ private:
         /// Delete Tree Method
     void Delete(TreeNode<T> *&node);
 
+    void CheckTreeRI();
+
         /// Insert Node to Tree
     void Insert(const T& data, TreeNode<T> *&node);
 
@@ -153,19 +155,21 @@ private:
     void InOrder(TreeNode<T> *node);
 
         /// Pre-order Traversal
-    void PreOrder(TreeNode<T> *node);
+    template <class... Args>
+    void PreOrder(TreeNode<T> *&node, void(BST<T>::*func)(Args&... params));
 
         /// Post-order Traversal
-    void PostOrder(TreeNode<T> *&node, void (BST<T>::*func)(TreeNode<T> *&node));
+    template <class... Args>
+    void PostOrder(TreeNode<T> *&node, void (BST<T>::*func)(Args&... params));
 
         /// Search Tree
     void Search(const T& item, TreeNode<T> *node, bool &found);
 
         /// Maintain Representation Invariant
-    void MaintainRI(TreeNode<T> *node);
+    void MaintainRI(TreeNode<T> *&node);
 
     template <class... Args>
-    void ProcessNode(Args&&... args);
+    void ProcessNode(void (BST<T>::*func)(Args&... params), Args&... args);
 
         /// Root Node of the Tree
     TreeNode<T>* m_root;
@@ -226,7 +230,7 @@ template <class T>
 void BST<T>::Insert(const T& data)
 {
     Insert(data, m_root);
-    MaintainRI(m_root);
+    CheckTreeRI();
 }
 
 //----------------------------------------------------------------------------
@@ -275,23 +279,24 @@ void BST<T>::InOrder(TreeNode<T> *node)
 
 //----------------------------------------------------------------------------
 template <class T>
-void BST<T>::PreOrder()
+void BST<T>::CheckTreeRI()
 {
-    PreOrder(m_root);
+    PreOrder(m_root, MaintainRI);
 }
 
 //----------------------------------------------------------------------------
 template <class T>
-void BST<T>::PreOrder(TreeNode<T> *node)
+template <class... Args>
+void BST<T>::PreOrder(TreeNode<T> *&node, void(BST<T>::*func)(Args&... params))
 {
     if(node == nullptr)
     {
         return;
     }
 
-    std::cout << node->m_data << std::endl;
-    PreOrder(node->m_left);
-    PreOrder(node->m_right);
+    ProcessNode(func, node);
+    PreOrder(node->m_left, func);
+    PreOrder(node->m_right, func);
 }
 
 //----------------------------------------------------------------------------
@@ -303,7 +308,8 @@ void BST<T>::DeleteTree()
 
 //----------------------------------------------------------------------------
 template <class T>
-void BST<T>::PostOrder(TreeNode<T> *&node, void (BST<T>::*func)(TreeNode<T> *&node))
+template <class... Args>
+void BST<T>::PostOrder(TreeNode<T> *&node, void (BST<T>::*func)(Args&... params))
 {
     if(node == nullptr)
     {
@@ -312,7 +318,7 @@ void BST<T>::PostOrder(TreeNode<T> *&node, void (BST<T>::*func)(TreeNode<T> *&no
 
     PostOrder(node->m_left, func);
     PostOrder(node->m_right, func);
-    (this->*func)(node);
+    ProcessNode(func, node);
 }
 
 //----------------------------------------------------------------------------
@@ -352,13 +358,8 @@ void BST<T>::Search(const T& item, TreeNode<T> *node, bool &found)
 
 //----------------------------------------------------------------------------
 template <class T>
-void BST<T>::MaintainRI(TreeNode<T> *node)
+void BST<T>::MaintainRI(TreeNode<T> *&node)
 {
-    if(node == nullptr)
-    {
-        return;
-    }
-
     bool leftValid = true;
     bool rightValid = true;
     if(node->m_left != nullptr)
@@ -373,12 +374,9 @@ void BST<T>::MaintainRI(TreeNode<T> *node)
 
     if(!leftValid || !rightValid)
     {
-        Delete(m_root);
+        DeleteTree();
         assert(false);
     }
-
-    MaintainRI(node->m_left);
-    MaintainRI(node->m_right);
 }
 
 //----------------------------------------------------------------------------
@@ -390,11 +388,11 @@ void BST<T>::Delete(TreeNode<T> *&node)
 }
 
 //----------------------------------------------------------------------------
-//template <class T>
-//template <class... Args>
-//void ProcessNode(Args&&... args)
-//{
-//
-//}
+template <class T>
+template <class... Args>
+void BST<T>::ProcessNode(void (BST<T>::*func)(Args&... params), Args&... args)
+{
+    (this->*func)(args...);
+}
 
 #endif // BST_H_INCLUDED

@@ -60,7 +60,7 @@ int main()
     intTree.Insert(5);
     intTree.InOrder();
     std::cout << std::endl;
-    intTree.PreOrder();
+//    intTree.PreOrder();
     std::cout << std::endl;
 //    intTree.PostOrder();
     std::cout << std::endl;
@@ -75,9 +75,9 @@ int main()
     floatTree.Insert(2);
     floatTree.Insert(6);
     floatTree.Insert(5);
-    floatTree.InOrder();
+//    floatTree.InOrder();
     std::cout << std::endl;
-    floatTree.PreOrder();
+//    floatTree.PreOrder();
     std::cout << std::endl;
 //    floatTree.PostOrder();
     std::cout << std::endl;
