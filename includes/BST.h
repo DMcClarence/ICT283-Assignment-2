@@ -111,6 +111,7 @@ public:
          * @brief  Executes In-Order Traversal.
          *
          * Processes Nodes in the order of left node, self, right node.
+         * Used for
          *
          *
          * @return void
@@ -121,21 +122,12 @@ public:
          * @brief  Executes Pre-Order Traversal.
          *
          * Processes Nodes in the order of self, left node, right node.
+         * Used for Search, MaintainRI
          *
          *
          * @return void
          */
     void PreOrder();
-
-        /**
-         * @brief  Executes Post-Order Traversal.
-         *
-         * Processes Nodes in the order of left node, right node, self.
-         *
-         *
-         * @return void
-         */
-    void PostOrder();
 
         /**
          * @brief  Searches BST for the existence of an item.
@@ -144,9 +136,12 @@ public:
          * @return bool - Returns true if item is found. Otherwise returns false.
          */
     bool Search(const T& item);
+
 private:
         /// Copy Tree Method
     void Copy(TreeNode<T> *newNode, TreeNode<T> *node);
+
+    void DeleteTree();
 
         /// Delete Tree Method
     void Delete(TreeNode<T> *&node);
@@ -161,13 +156,16 @@ private:
     void PreOrder(TreeNode<T> *node);
 
         /// Post-order Traversal
-    void PostOrder(TreeNode<T> *node);
+    void PostOrder(TreeNode<T> *&node, void (BST<T>::*func)(TreeNode<T> *&node));
 
         /// Search Tree
     void Search(const T& item, TreeNode<T> *node, bool &found);
 
         /// Maintain Representation Invariant
     void MaintainRI(TreeNode<T> *node);
+
+    template <class... Args>
+    void ProcessNode(Args&&... args);
 
         /// Root Node of the Tree
     TreeNode<T>* m_root;
@@ -184,7 +182,7 @@ BST<T>::BST()
 template <class T>
 BST<T>::~BST()
 {
-    Delete(m_root);
+    DeleteTree();
     m_root = nullptr;
 }
 
@@ -228,6 +226,7 @@ template <class T>
 void BST<T>::Insert(const T& data)
 {
     Insert(data, m_root);
+    MaintainRI(m_root);
 }
 
 //----------------------------------------------------------------------------
@@ -291,29 +290,29 @@ void BST<T>::PreOrder(TreeNode<T> *node)
     }
 
     std::cout << node->m_data << std::endl;
-    InOrder(node->m_left);
-    InOrder(node->m_right);
+    PreOrder(node->m_left);
+    PreOrder(node->m_right);
 }
 
 //----------------------------------------------------------------------------
 template <class T>
-void BST<T>::PostOrder()
+void BST<T>::DeleteTree()
 {
-    PostOrder(m_root);
+    PostOrder(m_root, Delete);
 }
 
 //----------------------------------------------------------------------------
 template <class T>
-void BST<T>::PostOrder(TreeNode<T> *node)
+void BST<T>::PostOrder(TreeNode<T> *&node, void (BST<T>::*func)(TreeNode<T> *&node))
 {
     if(node == nullptr)
     {
         return;
     }
 
-    InOrder(node->m_left);
-    InOrder(node->m_right);
-    std::cout << node->m_data << std::endl;
+    PostOrder(node->m_left, func);
+    PostOrder(node->m_right, func);
+    (this->*func)(node);
 }
 
 //----------------------------------------------------------------------------
@@ -386,19 +385,16 @@ void BST<T>::MaintainRI(TreeNode<T> *node)
 template <class T>
 void BST<T>::Delete(TreeNode<T> *&node)
 {
-    if(node == nullptr)
-    {
-        return;
-    }
-
-    Delete(node->m_left);
-    Delete(node->m_right);
     delete node;
     node = nullptr;
-
-    // PostOrderTraversal(node, functionPtr);
 }
 
 //----------------------------------------------------------------------------
+//template <class T>
+//template <class... Args>
+//void ProcessNode(Args&&... args)
+//{
+//
+//}
 
 #endif // BST_H_INCLUDED

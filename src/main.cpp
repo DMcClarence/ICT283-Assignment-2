@@ -62,7 +62,7 @@ int main()
     std::cout << std::endl;
     intTree.PreOrder();
     std::cout << std::endl;
-    intTree.PostOrder();
+//    intTree.PostOrder();
     std::cout << std::endl;
     bool found;
     found = intTree.Search(6);
@@ -79,7 +79,7 @@ int main()
     std::cout << std::endl;
     floatTree.PreOrder();
     std::cout << std::endl;
-    floatTree.PostOrder();
+//    floatTree.PostOrder();
     std::cout << std::endl;
 
     return 0;
