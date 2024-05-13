@@ -13,6 +13,7 @@
 
 using std::istream;
 using std::string;
+using std::ostream;
 
 //---------------------------------------------------------------------------------
         /**
@@ -36,6 +37,18 @@ using std::string;
 		 * @return istream&
 		 */
 istream& operator>>(istream& input, Date& d);
+
+        /**
+		 * @brief  Ouputs a Date Object.
+		 *
+		 * Outputs in the format "D/M/YYYY"
+		 *
+		 *
+		 * @param output - The ostream object
+		 * @param d - The date object
+		 * @return ostream&
+		 */
+ostream& operator<<(ostream& output, const Date& d);
 
         /**
 		 * @brief  Reads an istream object into a time object.

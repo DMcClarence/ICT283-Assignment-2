@@ -29,6 +29,7 @@ using std::stof;
 using std::istringstream;
 using std::invalid_argument;
 using std::cerr;
+using std::ostream;
 
 //----------------------------------------------------------------------------
 // Global variables/defines
@@ -98,6 +99,14 @@ istream& operator>>(istream& input, Date& d)
     d.SetYear(date);
 
     return input;
+}
+
+//----------------------------------------------------------------------------
+ostream& operator<<(ostream& output, const Date& d)
+{
+    output << d.GetDay() << "/" << d.GetMonth() << "/" << d.GetYear();
+
+    return output;
 }
 
 //----------------------------------------------------------------------------

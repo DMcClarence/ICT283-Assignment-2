@@ -62,7 +62,7 @@ int main()
     std::cout << std::endl;
     intTree.PreOrder();
     std::cout << std::endl;
-//    intTree.PostOrder();
+    intTree.PostOrder();
     std::cout << std::endl;
     bool found;
     found = intTree.Search(6);
@@ -79,7 +79,19 @@ int main()
     std::cout << std::endl;
     floatTree.PreOrder();
     std::cout << std::endl;
-//    floatTree.PostOrder();
+    floatTree.PostOrder();
+    std::cout << std::endl;
+
+    BST<Date> dateTree;
+    dateTree.Insert(Date(12, 6, 2020));
+    dateTree.Insert(Date(17, 5, 2020));
+    dateTree.Insert(Date(12, 6, 2021));
+    dateTree.Insert(Date(31, 5, 2020));
+    dateTree.InOrder();
+    std::cout << std::endl;
+    dateTree.PreOrder();
+    std::cout << std::endl;
+    dateTree.PostOrder();
     std::cout << std::endl;
 
     return 0;

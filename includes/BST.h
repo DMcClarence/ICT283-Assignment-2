@@ -7,6 +7,7 @@
 //---------------------------------------------------------------------------------
 
 #include <assert.h>
+#include "WeatherRecIO.h"
 
 //---------------------------------------------------------------------------------
     /**
@@ -171,6 +172,9 @@ private:
         /// Maintain Representation Invariant
     void MaintainRI(TreeNode<T> *node);
 
+        /// Process A Node
+    void ProcessNode(TreeNode<T> *node);
+
         /// Root Node of the Tree
     TreeNode<T>* m_root;
 };
@@ -273,7 +277,7 @@ void BST<T>::InOrder(TreeNode<T> *node)
     }
 
     InOrder(node->m_left);
-    // Process This Node;
+    ProcessNode(node);
     InOrder(node->m_right);
 }
 
@@ -293,7 +297,7 @@ void BST<T>::PreOrder(TreeNode<T> *node)
         return;
     }
 
-    // Process This Node;
+    ProcessNode(node);
     PreOrder(node->m_left);
     PreOrder(node->m_right);
 }
@@ -316,7 +320,7 @@ void BST<T>::PostOrder(TreeNode<T> *&node)
 
     PostOrder(node->m_left);
     PostOrder(node->m_right);
-    // Process This Node;
+    ProcessNode(node);
 }
 
 //----------------------------------------------------------------------------
@@ -398,6 +402,13 @@ void BST<T>::Delete(TreeNode<T> *&node)
     Delete(node->m_right);
     delete node;
     node = nullptr;
+}
+
+//----------------------------------------------------------------------------
+template <class T>
+void BST<T>::ProcessNode(TreeNode<T> *node)
+{
+    std::cout << node->m_data << std::endl;
 }
 
 //----------------------------------------------------------------------------
