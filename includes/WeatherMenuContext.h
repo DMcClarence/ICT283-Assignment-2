@@ -8,7 +8,6 @@
 
 #include "WeatherMenuStrategy.h"
 #include "WeatherRec.h"
-#include <functional>
 
 //---------------------------------------------------------------------------------
 
@@ -24,8 +23,12 @@
 	 * @date 18/04/2024 Started
 	 *
 	 * @author 34085068
-	 * @version 01
-	 * @date 18/04/2024 Modify to pass functions instead of objects
+	 * @version 02
+	 * @date 01/05/2024 Modify to pass functions instead of objects
+     *
+	 * @author 34085068
+	 * @version 03
+	 * @date 14/05/2024 Modify to use function pointers instead of std::function
 	 */
 class WeatherMenuContext
 {
@@ -52,7 +55,7 @@ class WeatherMenuContext
              * @param menuOption - The Menu Option to be Executed
              * @return bool - Returns true if Set Successful. Returns false if Set Failed.
              */
-        bool SetWeatherMenuStrategy(std::function<void(WeatherLogType&)> option);
+        bool SetWeatherMenuStrategy(void (*menuOption)(WeatherLogType&));
 
             /**
              * @brief  Executes the WeatherMenuStrategy Object.
@@ -64,7 +67,7 @@ class WeatherMenuContext
         bool ExecuteWeatherMenuOption(WeatherLogType &weatherLog);
     private:
             /// The Menu Option to be Executed.
-        std::function<void(WeatherLogType&)> m_menuOption;
+        void (*m_menuOption)(WeatherLogType&);
 };
 
 //---------------------------------------------------------------------------------

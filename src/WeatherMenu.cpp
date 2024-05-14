@@ -25,14 +25,14 @@
 void DisplayWeatherMenu();
 
     // Dedicated to Executing the Weather Menu Option selected by the User
-void ExecuteSelection(int selection, WeatherMenuContext &progMenu, const Vector<std::function<void(WeatherLogType&)>> &menuOptions, WeatherLogType &weatherLog);
+void ExecuteSelection(int selection, WeatherMenuContext &progMenu, const Vector<void (*)(WeatherLogType&)> &menuOptions, WeatherLogType &weatherLog);
 
 //----------------------------------------------------------------------------
 // Function implementations
 
 void RunWeatherMenu(WeatherLogType &weatherLog)
 {
-    Vector<std::function<void(WeatherLogType&)>> menuOptions;
+    Vector<void (*)(WeatherLogType&)> menuOptions;
     menuOptions.PushBack(WindSpeedMenu::WindSpeedMenuOption);
     menuOptions.PushBack(TemperatureMenu::TemperatureMenuOption);
     menuOptions.PushBack(SolarRadiationMenu::SolarRadiationMenuOption);
@@ -66,7 +66,7 @@ void DisplayWeatherMenu()
 }
 
 //----------------------------------------------------------------------------
-void ExecuteSelection(int selection, WeatherMenuContext &progMenu, const Vector<std::function<void(WeatherLogType&)>> &menuOptions, WeatherLogType &weatherLog)
+void ExecuteSelection(int selection, WeatherMenuContext &progMenu, const Vector<void (*)(WeatherLogType&)> &menuOptions, WeatherLogType &weatherLog)
 {
     if(selection == 5)
     {

@@ -7,13 +7,14 @@
 //      Started
 // 02 01/05/2024 34085068
 //      Modify to pass functions instead of objects
+// 03 14/05/2024 34085068
+//      Modify to use function pointers instead of std::function
 //---------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
 // Includes
 
 #include "../includes/WeatherMenuContext.h"
-//#include <functional>
 
 //----------------------------------------------------------------------------
 // Global variables/defines
@@ -29,11 +30,11 @@ WeatherMenuContext::WeatherMenuContext()
 }
 
 //----------------------------------------------------------------------------
-bool WeatherMenuContext::SetWeatherMenuStrategy(std::function<void(WeatherLogType&)> option)
+bool WeatherMenuContext::SetWeatherMenuStrategy(void (*menuOption)(WeatherLogType&))
 {
     try
     {
-        m_menuOption = option;
+        m_menuOption = menuOption;
     }
     catch(...)
     {
@@ -50,7 +51,7 @@ bool WeatherMenuContext::ExecuteWeatherMenuOption(WeatherLogType &weatherLog)
     {
         m_menuOption(weatherLog);
     }
-    catch(std::bad_function_call& bfc)
+    catch(...)
     {
         return false;
     }
