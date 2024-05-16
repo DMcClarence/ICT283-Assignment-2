@@ -42,11 +42,23 @@ TemperatureMenuOption::TemperatureMenuOption()
 //----------------------------------------------------------------------------
 void TemperatureMenuOption::Execute(WeatherLogType &weatherLog)
 {
+    std::string yearStr;
     int year;
 
     std::cout << "Enter a Year: " << std::endl;
     std::cin >> year;
     std::cin.clear();
+    try
+    {
+        year = stoi(yearStr);
+    }
+    catch(...)
+    {
+        std::cout << std::endl;
+        std::cout << "Invalid Year" << std::endl;
+        std::cout << std::endl;
+        return;
+    }
 
     std::cout << std::endl;
     std::cout << year << std::endl;

@@ -28,7 +28,7 @@
 void DisplayWeatherMenu();
 
     // Dedicated to Executing the Weather Menu Option selected by the User
-void ExecuteSelection(int selection, WeatherMenuContext &progMenu, const Vector<WeatherMenuStrategy*> &menuOptions, WeatherLogType &weatherLog);
+void ExecuteSelection(std::string selection, WeatherMenuContext &progMenu, const Vector<WeatherMenuStrategy*> &menuOptions, WeatherLogType &weatherLog);
 
 //----------------------------------------------------------------------------
 // Function implementations
@@ -49,7 +49,7 @@ void RunWeatherMenu(WeatherLogType &weatherLog)
     menuOptions.PushBack(&ptfOption);
 
     WeatherMenuContext progMenu;
-    int selection;
+    std::string selection;
 
     do
     {
@@ -58,9 +58,7 @@ void RunWeatherMenu(WeatherLogType &weatherLog)
         std::cin.clear();
         std::cout << std::endl;
         ExecuteSelection(selection, progMenu, menuOptions, weatherLog);
-    }while(selection != 5);
-
-    std::cout << "Program Exiting..." << std::endl;
+    }while(selection != "5");
 }
 
 //----------------------------------------------------------------------------
@@ -77,16 +75,29 @@ void DisplayWeatherMenu()
 }
 
 //----------------------------------------------------------------------------
-void ExecuteSelection(int selection, WeatherMenuContext &progMenu, const Vector<WeatherMenuStrategy*> &menuOptions, WeatherLogType &weatherLog)
+void ExecuteSelection(std::string selection, WeatherMenuContext &progMenu, const Vector<WeatherMenuStrategy*> &menuOptions, WeatherLogType &weatherLog)
 {
-    if(selection == 5)
+    int select;
+
+    try
+    {
+        select = std::stoi(selection);
+    }
+    catch(...)
+    {
+        std::cout << "Invalid Option" << std::endl;
+        std::cout << std::endl;
+        return;
+    }
+
+    if(select == 5)
     {
         return;
     }
 
-    if(selection > 0 && selection <= 4)
+    if(select > 0 && select <= 4)
     {
-        progMenu.SetWeatherMenuStrategy(menuOptions[selection - 1]);
+        progMenu.SetWeatherMenuStrategy(menuOptions[select - 1]);
         progMenu.ExecuteWeatherMenuOption(weatherLog);
     }
     else

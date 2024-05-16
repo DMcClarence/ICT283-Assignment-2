@@ -40,15 +40,40 @@ WindSpeedMenuOption::WindSpeedMenuOption()
 //----------------------------------------------------------------------------
 void WindSpeedMenuOption::Execute(WeatherLogType &weatherLog)
 {
+    std::string yearStr;
+    std::string monthStr;
     int year;
     int month;
 
     std::cout << "Enter a Year: ";
-    std::cin >> year;
+    std::cin >> yearStr;
     std::cin.clear();
+    try
+    {
+        year = stoi(yearStr);
+    }
+    catch(...)
+    {
+        std::cout << std::endl;
+        std::cout << "Invalid Year" << std::endl;
+        std::cout << std::endl;
+        return;
+    }
+
     std::cout << "Enter a numerical Month: ";
     std::cin >> month;
     std::cin.clear();
+    try
+    {
+        month = stoi(monthStr);
+    }
+    catch(...)
+    {
+        std::cout << std::endl;
+        std::cout << "Invalid Month" << std::endl;
+        std::cout << std::endl;
+        return;
+    }
     std::cout << std::endl;
 
     std::cout << MonthToString(month) << " " << year << ": ";
