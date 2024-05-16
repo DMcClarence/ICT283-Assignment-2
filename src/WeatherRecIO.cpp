@@ -18,18 +18,6 @@
 #include <sstream>
 #include <stdexcept>
 
-using std::istream;
-using std::ifstream;
-using std::string;
-using std::cout;
-using std::endl;
-using std::getline;
-using std::stoi;
-using std::stof;
-using std::istringstream;
-using std::invalid_argument;
-using std::cerr;
-
 //----------------------------------------------------------------------------
 // Global variables/defines
 
@@ -37,7 +25,7 @@ using std::cerr;
 typedef struct
 {
     int colNum;
-    string colName;
+    std::string colName;
 }colOfInterest;
 
     // The Number of Columns in a Data File
@@ -47,7 +35,7 @@ const int numColsInFile = 18;
 const int numWeatherRecCols = 4;
 
     // Name of Columns being Searched for
-const string WeatherRecColNames[numWeatherRecCols] = {"WAST", "S", "T", "SR"};
+const std::string WeatherRecColNames[numWeatherRecCols] = {"WAST", "S", "T", "SR"};
 
 enum WeatherRecCols{WAST, S, T, SR};
 
@@ -58,72 +46,72 @@ enum WeatherRecCols{WAST, S, T, SR};
     // Not Designed for client use, hence why they're not prototyped in the interface.
 
     // Stores the Names of the Columns being Searched for
-void InitColsOfInterest(istream &input, colOfInterest *weatherRecCols);
+void InitColsOfInterest(std::istream &input, colOfInterest *weatherRecCols);
 
     // Finds the Location of Each Column being Searched for
-void FindWeatherRecCols(istringstream &line, colOfInterest *weatherRecCols);
+void FindWeatherRecCols(std::istringstream &line, colOfInterest *weatherRecCols);
 
     // Reads a Date Object from a Column Stream
-void ReadDateFromCol(istringstream &col, WeatherRecType &temp);
+void ReadDateFromCol(std::istringstream &col, WeatherRecType &temp);
 
     // Reads a Time Object from a Column Stream
-void ReadTimeFromCol(istringstream &col, WeatherRecType &temp);
+void ReadTimeFromCol(std::istringstream &col, WeatherRecType &temp);
 
     // Reads a Column into a WeatherRecType Object
-void ReadColIntoWeatherRec(string col, int colNum, const colOfInterest *weatherRecCols, WeatherRecType &weatherRec);
+void ReadColIntoWeatherRec(std::string col, int colNum, const colOfInterest *weatherRecCols, WeatherRecType &weatherRec);
 
-    // Convert String to a Float
-bool CheckStringToFloatConversion(float &value, const string &strValue);
+    // Convert std::string to a Float
+bool CheckStringToFloatConversion(float &value, const std::string &strValue);
 
 //----------------------------------------------------------------------------
 // Function implementations
 
-istream& operator>>(istream& input, Date& d)
+std::istream& operator>>(std::istream& input, Date& d)
 {
-    string day;
-    string month;
-    string year;
+    std::string day;
+    std::string month;
+    std::string year;
     int date;
 
-    getline(input, day, '/');
-    date = stoi(day);
+    std::getline(input, day, '/');
+    date = std::stoi(day);
     d.SetDay(date);
 
-    getline(input, month, '/');
-    date = stoi(month);
+    std::getline(input, month, '/');
+    date = std::stoi(month);
     d.SetMonth(date);
 
-    getline(input, year);
-    date = stoi(year);
+    std::getline(input, year);
+    date = std::stoi(year);
     d.SetYear(date);
 
     return input;
 }
 
 //----------------------------------------------------------------------------
-istream& operator>>(istream& input, Time& t)
+std::istream& operator>>(std::istream& input, Time& t)
 {
-    string hours;
-    string minutes;
+    std::string hours;
+    std::string minutes;
     int time;
 
-    getline(input, hours, ':');
-    time = stoi(hours);
+    std::getline(input, hours, ':');
+    time = std::stoi(hours);
     t.SetHours(time);
 
-    getline(input, minutes);
-    time = stoi(minutes);
+    std::getline(input, minutes);
+    time = std::stoi(minutes);
     t.SetMinutes(time);
 
     return input;
 }
 
 //----------------------------------------------------------------------------
-istream& operator>>(istream& input, WeatherLogType& data)
+std::istream& operator>>(std::istream& input, WeatherLogType& data)
 {
     colOfInterest weatherRecCols[numWeatherRecCols];
     WeatherRecType tempWeatherRec;
-    string line;
+    std::string line;
 
     InitColsOfInterest(input, weatherRecCols);
 
@@ -131,17 +119,17 @@ istream& operator>>(istream& input, WeatherLogType& data)
     {
         int col = 0;
 
-        getline(input, line);
+        std::getline(input, line);
         if(line.empty())
         {
             continue;
         }
-        istringstream colStream(line);
+        std::istringstream colStream(line);
 
         while(col < numColsInFile)
         {
-            string column;
-            getline(colStream, column, ',');
+            std::string column;
+            std::getline(colStream, column, ',');
             ReadColIntoWeatherRec(column, col, weatherRecCols, tempWeatherRec);
             column.clear();
             col++;
@@ -154,19 +142,19 @@ istream& operator>>(istream& input, WeatherLogType& data)
 }
 
 //----------------------------------------------------------------------------
-bool GetDataFileNameFromSrcFile(Stack<string> &fileNameStack)
+bool GetDataFileNameFromSrcFile(Stack<std::string> &fileNameStack)
 {
-    ifstream dataSource("data/data_source.txt");
-    string fileName;
+    std::ifstream dataSource("data/data_source.txt");
+    std::string fileName;
     if(dataSource.rdstate() != 0)
     {
-        cout << "Failed To Read File" << endl;
+        std::cout << "Failed To Read File" << std::endl;
         return false;
     }
 
     while(dataSource.eof() == 0)
     {
-        getline(dataSource, fileName);
+        std::getline(dataSource, fileName);
         fileNameStack.Push(fileName);
     }
     dataSource.close();
@@ -175,12 +163,12 @@ bool GetDataFileNameFromSrcFile(Stack<string> &fileNameStack)
 }
 
 //----------------------------------------------------------------------------
-bool ReadWeatherDataFromFile(string &filename, WeatherLogType &weatherLog)
+bool ReadWeatherDataFromFile(std::string &filename, WeatherLogType &weatherLog)
 {
-    ifstream dataFile("data/" + filename);
+    std::ifstream dataFile("data/" + filename);
     if(dataFile.rdstate() != 0)
     {
-        cout << "Failed To Read File" << endl;
+        std::cout << "Failed To Read File" << std::endl;
         return false;
     }
     dataFile >> weatherLog;
@@ -190,20 +178,20 @@ bool ReadWeatherDataFromFile(string &filename, WeatherLogType &weatherLog)
 }
 
 //----------------------------------------------------------------------------
-void InitColsOfInterest(istream &input, colOfInterest *weatherRecCols)
+void InitColsOfInterest(std::istream &input, colOfInterest *weatherRecCols)
 {
-    string line;
+    std::string line;
 
-    getline(input, line);
-    istringstream headersStream(line);
+    std::getline(input, line);
+    std::istringstream headersStream(line);
     FindWeatherRecCols(headersStream, weatherRecCols);
 }
 
 //----------------------------------------------------------------------------
-void FindWeatherRecCols(istringstream &line, colOfInterest *weatherRecCols)
+void FindWeatherRecCols(std::istringstream &line, colOfInterest *weatherRecCols)
 {
     int i = 0;
-    string col;
+    std::string col;
 
         // Populate struct with Column Names
     for(int j = WAST; j <= SR; j++)
@@ -212,7 +200,7 @@ void FindWeatherRecCols(istringstream &line, colOfInterest *weatherRecCols)
     }
 
         // Find the column number for each column
-    while(getline(line, col, ','))
+    while(std::getline(line, col, ','))
     {
         for(int j = WAST; j <= SR; j++)
         {
@@ -226,31 +214,31 @@ void FindWeatherRecCols(istringstream &line, colOfInterest *weatherRecCols)
 }
 
 //----------------------------------------------------------------------------
-void ReadDateFromCol(istringstream &col, WeatherRecType &temp)
+void ReadDateFromCol(std::istringstream &col, WeatherRecType &temp)
 {
-    string date;
+    std::string date;
 
-    getline(col, date, ' ');
-    istringstream dateStream(date);
+    std::getline(col, date, ' ');
+    std::istringstream dateStream(date);
     dateStream >> temp.m_date;
 }
 
 //----------------------------------------------------------------------------
-void ReadTimeFromCol(istringstream &col, WeatherRecType &temp)
+void ReadTimeFromCol(std::istringstream &col, WeatherRecType &temp)
 {
-    string time;
+    std::string time;
 
-    getline(col, time);
-    istringstream timeStream(time);
+    std::getline(col, time);
+    std::istringstream timeStream(time);
     timeStream >> temp.m_time;
 }
 
 //----------------------------------------------------------------------------
-void ReadColIntoWeatherRec(string col, int colNum, const colOfInterest *weatherRecCols, WeatherRecType &weatherRec)
+void ReadColIntoWeatherRec(std::string col, int colNum, const colOfInterest *weatherRecCols, WeatherRecType &weatherRec)
 {
     if(colNum == weatherRecCols[WAST].colNum)
     {
-        istringstream dateTime(col);
+        std::istringstream dateTime(col);
         ReadDateFromCol(dateTime, weatherRec);
         ReadTimeFromCol(dateTime, weatherRec);
         return;
@@ -260,7 +248,7 @@ void ReadColIntoWeatherRec(string col, int colNum, const colOfInterest *weatherR
     CheckStringToFloatConversion(value, col);
 
         // Even if Value is 0, still stores value.
-        // If stof check fails, probably because of a string to indicate
+        // If std::stof check fails, probably because of a std::string to indicate
         // that the Sensor was offline.
     if(colNum == weatherRecCols[S].colNum)
     {
@@ -286,16 +274,16 @@ void ReadColIntoWeatherRec(string col, int colNum, const colOfInterest *weatherR
 }
 
 //----------------------------------------------------------------------------
-bool CheckStringToFloatConversion(float &value, const string &strValue)
+bool CheckStringToFloatConversion(float &value, const std::string &strValue)
 {
     try
     {
-        value = stof(strValue);
+        value = std::stof(strValue);
         return true;
     }
-    catch(const invalid_argument& argument)
+    catch(const std::invalid_argument& argument)
     {
-        cerr << "Invalid Argument to std::stof: " << argument.what() << endl;
+        std::cerr << "Invalid Argument to std::stof: " << argument.what() << std::endl;
         value = 0;
     }
 

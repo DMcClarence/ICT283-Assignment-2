@@ -14,8 +14,6 @@
 
 #include <cmath>
 
-using std::sqrt;
-
 //----------------------------------------------------------------------------
 // Global variables/defines
 
@@ -58,7 +56,7 @@ float CalcStdDevOfVectorf(const Vector<float> &vec)
         sum += ((vec[i] - mean) * (vec[i] - mean));
     }
 
-    return sqrt((sum / (vec.GetSize() - 1)));
+    return std::sqrt((sum / (vec.GetSize() - 1)));
 }
 
 //---------------------------------------------------------------------------------
