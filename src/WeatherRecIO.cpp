@@ -239,8 +239,19 @@ void ReadColIntoWeatherRec(std::string col, int colNum, const colOfInterest *wea
     if(colNum == weatherRecCols[WAST].colNum)
     {
         std::istringstream dateTime(col);
-        ReadDateFromCol(dateTime, weatherRec);
-        ReadTimeFromCol(dateTime, weatherRec);
+        try
+        {
+            ReadDateFromCol(dateTime, weatherRec);
+            ReadTimeFromCol(dateTime, weatherRec);
+        }
+        catch(...)
+        {
+            std::cout << std::endl;
+            std::cout << "Error reading Date/Time" << std::endl;
+            std::cout << std::endl;
+            exit(-1);
+        }
+
         return;
     }
 
@@ -276,18 +287,19 @@ void ReadColIntoWeatherRec(std::string col, int colNum, const colOfInterest *wea
 //----------------------------------------------------------------------------
 bool CheckStringToFloatConversion(float &value, const std::string &strValue)
 {
+    bool converted = true;
+
     try
     {
         value = std::stof(strValue);
-        return true;
     }
-    catch(const std::invalid_argument& argument)
+    catch(...)
     {
-        std::cerr << "Invalid Argument to std::stof: " << argument.what() << std::endl;
+        converted = false;
         value = 0;
     }
 
-    return false;
+    return converted;
 }
 
 //----------------------------------------------------------------------------

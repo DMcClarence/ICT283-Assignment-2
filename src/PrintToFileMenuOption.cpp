@@ -52,8 +52,9 @@ void PrintToFileMenuOption::Execute(WeatherLogType &weatherLog)
     int year;
 
     std::cout << "Enter a Year: " << std::endl;
-    std::cin >> year;
+    std::cin >> yearStr;
     std::cin.clear();
+    std::cin.ignore(10000, '\n');
     try
     {
         year = stoi(yearStr);

@@ -27,8 +27,10 @@
     // Dedicated to Displaying the Weather Menu Options to the User
 void DisplayWeatherMenu();
 
+int GetUserSelection();
+
     // Dedicated to Executing the Weather Menu Option selected by the User
-void ExecuteSelection(std::string selection, WeatherMenuContext &progMenu, const Vector<WeatherMenuStrategy*> &menuOptions, WeatherLogType &weatherLog);
+void ExecuteSelection(int selection, WeatherMenuContext &progMenu, const Vector<WeatherMenuStrategy*> &menuOptions, WeatherLogType &weatherLog);
 
 //----------------------------------------------------------------------------
 // Function implementations
@@ -49,16 +51,14 @@ void RunWeatherMenu(WeatherLogType &weatherLog)
     menuOptions.PushBack(&ptfOption);
 
     WeatherMenuContext progMenu;
-    std::string selection;
+    int selection;
 
     do
     {
         DisplayWeatherMenu();
-        std::cin >> selection;
-        std::cin.clear();
-        std::cout << std::endl;
+        selection = GetUserSelection();
         ExecuteSelection(selection, progMenu, menuOptions, weatherLog);
-    }while(selection != "5");
+    }while(selection != 5);
 }
 
 //----------------------------------------------------------------------------
@@ -75,35 +75,45 @@ void DisplayWeatherMenu()
 }
 
 //----------------------------------------------------------------------------
-void ExecuteSelection(std::string selection, WeatherMenuContext &progMenu, const Vector<WeatherMenuStrategy*> &menuOptions, WeatherLogType &weatherLog)
+void ExecuteSelection(int selection, WeatherMenuContext &progMenu, const Vector<WeatherMenuStrategy*> &menuOptions, WeatherLogType &weatherLog)
 {
-    int select;
-
-    try
-    {
-        select = std::stoi(selection);
-    }
-    catch(...)
-    {
-        std::cout << "Invalid Option" << std::endl;
-        std::cout << std::endl;
-        return;
-    }
-
-    if(select == 5)
+    if(selection == 5)
     {
         return;
     }
 
-    if(select > 0 && select <= 4)
+    if(selection > 0 && selection <= 4)
     {
-        progMenu.SetWeatherMenuStrategy(menuOptions[select - 1]);
+        progMenu.SetWeatherMenuStrategy(menuOptions[selection - 1]);
         progMenu.ExecuteWeatherMenuOption(weatherLog);
     }
     else
     {
         std::cout << "Invalid Option" << std::endl;
+        std::cout << std::endl;
     }
+}
+
+//----------------------------------------------------------------------------
+int GetUserSelection()
+{
+    std::string input;
+    std::cin >> input;
+    std::cin.clear();
+    std::cin.ignore(10000, '\n');
+    std::cout << std::endl;
+
+    int selection;
+    try
+    {
+        selection = std::stoi(input);
+    }
+    catch(...)
+    {
+        return -1;
+    }
+
+    return selection;
 }
 
 //----------------------------------------------------------------------------

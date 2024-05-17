@@ -48,6 +48,7 @@ void WindSpeedMenuOption::Execute(WeatherLogType &weatherLog)
     std::cout << "Enter a Year: ";
     std::cin >> yearStr;
     std::cin.clear();
+    std::cin.ignore(10000, '\n');
     try
     {
         year = stoi(yearStr);
@@ -61,8 +62,9 @@ void WindSpeedMenuOption::Execute(WeatherLogType &weatherLog)
     }
 
     std::cout << "Enter a numerical Month: ";
-    std::cin >> month;
+    std::cin >> monthStr;
     std::cin.clear();
+    std::cin.ignore(10000, '\n');
     try
     {
         month = stoi(monthStr);
