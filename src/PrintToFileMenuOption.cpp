@@ -92,8 +92,8 @@ void PrintMeanStdDevToFile(WeatherLogType &weatherLog, float WeatherRecType::*p_
     }
     else
     {
-        float avg = CalcMeanOfVectorf(data);
-        float stdDev = CalcStdDevOfVectorf(data);
+        float avg = StatsCalcs::CalcMeanOfVectorf(data);
+        float stdDev = StatsCalcs::CalcStdDevOfVectorf(data);
         output << std::fixed << std::showpoint << std::setprecision(2);
         output << avg << "(" << stdDev << "),";
     }
@@ -111,7 +111,7 @@ void PrintSolarRadToFile(WeatherLogType &weatherLog, int month, int year, std::o
     }
     else
     {
-        float totalRad = CalcSumOfVectorf(data);
+        float totalRad = StatsCalcs::CalcSumOfVectorf(data);
         output << std::fixed << std::showpoint << std::setprecision(2);
         output << totalRad;
     }

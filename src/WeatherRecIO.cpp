@@ -40,6 +40,7 @@ const std::string WeatherRecColNames[numWeatherRecCols] = {"WAST", "S", "T", "SR
 
 enum WeatherRecCols{WAST, S, T, SR};
 
+    // Line with no Data in any Column
 std::string emptyLine = ",,,,,,,,,,,,,,,,,";
 
 //----------------------------------------------------------------------------

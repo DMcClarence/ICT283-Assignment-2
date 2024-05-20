@@ -95,8 +95,8 @@ void PrintWindMeanStdDevToScreen(WeatherLogType &weatherLog, int month, int year
     }
     else
     {
-        float avgWindSpeed = CalcMeanOfVectorf(data);
-        float windSpeedStdDev = CalcStdDevOfVectorf(data);
+        float avgWindSpeed = StatsCalcs::CalcMeanOfVectorf(data);
+        float windSpeedStdDev = StatsCalcs::CalcStdDevOfVectorf(data);
         std::cout << std::endl;
         std::cout << std::fixed << std::showpoint << std::setprecision(2);
         std::cout << "Average speed: " << avgWindSpeed << " km/h" << std::endl;

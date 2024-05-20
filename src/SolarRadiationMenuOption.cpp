@@ -83,7 +83,7 @@ void PrintSolarRadToScreen(WeatherLogType &weatherLog, int month, int year)
     }
     else
     {
-        float totalSR = CalcSumOfVectorf(data);
+        float totalSR = StatsCalcs::CalcSumOfVectorf(data);
         std::cout << std::fixed << std::showpoint << std::setprecision(2);
         std::cout << totalSR<< " kWh/m^2" << std::endl;
     }

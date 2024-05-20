@@ -83,8 +83,8 @@ void PrintTempMeanStdDevToScreen(WeatherLogType &weatherLog, int month, int year
     }
     else
     {
-        float avgTemp = CalcMeanOfVectorf(data);
-        float tempStdDev = CalcStdDevOfVectorf(data);
+        float avgTemp = StatsCalcs::CalcMeanOfVectorf(data);
+        float tempStdDev = StatsCalcs::CalcStdDevOfVectorf(data);
         std::cout << std::fixed << std::showpoint << std::setprecision(2);
         std::cout << "average: " << avgTemp << " degrees C, stdev: " << tempStdDev << std::endl;
     }
