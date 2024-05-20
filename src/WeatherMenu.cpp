@@ -33,10 +33,10 @@ void ExecuteSelection(int selection, WeatherMenuContext &progMenu, const Vector<
 void RunWeatherMenu(WeatherLogType &weatherLog)
 {
     Vector<void (*)(WeatherLogType&)> menuOptions;
-    menuOptions.PushBack(WindSpeedMenu::WindSpeedMenuOption);
-    menuOptions.PushBack(TemperatureMenu::TemperatureMenuOption);
-    menuOptions.PushBack(SolarRadiationMenu::SolarRadiationMenuOption);
-    menuOptions.PushBack(PrintToFileMenu::PrintToFileMenuOption);
+    menuOptions.PushBack(WeatherMenuStrategy::WindSpeedStrategy::Execute);
+    menuOptions.PushBack(WeatherMenuStrategy::TemperatureStrategy::Execute);
+    menuOptions.PushBack(WeatherMenuStrategy::SolarRadiationStrategy::Execute);
+    menuOptions.PushBack(WeatherMenuStrategy::PrintToFileStrategy::Execute);
 
     WeatherMenuContext progMenu;
     int selection;

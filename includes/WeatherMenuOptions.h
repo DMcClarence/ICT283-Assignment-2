@@ -4,29 +4,48 @@
 #include "../includes/WeatherRec.h"
 
     /**
+    * @namespace WeatherMenuStrategy
     * @todo Documentation
     * @todo Encapsulate each menu in own namespace. Maybe separate into files with helper functions
     */
 
-namespace WindSpeedMenu
+namespace WeatherMenuStrategy
 {
-    void WindSpeedMenuOption(WeatherLogType &weatherLog);
-}
+        /**
+         * @namespace WindSpeedStrategy
+         * @todo Documentation
+         */
+    namespace WindSpeedStrategy
+    {
+        void Execute(WeatherLogType &weatherLog);
+    }
 
-namespace TemperatureMenu
-{
-    void TemperatureMenuOption(WeatherLogType &weatherLog);
-}
+        /**
+         * @namespace TemperatureStrategy
+         * @todo Documentation
+         */
+    namespace TemperatureStrategy
+    {
+        void Execute(WeatherLogType &weatherLog);
+    }
 
-namespace SolarRadiationMenu
-{
-    void SolarRadiationMenuOption(WeatherLogType &weatherLog);
-}
+        /**
+         * @namespace SolarRadiationStrategy
+         * @todo Documentation
+         */
+    namespace SolarRadiationStrategy
+    {
+        void Execute(WeatherLogType &weatherLog);
+    }
 
-namespace PrintToFileMenu
-{
-    void PrintToFileMenuOption(WeatherLogType &weatherLog);
+        /**
+         * @namespace PrintToFileStrategy
+         * @todo Documentation
+         */
+    namespace PrintToFileStrategy
+    {
+        void Execute(WeatherLogType &weatherLog);
+    }
 }
-
 
 #endif // WEATHERMENUOPTIONS_H_INCLUDED

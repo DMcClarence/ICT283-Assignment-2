@@ -31,8 +31,6 @@ using std::ofstream;
 //----------------------------------------------------------------------------
 // Global variables/defines
 
-enum months {Jan = 1, Feb = 2, Mar = 3, Apr = 4, May = 5, Jun = 6, Jul = 7, Aug = 8, Sep = 9, Oct = 10, Nov = 11, Dec = 12};
-
 //----------------------------------------------------------------------------
 // Implementation Helper Function Prototypes
 
@@ -58,7 +56,7 @@ void PrintSolarRadToFile(WeatherLogType &weatherLog, int month, int year, ofstre
 //----------------------------------------------------------------------------
 // Function implementations
 
-void WindSpeedMenu::WindSpeedMenuOption(WeatherLogType &weatherLog)
+void WeatherMenuStrategy::WindSpeedStrategy::Execute(WeatherLogType &weatherLog)
 {
     int year;
     int month;
@@ -77,7 +75,7 @@ void WindSpeedMenu::WindSpeedMenuOption(WeatherLogType &weatherLog)
 }
 
 //----------------------------------------------------------------------------
-void TemperatureMenu::TemperatureMenuOption(WeatherLogType &weatherLog)
+void WeatherMenuStrategy::TemperatureStrategy::Execute(WeatherLogType &weatherLog)
 {
     int year;
 
@@ -95,7 +93,7 @@ void TemperatureMenu::TemperatureMenuOption(WeatherLogType &weatherLog)
 }
 
 //----------------------------------------------------------------------------
-void SolarRadiationMenu::SolarRadiationMenuOption(WeatherLogType &weatherLog)
+void WeatherMenuStrategy::SolarRadiationStrategy::Execute(WeatherLogType &weatherLog)
 {
     int year;
 
@@ -113,7 +111,7 @@ void SolarRadiationMenu::SolarRadiationMenuOption(WeatherLogType &weatherLog)
 }
 
 //----------------------------------------------------------------------------
-void PrintToFileMenu::PrintToFileMenuOption(WeatherLogType &weatherLog)
+void WeatherMenuStrategy::PrintToFileStrategy::Execute(WeatherLogType &weatherLog)
 {
     ofstream output("WindSolarTemp.csv");
     int year;
