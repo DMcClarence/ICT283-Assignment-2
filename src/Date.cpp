@@ -185,7 +185,7 @@ bool IsLeapYear(int y)
 }
 
 //----------------------------------------------------------------------------
-bool Date::operator==(Date &right) const
+bool Date::operator==(const Date &right) const
 {
     if((m_day == right.m_day) && (m_month == right.m_month) && (m_year == right.m_year))
     {
@@ -196,7 +196,7 @@ bool Date::operator==(Date &right) const
 }
 
 //----------------------------------------------------------------------------
-bool Date::operator<(Date &right) const
+bool Date::operator<(const Date &right) const
 {
     bool isLessThan = false;
 
@@ -225,7 +225,7 @@ bool Date::operator<(Date &right) const
 }
 
 //----------------------------------------------------------------------------
-bool Date::operator<=(Date &right) const
+bool Date::operator<=(const Date &right) const
 {
     if((*this < right) || (*this == right))
     {
@@ -236,7 +236,7 @@ bool Date::operator<=(Date &right) const
 }
 
 //----------------------------------------------------------------------------
-bool Date::operator>(Date &right) const
+bool Date::operator>(const Date &right) const
 {
     bool isGreaterThan = false;
 
@@ -265,7 +265,7 @@ bool Date::operator>(Date &right) const
 }
 
 //----------------------------------------------------------------------------
-bool Date::operator>=(Date &right) const
+bool Date::operator>=(const Date &right) const
 {
     if((*this > right) || (*this == right))
     {
@@ -276,7 +276,7 @@ bool Date::operator>=(Date &right) const
 }
 
 //----------------------------------------------------------------------------
-bool Date::operator!=(Date &right) const
+bool Date::operator!=(const Date &right) const
 {
     if(*this == right)
     {

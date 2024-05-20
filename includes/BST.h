@@ -6,8 +6,8 @@
 
 //---------------------------------------------------------------------------------
 
-#include <assert.h>
-#include "WeatherRecIO.h"
+#include <cassert>
+#include <stdexcept>
 
 //---------------------------------------------------------------------------------
     /**
@@ -27,13 +27,23 @@ template <class T>
 struct TreeNode
 {
 private:
-    TreeNode(T data, TreeNode<T> *left = nullptr, TreeNode<T> *right = nullptr);
+        /// Node Constructor
+    explicit TreeNode(T data, TreeNode<T> *left = nullptr, TreeNode<T> *right = nullptr);
+        /// Node Data
     T m_data;
+        /// Left Node
     TreeNode<T> *m_left;
+        /// Right Node
     TreeNode<T> *m_right;
 
     template <class T2>
     friend class BST;
+
+//---------------------------------------------------------
+        /// For Testing Purposes
+    friend void RiOutOfOrderBstTest();
+    friend void InsertDuplicateNodesTest();
+//---------------------------------------------------------
 };
 
 //----------------------------------------------------------------------------
@@ -59,10 +69,10 @@ TreeNode<T>::TreeNode(T data, TreeNode<T> *left, TreeNode<T> *right)
 	 * @author 34085068
 	 * @version 02
 	 * @date 09/05/2024 Templated and Renamed Class to be reusable with different types.
-     *
-	 * @todo Remove Public Traversal Methods
-	 * @todo Modify Private Traversal Methods to take function pointers
-	 * @todo Modify Methods that Require Traversal to use private Traversal Methods with Function Pointers
+	 *
+	 * @author 34085068
+	 * @version 03
+	 * @date 20/05/2024 Modify to be complete minimal BST class.
 	 */
 template <class T>
 class BST
@@ -117,7 +127,7 @@ public:
          *
          * @return void
          */
-    void InOrder();
+    void InOrder(void (*ProcessNode)(const T&));
 
         /**
          * @brief  Executes Pre-Order Traversal.
@@ -127,7 +137,7 @@ public:
          *
          * @return void
          */
-    void PreOrder();
+    void PreOrder(void (*ProcessNode)(const T&));
 
         /**
          * @brief  Executes Pre-Order Traversal.
@@ -137,7 +147,7 @@ public:
          *
          * @return void
          */
-    void PostOrder();
+    void PostOrder(void (*ProcessNode)(const T&));
 
         /**
          * @brief  Searches BST for the existence of an item.
@@ -147,33 +157,53 @@ public:
          */
     bool Search(const T& item);
 
+        /**
+         * @brief  Deletes an Item from the Tree
+         *
+         *
+         * @return bool - Returns true if item is found. Otherwise returns false.
+         */
+    void Delete(const T& item);
+
+//---------------------------------------------------------
+        /// For Testing Purposes
+    friend void DeleteEmptyTreeTest();
+    friend void DeleteSingleNodeTreeTest();
+    friend void DeleteSmallTreeTest();
+    friend void DeleteLargeTreeTest();
+    friend void DeletePerformanceTest();
+    friend void RiEmptyTreeTest();
+    friend void RiOutOfOrderBstTest();
+    friend void InsertDuplicateNodesTest();
+//---------------------------------------------------------
+
 private:
         /// Copy Tree Method
     void Copy(TreeNode<T> *newNode, TreeNode<T> *node);
 
-        /// Delete Tree Method
-    void Delete(TreeNode<T> *&node);
+        /// Remove Single Node from Tree
+    void DeleteNode(TreeNode<T>*& deleteNode);
+
+        /// Recursive Delete Tree Method
+    void DeleteTree(TreeNode<T>*& node);
 
         /// Insert Node to Tree
     void Insert(const T& data, TreeNode<T> *&node);
 
         /// In-order Traversal
-    void InOrder(TreeNode<T> *node);
+    void InOrder(void (*ProcessNode)(const T&), TreeNode<T> *&node);
 
         /// Pre-order Traversal
-    void PreOrder(TreeNode<T> *node);
+    void PreOrder(void (*ProcessNode)(const T&), TreeNode<T> *&node);
 
         /// Post-order Traversal
-    void PostOrder(TreeNode<T> *&node);
+    void PostOrder(void (*ProcessNode)(const T&), TreeNode<T> *&node);
 
         /// Search Tree
-    void Search(const T& item, TreeNode<T> *node, bool &found);
+    static TreeNode<T>*& SearchTree(BST<T>& tree, const T& item);
 
         /// Maintain Representation Invariant
     void MaintainRI(TreeNode<T> *node);
-
-        /// Process A Node
-    void ProcessNode(TreeNode<T> *node);
 
         /// Root Node of the Tree
     TreeNode<T>* m_root;
@@ -190,7 +220,7 @@ BST<T>::BST()
 template <class T>
 BST<T>::~BST()
 {
-    Delete(m_root);
+    DeleteTree(m_root);
     m_root = nullptr;
 }
 
@@ -207,6 +237,10 @@ BST<T>& BST<T>::operator=(const BST<T>& bst)
 {
     if(this != &bst)
     {
+        if(m_root != nullptr)
+        {
+            DeleteTree();
+        }
         Copy(m_root, bst.m_root);
     }
 
@@ -253,7 +287,7 @@ void BST<T>::Insert(const T& data, TreeNode<T> *&node)
         return;
     }
 
-    if(data >= node->m_data)
+    if(data > node->m_data)
     {
         Insert(data, node->m_right);
         return;
@@ -262,100 +296,99 @@ void BST<T>::Insert(const T& data, TreeNode<T> *&node)
 
 //----------------------------------------------------------------------------
 template <class T>
-void BST<T>::InOrder()
+void BST<T>::InOrder(void (*ProcessNode)(const T&))
 {
-    InOrder(m_root);
+    InOrder(ProcessNode, m_root);
 }
 
 //----------------------------------------------------------------------------
 template <class T>
-void BST<T>::InOrder(TreeNode<T> *node)
+void BST<T>::InOrder(void (*ProcessNode)(const T&), TreeNode<T> *&node)
 {
     if(node == nullptr)
     {
         return;
     }
 
-    InOrder(node->m_left);
-    ProcessNode(node);
-    InOrder(node->m_right);
+    InOrder(ProcessNode, node->m_left);
+    (*ProcessNode)(node->m_data);
+    InOrder(ProcessNode, node->m_right);
 }
 
 //----------------------------------------------------------------------------
 template <class T>
-void BST<T>::PreOrder()
+void BST<T>::PreOrder(void (*ProcessNode)(const T&))
 {
-    PreOrder(m_root);
+    PreOrder(ProcessNode, m_root);
 }
 
 //----------------------------------------------------------------------------
 template <class T>
-void BST<T>::PreOrder(TreeNode<T> *node)
-{
-    if(node == nullptr)
-    {
-        return;
-    }
-
-    ProcessNode(node);
-    PreOrder(node->m_left);
-    PreOrder(node->m_right);
-}
-
-//----------------------------------------------------------------------------
-template <class T>
-void BST<T>::PostOrder()
-{
-    PostOrder(m_root);
-}
-
-//----------------------------------------------------------------------------
-template <class T>
-void BST<T>::PostOrder(TreeNode<T> *&node)
+void BST<T>::PreOrder(void (*ProcessNode)(const T&), TreeNode<T> *&node)
 {
     if(node == nullptr)
     {
         return;
     }
 
-    PostOrder(node->m_left);
-    PostOrder(node->m_right);
-    ProcessNode(node);
+    (*ProcessNode)(node->m_data);
+    PreOrder(ProcessNode, node->m_left);
+    PreOrder(ProcessNode, node->m_right);
+}
+
+//----------------------------------------------------------------------------
+template <class T>
+void BST<T>::PostOrder(void (*ProcessNode)(const T&))
+{
+    PostOrderTraversal(ProcessNode, m_root);
+}
+
+//----------------------------------------------------------------------------
+template <class T>
+void BST<T>::PostOrder(void (*ProcessNode)(const T&), TreeNode<T> *&node)
+{
+    if(node == nullptr)
+    {
+        return;
+    }
+
+    PostOrder(ProcessNode, node->m_left);
+    PostOrder(ProcessNode, node->m_right);
+    (*ProcessNode)(node->m_data);
 }
 
 //----------------------------------------------------------------------------
 template <class T>
 bool BST<T>::Search(const T& item)
 {
-    bool found = false;
-    Search(item, m_root, found);
+    TreeNode<T>*& node = SearchTree(*this, item);
+    if(node == nullptr)
+    {
+        return false;
+    }
 
-    return found;
+    return true;
 }
 
 //----------------------------------------------------------------------------
 template <class T>
-void BST<T>::Search(const T& item, TreeNode<T> *node, bool &found)
+TreeNode<T>*& BST<T>::SearchTree(BST<T>& tree, const T& item)
 {
-    if(found == true || node == nullptr)
+    TreeNode<T>*& current = tree.m_root;
+
+    while(current != nullptr && current->m_data != item)
     {
-        return;
+        if(item < current->m_data)
+        {
+            current = current->m_left;
+        }
+        else
+        {
+            current = current->m_right;
+        }
     }
 
-    if(node->m_data == item)
-    {
-        found = true;
-        return;
-    }
-
-    if(item < node->m_data)
-    {
-        Search(item, node->m_left, found);
-    }
-    else
-    {
-        Search(item, node->m_right, found);
-    }
+    return current;
 }
 
 //----------------------------------------------------------------------------
@@ -381,8 +414,8 @@ void BST<T>::MaintainRI(TreeNode<T> *node)
 
     if(!leftValid || !rightValid)
     {
-        Delete(m_root);
-        assert(false);
+        Delete(m_root->m_data);
+        assert(leftValid && rightValid); // Might just throw an error instead of asserting?
     }
 
     MaintainRI(node->m_left);
@@ -391,24 +424,129 @@ void BST<T>::MaintainRI(TreeNode<T> *node)
 
 //----------------------------------------------------------------------------
 template <class T>
-void BST<T>::Delete(TreeNode<T> *&node)
+void BST<T>::Delete(const T& data)
+{
+            // Implemented from: C++ Programming: Program Design Including Data Structures
+                            // By D.S. Malik
+
+    TreeNode<T>* current = nullptr;
+    TreeNode<T>* currentParent = nullptr;
+    bool found = false;
+
+    current = m_root;
+    currentParent = m_root;
+
+    while(current != nullptr && !found)
+    {
+        if(current->m_data == data)
+        {
+            found = true;
+        }
+        else
+        {
+            currentParent = current;
+            if(current->m_data > data)
+            {
+                current = current->m_left;
+            }
+            else
+            {
+                current = current->m_right;
+            }
+        }
+
+        if(found)
+        {
+            if(current == m_root)
+            {
+                DeleteNode(m_root);
+            }
+            else if(currentParent->m_data > data)
+            {
+                DeleteNode(currentParent->m_left);
+            }
+            else
+            {
+                DeleteNode(currentParent->m_right);
+            }
+        }
+    }
+
+    MaintainRI(m_root);
+}
+
+//----------------------------------------------------------------------------
+template <class T>
+void BST<T>::DeleteNode(TreeNode<T>*& deleteNode)
+{
+        // Implemented from: C++ Programming: Program Design Including Data Structures
+                            // By D.S. Malik
+
+    TreeNode<T>* current = nullptr;
+    TreeNode<T>* currentParent = nullptr;
+    TreeNode<T>* temp = nullptr;
+
+    if(deleteNode == nullptr)
+    {
+        return;
+    }
+
+        // Case 1: Node has no Children
+    if(deleteNode->m_left == nullptr && deleteNode->m_right == nullptr)
+    {
+        delete deleteNode;
+        deleteNode = nullptr;
+    }  // Case 2: Node only has Right Child
+    else if(deleteNode->m_left == nullptr)
+    {
+        temp = deleteNode;
+        deleteNode = temp->m_right;
+        delete temp;
+    }  // Case 3: Node only has Left Child
+    else if(deleteNode->m_right == nullptr)
+    {
+        temp = deleteNode;
+        deleteNode = temp->m_left;
+        delete temp;
+    }  // Case 4: Node has 2 Children
+    else
+    {
+        current = deleteNode->m_left;
+
+        while(current->m_right != nullptr)
+        {
+            currentParent = current;
+            current = current->m_right;
+        }
+
+        deleteNode->m_data = current->m_data;
+
+        if(currentParent == nullptr)
+        {
+            deleteNode->m_left = current->m_left;
+        }
+        else
+        {
+            currentParent->m_right = current->m_left;
+        }
+
+        delete current;
+    }
+}
+
+//----------------------------------------------------------------------------
+template <class T>
+void BST<T>::DeleteTree(TreeNode<T>*& node)
 {
     if(node == nullptr)
     {
         return;
     }
 
-    Delete(node->m_left);
-    Delete(node->m_right);
+    DeleteTree(node->m_left);
+    DeleteTree(node->m_right);
     delete node;
-    node = nullptr;
-}
-
-//----------------------------------------------------------------------------
-template <class T>
-void BST<T>::ProcessNode(TreeNode<T> *node)
-{
-    std::cout << node->m_data << std::endl;
+    node == nullptr;
 }
 
 //----------------------------------------------------------------------------

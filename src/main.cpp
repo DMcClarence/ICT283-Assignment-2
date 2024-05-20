@@ -31,68 +31,27 @@
 
 int main()
 {
-//    bool readSuccessful = false;
-//    Stack<std::string> fileStack;
-//    WeatherLogType weatherLog;
-//
-//    readSuccessful = GetDataFileNameFromSrcFile(fileStack);
-//    if(readSuccessful)
-//    {
-//        while(!fileStack.IsEmpty())
-//        {
-//            std::string fileName;
-//            fileStack.Pop(fileName);
-//            ReadWeatherDataFromFile(fileName, weatherLog);
-//        }
-//    }
-//
-//        // Checks weatherLog isn't empty before running Weather Menu
-//    if(weatherLog.GetSize() > 0)
-//    {
-//        RemoveDuplicatesFromWeatherLog(weatherLog);
-//        RunWeatherMenu(weatherLog);
-//    }
-//
-    BST<int> intTree;
-    intTree.Insert(4);
-    intTree.Insert(2);
-    intTree.Insert(6);
-    intTree.Insert(5);
-    intTree.InOrder();
-    std::cout << std::endl;
-    intTree.PreOrder();
-    std::cout << std::endl;
-    intTree.PostOrder();
-    std::cout << std::endl;
-    bool found;
-    found = intTree.Search(6);
-    std::cout << found << std::endl;
-    found = intTree.Search(15);
-    std::cout << found << std::endl;
+    bool readSuccessful = false;
+    Stack<std::string> fileStack;
+    WeatherLogType weatherLog;
 
-    BST<float> floatTree;
-    floatTree.Insert(4);
-    floatTree.Insert(2);
-    floatTree.Insert(6);
-    floatTree.Insert(5);
-    floatTree.InOrder();
-    std::cout << std::endl;
-    floatTree.PreOrder();
-    std::cout << std::endl;
-    floatTree.PostOrder();
-    std::cout << std::endl;
+    readSuccessful = GetDataFileNameFromSrcFile(fileStack);
+    if(readSuccessful)
+    {
+        while(!fileStack.IsEmpty())
+        {
+            std::string fileName;
+            fileStack.Pop(fileName);
+            ReadWeatherDataFromFile(fileName, weatherLog);
+        }
+    }
 
-    BST<Date> dateTree;
-    dateTree.Insert(Date(12, 6, 2020));
-    dateTree.Insert(Date(17, 5, 2020));
-    dateTree.Insert(Date(12, 6, 2021));
-    dateTree.Insert(Date(31, 5, 2020));
-    dateTree.InOrder();
-    std::cout << std::endl;
-    dateTree.PreOrder();
-    std::cout << std::endl;
-    dateTree.PostOrder();
-    std::cout << std::endl;
+        // Checks weatherLog isn't empty before running Weather Menu
+    if(weatherLog.GetSize() > 0)
+    {
+        RemoveDuplicatesFromWeatherLog(weatherLog);
+        RunWeatherMenu(weatherLog);
+    }
 
     return 0;
 }
