@@ -17,6 +17,7 @@
 #include <fstream>
 #include <sstream>
 #include <stdexcept>
+#include <cmath>
 
 //----------------------------------------------------------------------------
 // Global variables/defines
@@ -38,6 +39,8 @@ const int numWeatherRecCols = 4;
 const std::string WeatherRecColNames[numWeatherRecCols] = {"WAST", "S", "T", "SR"};
 
 enum WeatherRecCols{WAST, S, T, SR};
+
+std::string emptyLine = ",,,,,,,,,,,,,,,,,";
 
 //----------------------------------------------------------------------------
 // Implementation Helper Function Prototypes
@@ -74,15 +77,37 @@ std::istream& operator>>(std::istream& input, Date& d)
     int date;
 
     std::getline(input, day, '/');
-    date = std::stoi(day);
+    try
+    {
+        date = std::stoi(day);
+    }
+    catch(...)
+    {
+        throw;
+    }
     d.SetDay(date);
 
     std::getline(input, month, '/');
-    date = std::stoi(month);
+    try
+    {
+        date = std::stoi(month);
+    }
+    catch(...)
+    {
+        throw;
+    }
     d.SetMonth(date);
 
     std::getline(input, year);
-    date = std::stoi(year);
+    try
+    {
+        date = std::stoi(year);
+    }
+    catch(...)
+    {
+        throw;
+    }
+
     d.SetYear(date);
 
     return input;
@@ -96,11 +121,26 @@ std::istream& operator>>(std::istream& input, Time& t)
     int time;
 
     std::getline(input, hours, ':');
-    time = std::stoi(hours);
+    try
+    {
+        time = std::stoi(hours);
+    }
+    catch(...)
+    {
+        throw;
+    }
+
     t.SetHours(time);
 
     std::getline(input, minutes);
-    time = std::stoi(minutes);
+    try
+    {
+       time = std::stoi(minutes);
+    }
+    catch(...)
+    {
+        throw;
+    }
     t.SetMinutes(time);
 
     return input;
@@ -120,7 +160,7 @@ std::istream& operator>>(std::istream& input, WeatherLogType& data)
         int col = 0;
 
         std::getline(input, line);
-        if(line.empty())
+        if(line == emptyLine || line.empty())
         {
             continue;
         }
@@ -220,7 +260,15 @@ void ReadDateFromCol(std::istringstream &col, WeatherRecType &temp)
 
     std::getline(col, date, ' ');
     std::istringstream dateStream(date);
-    dateStream >> temp.m_date;
+    try
+    {
+        dateStream >> temp.m_date;
+    }
+    catch(...)
+    {
+        throw;
+    }
+
 }
 
 //----------------------------------------------------------------------------
@@ -230,7 +278,15 @@ void ReadTimeFromCol(std::istringstream &col, WeatherRecType &temp)
 
     std::getline(col, time);
     std::istringstream timeStream(time);
-    timeStream >> temp.m_time;
+    try
+    {
+        timeStream >> temp.m_time;
+    }
+    catch(...)
+    {
+        throw;
+    }
+
 }
 
 //----------------------------------------------------------------------------
@@ -246,9 +302,7 @@ void ReadColIntoWeatherRec(std::string col, int colNum, const colOfInterest *wea
         }
         catch(...)
         {
-            std::cout << std::endl;
-            std::cout << "Error reading Date/Time" << std::endl;
-            std::cout << std::endl;
+            std::cout << "Error Reading Date/Time" << std::endl;
             exit(-1);
         }
 
