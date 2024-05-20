@@ -10,8 +10,6 @@
 
 #include <string>
 
-using std::string;
-
 //---------------------------------------------------------------------------------
 
     /**
@@ -48,7 +46,7 @@ void ExtractValuesFromWeatherLog(WeatherLogType &weatherLog, int month, int year
      * @param  month - The numerical month to be converted
      * @return string
      */
-string MonthToString(int month);
+std::string MonthToString(int month);
 
     /**
      * @brief  Converts Speed from m/s to km/h
