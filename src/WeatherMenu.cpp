@@ -27,6 +27,8 @@
     // Dedicated to Displaying the Weather Menu Options to the User
 void DisplayWeatherMenu();
 
+int GetUserSelection();
+
     // Dedicated to Executing the Weather Menu Option selected by the User
 void ExecuteSelection(int selection, WeatherMenuContext &progMenu, const Vector<WeatherMenuStrategy*> &menuOptions, WeatherLogType &weatherLog);
 
@@ -54,13 +56,9 @@ void RunWeatherMenu(WeatherLogType &weatherLog)
     do
     {
         DisplayWeatherMenu();
-        std::cin >> selection;
-        std::cin.clear();
-        std::cout << std::endl;
+        selection = GetUserSelection();
         ExecuteSelection(selection, progMenu, menuOptions, weatherLog);
     }while(selection != 5);
-
-    std::cout << "Program Exiting..." << std::endl;
 }
 
 //----------------------------------------------------------------------------
@@ -92,7 +90,30 @@ void ExecuteSelection(int selection, WeatherMenuContext &progMenu, const Vector<
     else
     {
         std::cout << "Invalid Option" << std::endl;
+        std::cout << std::endl;
     }
+}
+
+//----------------------------------------------------------------------------
+int GetUserSelection()
+{
+    std::string input;
+    std::cin >> input;
+    std::cin.clear();
+    std::cin.ignore(10000, '\n');
+    std::cout << std::endl;
+
+    int selection;
+    try
+    {
+        selection = std::stoi(input);
+    }
+    catch(...)
+    {
+        return -1;
+    }
+
+    return selection;
 }
 
 //----------------------------------------------------------------------------

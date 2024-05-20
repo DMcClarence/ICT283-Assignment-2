@@ -16,18 +16,8 @@
 #include "../includes/StatsCalcs.h"
 
 #include <iostream>
-#include <string>
 #include <fstream>
 #include <iomanip>
-
-using std::cout;
-using std::endl;
-using std::cin;
-using std::string;
-using std::ofstream;
-using std::fixed;
-using std::showpoint;
-using std::setprecision;
 
 //----------------------------------------------------------------------------
 // Global variables/defines
@@ -41,11 +31,11 @@ enum months {Jan = 1, Feb = 2, Mar = 3, Apr = 4, May = 5, Jun = 6, Jul = 7, Aug 
     // Not Designed for client use, hence why they're not prototyped in the interface.
 
     // Dedicated to Printing Mean and Standard Deviation of float data members to a File
-void PrintMeanStdDevToFile(WeatherLogType &weatherLog, float WeatherRecType::*p_Member, int month, int year, ofstream& output);
+void PrintMeanStdDevToFile(WeatherLogType &weatherLog, float WeatherRecType::*p_Member, int month, int year, std::ofstream& output);
 
     // Dedicated to Printing Total Solar Radiation to a File
     // Designed to be last on each line of a CSV file (no comma printed)
-void PrintSolarRadToFile(WeatherLogType &weatherLog, int month, int year, ofstream& output);
+void PrintSolarRadToFile(WeatherLogType &weatherLog, int month, int year, std::ofstream& output);
 
 //----------------------------------------------------------------------------
 // Function implementations
@@ -57,28 +47,41 @@ PrintToFileMenuOption::PrintToFileMenuOption()
 //----------------------------------------------------------------------------
 void PrintToFileMenuOption::Execute(WeatherLogType &weatherLog)
 {
-    ofstream output("WindSolarTemp.csv");
+    std::ofstream output("WindSolarTemp.csv");
+    std::string yearStr;
     int year;
 
-    cout << "Enter a Year: " << endl;
-    cin >> year;
-    cin.clear();
+    std::cout << "Enter a Year: " << std::endl;
+    std::cin >> yearStr;
+    std::cin.clear();
+    std::cin.ignore(10000, '\n');
+    try
+    {
+        year = stoi(yearStr);
+    }
+    catch(...)
+    {
+        std::cout << std::endl;
+        std::cout << "Invalid Year" << std::endl;
+        std::cout << std::endl;
+        return;
+    }
 
-    output << year << endl;
+    output << year << std::endl;
     for(int month = Jan; month <= Dec; month++)
     {
         output << MonthToString(month) << ",";
         PrintMeanStdDevToFile(weatherLog, &WeatherRecType::m_s, month, year, output);
         PrintMeanStdDevToFile(weatherLog, &WeatherRecType::m_t, month, year, output);
         PrintSolarRadToFile(weatherLog, month, year, output);
-        output << endl;
+        output << std::endl;
     }
 
     output.close();
 }
 
 //----------------------------------------------------------------------------
-void PrintMeanStdDevToFile(WeatherLogType &weatherLog, float WeatherRecType::*p_Member, int month, int year, ofstream& output)
+void PrintMeanStdDevToFile(WeatherLogType &weatherLog, float WeatherRecType::*p_Member, int month, int year, std::ofstream& output)
 {
     Vector<float> data;
     ExtractValuesFromWeatherLog(weatherLog, month, year, p_Member, data);
@@ -91,13 +94,13 @@ void PrintMeanStdDevToFile(WeatherLogType &weatherLog, float WeatherRecType::*p_
     {
         float avg = CalcMeanOfVectorf(data);
         float stdDev = CalcStdDevOfVectorf(data);
-        output << fixed << showpoint << setprecision(2);
+        output << std::fixed << std::showpoint << std::setprecision(2);
         output << avg << "(" << stdDev << "),";
     }
 }
 
 //----------------------------------------------------------------------------
-void PrintSolarRadToFile(WeatherLogType &weatherLog, int month, int year, ofstream& output)
+void PrintSolarRadToFile(WeatherLogType &weatherLog, int month, int year, std::ofstream& output)
 {
     Vector<float> data;
     ExtractValuesFromWeatherLog(weatherLog, month, year, &WeatherRecType::m_sr, data);
@@ -109,7 +112,7 @@ void PrintSolarRadToFile(WeatherLogType &weatherLog, int month, int year, ofstre
     else
     {
         float totalRad = CalcSumOfVectorf(data);
-        output << fixed << showpoint << setprecision(2);
+        output << std::fixed << std::showpoint << std::setprecision(2);
         output << totalRad;
     }
 }

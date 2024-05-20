@@ -16,16 +16,7 @@
 #include "../includes/StatsCalcs.h"
 
 #include <iostream>
-#include <string>
 #include <iomanip>
-
-using std::cout;
-using std::endl;
-using std::cin;
-using std::string;
-using std::fixed;
-using std::showpoint;
-using std::setprecision;
 
 //----------------------------------------------------------------------------
 // Global variables/defines
@@ -49,20 +40,47 @@ WindSpeedMenuOption::WindSpeedMenuOption()
 //----------------------------------------------------------------------------
 void WindSpeedMenuOption::Execute(WeatherLogType &weatherLog)
 {
+    std::string yearStr;
+    std::string monthStr;
     int year;
     int month;
 
-    cout << "Enter a Year: ";
-    cin >> year;
-    cin.clear();
-    cout << "Enter a numerical Month: ";
-    cin >> month;
-    cin.clear();
-    cout << endl;
+    std::cout << "Enter a Year: ";
+    std::cin >> yearStr;
+    std::cin.clear();
+    std::cin.ignore(10000, '\n');
+    try
+    {
+        year = stoi(yearStr);
+    }
+    catch(...)
+    {
+        std::cout << std::endl;
+        std::cout << "Invalid Year" << std::endl;
+        std::cout << std::endl;
+        return;
+    }
 
-    cout << MonthToString(month) << " " << year << ": ";
+    std::cout << "Enter a numerical Month: ";
+    std::cin >> monthStr;
+    std::cin.clear();
+    std::cin.ignore(10000, '\n');
+    try
+    {
+        month = stoi(monthStr);
+    }
+    catch(...)
+    {
+        std::cout << std::endl;
+        std::cout << "Invalid Month" << std::endl;
+        std::cout << std::endl;
+        return;
+    }
+    std::cout << std::endl;
+
+    std::cout << MonthToString(month) << " " << year << ": ";
     PrintWindMeanStdDevToScreen(weatherLog, month, year);
-    cout << endl;
+    std::cout << std::endl;
 }
 
 //----------------------------------------------------------------------------
@@ -73,16 +91,16 @@ void PrintWindMeanStdDevToScreen(WeatherLogType &weatherLog, int month, int year
 
     if(data.GetSize() == 0)
     {
-        cout << "No Data" << endl;
+        std::cout << "No Data" << std::endl;
     }
     else
     {
         float avgWindSpeed = CalcMeanOfVectorf(data);
         float windSpeedStdDev = CalcStdDevOfVectorf(data);
-        cout << endl;
-        cout << fixed << showpoint << setprecision(2);
-        cout << "Average speed: " << avgWindSpeed << " km/h" << endl;
-        cout << "Sample stdev: " << windSpeedStdDev << endl;
+        std::cout << std::endl;
+        std::cout << std::fixed << std::showpoint << std::setprecision(2);
+        std::cout << "Average speed: " << avgWindSpeed << " km/h" << std::endl;
+        std::cout << "Sample stdev: " << windSpeedStdDev << std::endl;
     }
 }
 

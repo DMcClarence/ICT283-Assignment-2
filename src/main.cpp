@@ -52,6 +52,8 @@ int main()
         RunWeatherMenu(weatherLog);
     }
 
+    std::cout << "Program Exiting..." << std::endl;
+
     return 0;
 }
 

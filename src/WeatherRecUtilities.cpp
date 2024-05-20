@@ -15,12 +15,10 @@
 
 #include <string>
 
-using std::string;
-
 //----------------------------------------------------------------------------
 // Global variables/defines
 
-const string months[12] = {"January",
+const std::string months[12] = {"January",
                             "February",
                             "March",
                             "April",
@@ -52,7 +50,7 @@ void ExtractValuesFromWeatherLog(WeatherLogType &weatherLog, int month, int year
 }
 
 //---------------------------------------------------------------------------------
-string MonthToString(int month)
+std::string MonthToString(int month)
 {
     assert(month > 0 && month <= 12);
     return months[month - 1];
