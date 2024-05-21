@@ -4,16 +4,30 @@
 #include "../includes/WeatherRec.h"
 
     /**
-    * @namespace WeatherMenuStrategy
-    * @todo Documentation
-    * @todo Encapsulate each menu in own namespace. Maybe separate into files with helper functions
-    */
-
+     * @namespace WeatherMenuStrategy
+     * @brief  Defines a common namespace for WeatherMenuStrategy function implementations
+     *
+     *
+     * @author 34085068
+     * @version 01
+	 * @date 01/05/2024 Started
+	 *
+     * @author 34085068
+     * @version 02
+	 * @date 15/05/2024 Encapsulate each Menu into namespaces
+	 *
+     * @todo Maybe separate into files with required helper functions.
+     */
 namespace WeatherMenuStrategy
 {
         /**
          * @namespace WindSpeedStrategy
-         * @todo Documentation
+         * @brief  Encapsulates Wind Menu's Execute Function
+         *
+         *
+         * @author 34085068
+         * @version 01
+         * @date 15/05/2024 Started
          */
     namespace WindSpeedStrategy
     {
@@ -22,7 +36,12 @@ namespace WeatherMenuStrategy
 
         /**
          * @namespace TemperatureStrategy
-         * @todo Documentation
+         * @brief  Encapsulates Temperatures's Execute Function
+         *
+         *
+         * @author 34085068
+         * @version 01
+         * @date 15/05/2024 Started
          */
     namespace TemperatureStrategy
     {
@@ -31,7 +50,12 @@ namespace WeatherMenuStrategy
 
         /**
          * @namespace SolarRadiationStrategy
-         * @todo Documentation
+         * @brief  Encapsulates Solar Radiations's Execute Function
+         *
+         *
+         * @author 34085068
+         * @version 01
+         * @date 15/05/2024 Started
          */
     namespace SolarRadiationStrategy
     {
@@ -40,7 +64,12 @@ namespace WeatherMenuStrategy
 
         /**
          * @namespace PrintToFileStrategy
-         * @todo Documentation
+         * @brief  Encapsulates Print to File's Execute Function
+         *
+         *
+         * @author 34085068
+         * @version 01
+         * @date 15/05/2024 Started
          */
     namespace PrintToFileStrategy
     {
