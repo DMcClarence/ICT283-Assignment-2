@@ -24,6 +24,7 @@
     // Dedicated to Displaying the Weather Menu Options to the User
 void DisplayWeatherMenu();
 
+    // Dedicated to Recieving User Selection and Returning to Client as an int
 int GetUserSelection();
 
     // Dedicated to Executing the Weather Menu Option selected by the User
