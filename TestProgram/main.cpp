@@ -5,6 +5,7 @@
 #include "WeatherRecUtilitiesTest.h"
 #include "weatherRecIOTest.h"
 #include "MenuTest.h"
+#include "StackTest.h"
 
 #include <iostream>
 
@@ -19,6 +20,7 @@ void StatsCalcsTest();
 void WeatherRecUtilitiesTest();
 void WeatherRecIOTest();
 void MenuTest();
+void StackTest();
 
 int main()
 {
@@ -32,6 +34,7 @@ int main()
     WeatherRecUtilitiesTest();
     WeatherRecIOTest();
     MenuTest();
+    StackTest();
 
     cout << "Test Program Completed" << endl;
     return 0;
@@ -322,5 +325,41 @@ void MenuTest()
     cout << endl;
 
     cout << "Menu Test Complete" << endl;
+    cout << endl;
+}
+
+void StackTest()
+{
+    int complete;
+
+    cout << "Stack Test Commencing" << endl;
+    cout << endl;
+
+    cout << "Stack Test 1 - Default Constructor" << endl;
+    complete = TestStackDefaultConstructor();
+    TestComplete(complete);
+    cout << endl;
+
+    cout << "Stack Test 2 - Push()" << endl;
+    complete = TestStackPush();
+    TestComplete(complete);
+    cout << endl;
+
+    cout << "Stack Test 3 - Pop()" << endl;
+    complete = TestStackPop();
+    TestComplete(complete);
+    cout << endl;
+
+    cout << "Stack Test 4 - Pop() from Empty Stack" << endl;
+    complete = TestStackPopFromEmptyStack();
+    TestComplete(complete);
+    cout << endl;
+
+    cout << "Stack Test 5 - IsEmpty()" << endl;
+    complete = TestStackIsEmpty();
+    TestComplete(complete);
+    cout << endl;
+
+    cout << "Stack Test Complete" << endl;
     cout << endl;
 }
