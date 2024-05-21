@@ -5,6 +5,10 @@
 // Version
 // 01 18/04/2024 34085068
 //      Started
+// 02 01/05/2024 34085068
+//      Modify to pass functions instead of objects
+// 03 14/05/2024 34085068
+//      Modify to use function pointers instead of std::function
 //---------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
@@ -23,21 +27,16 @@
 
 WeatherMenuContext::WeatherMenuContext()
 {
-    m_menuOption = nullptr;
 }
 
 //----------------------------------------------------------------------------
-WeatherMenuContext::~WeatherMenuContext()
+bool WeatherMenuContext::SetWeatherMenuStrategy(void (*menuOption)(WeatherLogType&))
 {
-    m_menuOption = nullptr;
-}
-
-//----------------------------------------------------------------------------
-bool WeatherMenuContext::SetWeatherMenuStrategy(WeatherMenuStrategy *option)
-{
-    m_menuOption = option;
-
-    if(m_menuOption == nullptr)
+    try
+    {
+        m_menuOption = menuOption;
+    }
+    catch(...)
     {
         return false;
     }
@@ -48,13 +47,16 @@ bool WeatherMenuContext::SetWeatherMenuStrategy(WeatherMenuStrategy *option)
 //----------------------------------------------------------------------------
 bool WeatherMenuContext::ExecuteWeatherMenuOption(WeatherLogType &weatherLog)
 {
-    if(m_menuOption != nullptr)
+    try
     {
-        m_menuOption->Execute(weatherLog);
-        return true;
+        m_menuOption(weatherLog);
+    }
+    catch(...)
+    {
+        return false;
     }
 
-    return false;
+    return true;
 }
 
 //----------------------------------------------------------------------------

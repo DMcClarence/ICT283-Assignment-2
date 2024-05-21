@@ -33,33 +33,25 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="includes/Date.h" />
-		<Unit filename="includes/PrintToFileMenuOption.h" />
-		<Unit filename="includes/SolarRadiationMenuOption.h" />
 		<Unit filename="includes/Stack.h" />
 		<Unit filename="includes/StatsCalcs.h" />
-		<Unit filename="includes/TemperatureMenuOption.h" />
 		<Unit filename="includes/Time.h" />
 		<Unit filename="includes/Vector.h" />
 		<Unit filename="includes/VectorUtilities.h" />
 		<Unit filename="includes/WeatherMenu.h" />
 		<Unit filename="includes/WeatherMenuContext.h" />
-		<Unit filename="includes/WeatherMenuStrategy.h" />
+		<Unit filename="includes/WeatherMenuOptions.h" />
 		<Unit filename="includes/WeatherRec.h" />
 		<Unit filename="includes/WeatherRecIO.h" />
 		<Unit filename="includes/WeatherRecUtilities.h" />
-		<Unit filename="includes/WindSpeedMenuOption.h" />
 		<Unit filename="src/Date.cpp" />
-		<Unit filename="src/PrintToFileMenuOption.cpp" />
-		<Unit filename="src/SolarRadiationMenuOption.cpp" />
 		<Unit filename="src/StatsCalcs.cpp" />
-		<Unit filename="src/TemperatureMenuOption.cpp" />
 		<Unit filename="src/Time.cpp" />
 		<Unit filename="src/WeatherMenu.cpp" />
 		<Unit filename="src/WeatherMenuContext.cpp" />
-		<Unit filename="src/WeatherMenuStrategy.cpp" />
+		<Unit filename="src/WeatherMenuOptions.cpp" />
 		<Unit filename="src/WeatherRecIO.cpp" />
 		<Unit filename="src/WeatherRecUtilities.cpp" />
-		<Unit filename="src/WindSpeedMenuOption.cpp" />
 		<Unit filename="src/main.cpp" />
 		<Extensions>
 			<code_completion />
