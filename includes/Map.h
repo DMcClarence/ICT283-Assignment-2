@@ -78,7 +78,7 @@ Map<T1, T2>::Map()
 template <class T1, class T2>
 Map<T1, T2>::~Map()
 {
-
+    m_map.clear();
 }
 //---------------------------------------------------------------------------------
 template <class T1, class T2>
@@ -93,6 +93,7 @@ const T2& Map<T1, T2>::operator[](T1 key) const
 {
     return m_map[key];
 }
+
 //---------------------------------------------------------------------------------
 template <class T1, class T2>
 bool Map<T1, T2>::Insert(T1 key, T2 value)
