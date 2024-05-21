@@ -82,7 +82,7 @@ public:
          *
          * @return void
          */
-        bool PopBack();
+    bool PopBack();
 private:
         ///Encapsulated STL Vector
     std::vector<T> m_vector;
