@@ -17,18 +17,8 @@
 #include "../includes/StatsCalcs.h"
 
 #include <iostream>
-#include <string>
 #include <iomanip>
 #include <fstream>
-
-using std::cout;
-using std::endl;
-using std::cin;
-using std::string;
-using std::fixed;
-using std::showpoint;
-using std::setprecision;
-using std::ofstream;
 
 //----------------------------------------------------------------------------
 // Global variables/defines
@@ -51,11 +41,11 @@ void PrintTempMeanStdDevToScreen(WeatherLogType &weatherLog, int month, int year
 void PrintSolarRadToScreen(WeatherLogType &weatherLog, int month, int year);
 
     // Dedicated to Printing Mean and Standard Deviation of float data members to a File
-void PrintMeanStdDevToFile(WeatherLogType &weatherLog, float WeatherRecType::*p_Member, int month, int year, ofstream& output);
+void PrintMeanStdDevToFile(WeatherLogType &weatherLog, float WeatherRecType::*p_Member, int month, int year, std::ofstream& output);
 
     // Dedicated to Printing Total Solar Radiation to a File
     // Designed to be last on each line of a CSV file (no comma printed)
-void PrintSolarRadToFile(WeatherLogType &weatherLog, int month, int year, ofstream& output);
+void PrintSolarRadToFile(WeatherLogType &weatherLog, int month, int year, std::ofstream& output);
 
 //----------------------------------------------------------------------------
 // Function implementations
@@ -65,17 +55,17 @@ void WeatherMenuStrategy::WindSpeedStrategy::Execute(WeatherLogType &weatherLog)
     int year;
     int month;
 
-    cout << "Enter a Year: ";
-    cin >> year;
-    cin.clear();
-    cout << "Enter a numerical Month: ";
-    cin >> month;
-    cin.clear();
-    cout << endl;
+    std::cout << "Enter a Year: ";
+    std::cin >> year;
+    std::cin.clear();
+    std::cout << "Enter a numerical Month: ";
+    std::cin >> month;
+    std::cin.clear();
+    std::cout << std::endl;
 
-    cout << MonthToString(month) << " " << year << ": ";
+    std::cout << MonthToString(month) << " " << year << ": ";
     PrintWindMeanStdDevToScreen(weatherLog, month, year);
-    cout << endl;
+    std::cout << std::endl;
 }
 
 //----------------------------------------------------------------------------
@@ -83,17 +73,17 @@ void WeatherMenuStrategy::TemperatureStrategy::Execute(WeatherLogType &weatherLo
 {
     int year;
 
-    cout << "Enter a Year: " << endl;
-    cin >> year;
-    cin.clear();
+    std::cout << "Enter a Year: " << std::endl;
+    std::cin >> year;
+    std::cin.clear();
 
-    cout << endl;
-    cout << year << endl;
+    std::cout << std::endl;
+    std::cout << year << std::endl;
     for(int month = Jan; month <= Dec; month++)
     {
         PrintTempMeanStdDevToScreen(weatherLog, month, year);
     }
-    cout << endl;
+    std::cout << std::endl;
 }
 
 //----------------------------------------------------------------------------
@@ -101,37 +91,37 @@ void WeatherMenuStrategy::SolarRadiationStrategy::Execute(WeatherLogType &weathe
 {
     int year;
 
-    cout << "Enter a Year: " << endl;
-    cin >> year;
-    cin.clear();
+    std::cout << "Enter a Year: " << std::endl;
+    std::cin >> year;
+    std::cin.clear();
 
-    cout << endl;
-    cout << year << endl;
+    std::cout << std::endl;
+    std::cout << year << std::endl;
     for(int month = Jan; month <= Dec; month++)
     {
         PrintSolarRadToScreen(weatherLog, month, year);
     }
-    cout << endl;
+    std::cout << std::endl;
 }
 
 //----------------------------------------------------------------------------
 void WeatherMenuStrategy::PrintToFileStrategy::Execute(WeatherLogType &weatherLog)
 {
-    ofstream output("WindSolarTemp.csv");
+    std::ofstream output("WindSolarTemp.csv");
     int year;
 
-    cout << "Enter a Year: " << endl;
-    cin >> year;
-    cin.clear();
+    std::cout << "Enter a Year: " << std::endl;
+    std::cin >> year;
+    std::cin.clear();
 
-    output << year << endl;
+    output << year << std::endl;
     for(int month = Jan; month <= Dec; month++)
     {
         output << MonthToString(month) << ",";
         PrintMeanStdDevToFile(weatherLog, &WeatherRecType::m_s, month, year, output);
         PrintMeanStdDevToFile(weatherLog, &WeatherRecType::m_t, month, year, output);
         PrintSolarRadToFile(weatherLog, month, year, output);
-        output << endl;
+        output << std::endl;
     }
 
     output.close();
@@ -145,17 +135,17 @@ void PrintWindMeanStdDevToScreen(WeatherLogType &weatherLog, int month, int year
 
     if(data.GetSize() == 0)
     {
-        cout << "No Data" << endl;
+        std::cout << "No Data" << std::endl;std::endl
     }
     else
     {
         float avgWindSpeed = CalcMeanOfVectorf(data);
         float windSpeedStdDev = CalcStdDevOfVectorf(data);
-        cout << endl;
-        cout << fixed << showpoint << setprecision(2);
-        cout << "Average speed: " << avgWindSpeed << " km/h" << endl;
-        cout << "Sample stdev: " << windSpeedStdDev << endl;
-    }
+        std::cout << std::endl;
+        std::cout << std::fixed << std::showpoint << std::setprecision(2);
+        std::cout << "Average speed: " << avgWindSpeed << " km/h" << std::endl;
+        std::cout << "Sample stdev: " << windSpeedStdDev << std::endl;
+    }std::cout
 }
 
 //----------------------------------------------------------------------------
@@ -164,17 +154,17 @@ void PrintTempMeanStdDevToScreen(WeatherLogType &weatherLog, int month, int year
     Vector<float> data;
     ExtractValuesFromWeatherLog(weatherLog, month, year, &WeatherRecType::m_t, data);
 
-    cout << MonthToString(month) << ": ";
+    std::cout << MonthToString(month) << ": ";
     if(data.GetSize() == 0)
     {
-        cout << "No Data" << endl;
+        std::cout << "No Data" << std::endl;
     }
     else
     {
         float avgTemp = CalcMeanOfVectorf(data);
         float tempStdDev = CalcStdDevOfVectorf(data);
-        cout << fixed << showpoint << setprecision(2);
-        cout << "average: " << avgTemp << " degrees C, stdev: " << tempStdDev << endl;
+        std::cout << std::fixed << std::showpoint << std::setprecision(2);
+        std::cout << "average: " << avgTemp << " degrees C, stdev: " << tempStdDev << std::endl;
     }
 }
 
@@ -184,21 +174,21 @@ void PrintSolarRadToScreen(WeatherLogType &weatherLog, int month, int year)
     Vector<float> data;
     ExtractValuesFromWeatherLog(weatherLog, month, year, &WeatherRecType::m_sr, data);
 
-    cout << MonthToString(month) << ": ";
+    std::cout << MonthToString(month) << ": ";
     if(data.GetSize() == 0)
     {
-        cout << "No Data" << endl;
+        std::cout << "No Data" << std::endl;
     }
     else
     {
         float totalSR = CalcSumOfVectorf(data);
-        cout << fixed << showpoint << setprecision(2);
-        cout << totalSR<< " kWh/m^2" << endl;
+        std::cout << std::fixed << std::showpoint << std::setprecision(2);
+        std::cout << totalSR<< " kWh/m^2" << std::endl;
     }
 }
 
 //----------------------------------------------------------------------------
-void PrintMeanStdDevToFile(WeatherLogType &weatherLog, float WeatherRecType::*p_Member, int month, int year, ofstream& output)
+void PrintMeanStdDevToFile(WeatherLogType &weatherLog, float WeatherRecType::*p_Member, int month, int year, std::ofstream& output)
 {
     Vector<float> data;
     ExtractValuesFromWeatherLog(weatherLog, month, year, p_Member, data);
@@ -211,13 +201,13 @@ void PrintMeanStdDevToFile(WeatherLogType &weatherLog, float WeatherRecType::*p_
     {
         float avg = CalcMeanOfVectorf(data);
         float stdDev = CalcStdDevOfVectorf(data);
-        output << fixed << showpoint << setprecision(2);
+        output << std::fixed << std::showpoint << std::setprecision(2);
         output << avg << "(" << stdDev << "),";
     }
 }
 
 //----------------------------------------------------------------------------
-void PrintSolarRadToFile(WeatherLogType &weatherLog, int month, int year, ofstream& output)
+void PrintSolarRadToFile(WeatherLogType &weatherLog, int month, int year, std::ofstream& output)
 {
     Vector<float> data;
     ExtractValuesFromWeatherLog(weatherLog, month, year, &WeatherRecType::m_sr, data);
@@ -229,7 +219,7 @@ void PrintSolarRadToFile(WeatherLogType &weatherLog, int month, int year, ofstre
     else
     {
         float totalRad = CalcSumOfVectorf(data);
-        output << fixed << showpoint << setprecision(2);
+        output << std::fixed << std::showpoint << std::setprecision(2);
         output << totalRad;
     }
 }
