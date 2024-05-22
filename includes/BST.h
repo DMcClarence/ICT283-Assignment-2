@@ -200,7 +200,7 @@ private:
     void PostOrder(void (*ProcessNode)(const T&), TreeNode<T> *&node);
 
         /// Search Tree
-    static TreeNode<T>*& SearchTree(BST<T>& tree, const T& item);
+    TreeNode<T>*& SearchTree(BST<T>& tree, const T& item);
 
         /// Maintain Representation Invariant
     void MaintainRI(TreeNode<T> *node);
