@@ -27,17 +27,15 @@ template <class T>
 struct TreeNode
 {
 private:
-        /// Node Constructor
-    explicit TreeNode(T data, TreeNode<T> *left = nullptr, TreeNode<T> *right = nullptr);
         /// Node Data
     T m_data;
         /// Left Node
-    TreeNode<T> *m_left;
+    TreeNode<T> *m_left = nullptr;
         /// Right Node
-    TreeNode<T> *m_right;
+    TreeNode<T> *m_right = nullptr;
 
     template <class T2>
-    friend class BST;
+    friend class BST; // Makes code cleaner.
 
 //---------------------------------------------------------
         /// For Testing Purposes
@@ -45,15 +43,6 @@ private:
     friend void InsertDuplicateNodesTest();
 //---------------------------------------------------------
 };
-
-//----------------------------------------------------------------------------
-template <class T>
-TreeNode<T>::TreeNode(T data, TreeNode<T> *left, TreeNode<T> *right)
-{
-    m_data = data;
-    m_left = left;
-    m_right = right;
-}
 
 //----------------------------------------------------------------------------
 
@@ -179,7 +168,7 @@ public:
 
 private:
         /// Copy Tree Method
-    void Copy(TreeNode<T> *newNode, TreeNode<T> *node);
+    void Copy(TreeNode<T> *&newNode, TreeNode<T> *node);
 
         /// Remove Single Node from Tree
     void DeleteNode(TreeNode<T>*& deleteNode);
@@ -249,7 +238,7 @@ BST<T>& BST<T>::operator=(const BST<T>& bst)
 
 //----------------------------------------------------------------------------
 template <class T>
-void BST<T>::Copy(TreeNode<T> *newRoot, TreeNode<T> *node)
+void BST<T>::Copy(TreeNode<T> *&newRoot, TreeNode<T> *node)
 {
     if(node == nullptr)
     {
@@ -257,7 +246,8 @@ void BST<T>::Copy(TreeNode<T> *newRoot, TreeNode<T> *node)
     }
     else
     {
-        newRoot = new TreeNode<T>(node->m_data);
+        newRoot = new TreeNode<T>;
+        newRoot->m_data = node->m_data;
         Copy(newRoot->m_left, node->m_left);
         Copy(newRoot->m_right, node->m_right);
     }
@@ -277,7 +267,8 @@ void BST<T>::Insert(const T& data, TreeNode<T> *&node)
 {
     if(node == nullptr)
     {
-        node = new TreeNode<T>(data);
+        node = new TreeNode<T>;
+        node->m_data = data;
         return;
     }
 
