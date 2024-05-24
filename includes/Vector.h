@@ -7,7 +7,7 @@
 //---------------------------------------------------------------------------------
 
 #include <vector>
-#include <assert.h>
+#include <cassert>
 #include <stdexcept>
 
 //---------------------------------------------------------------------------------
@@ -82,7 +82,7 @@ public:
          *
          * @return void
          */
-        bool PopBack();
+    bool PopBack();
 private:
         ///Encapsulated STL Vector
     std::vector<T> m_vector;
@@ -153,7 +153,7 @@ bool Vector<T>::PopBack()
 
     m_vector.pop_back();
 
-    return false;
+    return true;
 }
 
 //---------------------------------------------------------------------------------

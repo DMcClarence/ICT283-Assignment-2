@@ -10,16 +10,17 @@
 //----------------------------------------------------------------------------
 // Includes
 
+#include "../includes/VectorUtilities.h"
 #include "../includes/WeatherRecUtilities.h"
 
 #include <string>
-
-using std::string;
+#include <cmath>
+#include <stdexcept>
 
 //----------------------------------------------------------------------------
 // Global variables/defines
 
-const string months[12] = {"January",
+const std::string months[12] = {"January",
                             "February",
                             "March",
                             "April",
@@ -27,7 +28,7 @@ const string months[12] = {"January",
                             "June",
                             "July",
                             "August",
-                            "Sepetember",
+                            "September",
                             "October",
                             "November",
                             "December"};
@@ -49,9 +50,38 @@ void ExtractValuesFromWeatherLog(WeatherLogType &weatherLog, int month, int year
         }
     }
 }
+//
+void RemoveInvalidData(Vector<float> &data)
+{
+    for(int i = data.GetSize() - 1; i >= 0; i--)
+    {
+        if(std::isnan(data[i]))
+        {
+            RemoveFromVector(data, i);
+        }
+    }
+}
 
 //---------------------------------------------------------------------------------
-string MonthToString(int month)
+void RemoveInvalidDataFromDataPairs(Vector<float> &data1, Vector<float> &data2)
+{
+    if(data1.GetSize() != data2.GetSize())
+    {
+        throw std::invalid_argument("Vectors aren't the same size");
+    }
+
+    for(int i = data1.GetSize() - 1; i >= 0; i--)
+    {
+        if(std::isnan(data1[i]) || std::isnan(data2[i]))
+        {
+            RemoveFromVector(data1, i);
+            RemoveFromVector(data2, i);
+        }
+    }
+}
+
+//---------------------------------------------------------------------------------
+std::string MonthToString(int month)
 {
     assert(month > 0 && month <= 12);
     return months[month - 1];
@@ -68,4 +98,98 @@ void TokWh(float &solarRad)
 {
     solarRad *= (1.0 / 6.0);
     solarRad /= 1000;
+}
+
+//----------------------------------------------------------------------------
+bool operator==(WeatherRecType &left, WeatherRecType &right)
+{
+    if((left.m_date == right.m_date) && (left.m_time == right.m_time))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+//----------------------------------------------------------------------------
+bool operator<(WeatherRecType &left, WeatherRecType &right)
+{
+    bool isLessThan = false;
+
+    if(left.m_date < right.m_date)
+    {
+        isLessThan = true;
+    }
+
+    if(left.m_date == right.m_date)
+    {
+        if(left.m_time < right.m_time)
+        {
+            isLessThan = true;
+        }
+    }
+
+    return isLessThan;
+}
+
+//----------------------------------------------------------------------------
+bool operator<=(WeatherRecType &left, WeatherRecType &right)
+{
+    if((left < right) || (left == right))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+//----------------------------------------------------------------------------
+bool operator>(WeatherRecType &left, WeatherRecType &right)
+{
+    bool isGreaterThan = false;
+
+    if(left.m_date > right.m_date)
+    {
+        isGreaterThan = true;
+    }
+
+    if(left.m_date == right.m_date)
+    {
+        if(left.m_time > right.m_time)
+        {
+            isGreaterThan = true;
+        }
+    }
+
+    return isGreaterThan;
+}
+
+//----------------------------------------------------------------------------
+bool operator>=(WeatherRecType &left, WeatherRecType &right)
+{
+    if((left > right) || (left == right))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+//----------------------------------------------------------------------------
+void RemoveDuplicatesFromWeatherLog(WeatherLogType &log)
+{
+    MergeSortVector(log);
+
+    int i = 0;
+    while(i < log.GetSize() - 1)
+    {
+        if(log[i] == log[i + 1])
+        {
+            RemoveFromVector(log, i + 1);
+        }
+        else
+        {
+            i++;
+        }
+    }
 }

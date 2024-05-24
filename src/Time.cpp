@@ -74,3 +74,105 @@ void Time::SetSeconds(int secs)
 }
 
 //----------------------------------------------------------------------------
+bool Time::operator==(Time &right) const
+{
+    if((m_hours == right.m_hours) && (m_minutes == right.m_minutes) && (m_seconds == right.m_seconds))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+//----------------------------------------------------------------------------
+bool Time::operator<(Time &right) const
+{
+    bool isLessThan = false;
+
+    if(m_hours < right.m_hours)
+    {
+        isLessThan = true;
+    }
+
+    if(m_hours == right.m_hours)
+    {
+        if(m_minutes < right.m_minutes)
+        {
+            isLessThan = true;
+        }
+
+        if(m_minutes == right.m_minutes)
+        {
+            if(m_seconds < right.m_seconds)
+            {
+                isLessThan = true;
+            }
+        }
+    }
+
+    return isLessThan;
+}
+
+//----------------------------------------------------------------------------
+bool Time::operator<=(Time &right) const
+{
+    if((*this < right) || (*this == right))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+//----------------------------------------------------------------------------
+bool Time::operator>(Time &right) const
+{
+    bool isGreaterThan = false;
+
+    if(m_hours > right.m_hours)
+    {
+        isGreaterThan = true;
+    }
+
+    if(m_hours == right.m_hours)
+    {
+        if(m_minutes > right.m_minutes)
+        {
+            isGreaterThan = true;
+        }
+
+        if(m_minutes == right.m_minutes)
+        {
+            if(m_seconds > right.m_seconds)
+            {
+                isGreaterThan = true;
+            }
+        }
+    }
+
+    return isGreaterThan;
+}
+
+//----------------------------------------------------------------------------
+bool Time::operator>=(Time &right) const
+{
+    if((*this > right) || (*this == right))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+//----------------------------------------------------------------------------
+bool Time::operator!=(Time &right) const
+{
+    if(*this == right)
+    {
+        return false;
+    }
+
+    return true;
+}
+
+//----------------------------------------------------------------------------

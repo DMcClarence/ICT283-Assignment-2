@@ -10,8 +10,6 @@
 
 #include <string>
 
-using std::string;
-
 //---------------------------------------------------------------------------------
 
     /**
@@ -21,6 +19,10 @@ using std::string;
 	 * @author 34085068
 	 * @version 01
 	 * @date 13/04/2024 34085068, Started
+	 *
+	 * @author 34085068
+	 * @version 02
+	 * @date 04/05/2024 34085068, Add comparison operator overloads to allow for Weather Record to be sorted
 	 */
 
     /**
@@ -38,13 +40,37 @@ void ExtractValuesFromWeatherLog(WeatherLogType &weatherLog, int month, int year
                                     float WeatherRecType::*p_member, Vector<float> &extractedValues);
 
     /**
+     * @brief  Removes any Data values that aren't valid.
+     *
+     * Looks specifically for values of NaN
+     *
+     * @param  data - Vector of Data Values
+     * @return void
+     */
+void RemoveInvalidData(Vector<float> &data);
+
+    /**
+     * @brief  Removes any Data values that aren't valid from a pair of Data Vectors.
+     *
+     * If an element in either Vector is invalid, that element is removed from both Vectors
+     * to ensure the data from each record matches up.
+     *
+     * Looks specifically for values of NaN.
+     *
+     * @param  data1 - Vector of Data Values
+     * @param  data2 - Vector of Data Values
+     * @return void
+     */
+void RemoveInvalidDataFromDataPairs(Vector<float> &data1, Vector<float> &data2);
+
+    /**
      * @brief  Converts a month from an int to a string
      *
      *
      * @param  month - The numerical month to be converted
      * @return string
      */
-string MonthToString(int month);
+std::string MonthToString(int month);
 
     /**
      * @brief  Converts Speed from m/s to km/h
@@ -63,6 +89,80 @@ void ToKMperHr(float &speed);
      * @return string
      */
 void TokWh(float &solarRad);
+
+    /**
+     * @brief  Compares Weather Records for equality.
+     *
+     * Uses the Date and Time for the check. Assumes that if the date and time matches,
+     * the data in each record will also be equal meaning they are the same record.
+     *
+     *
+     * @param left - Weather Record to compare
+     * @param right - Weather Record to be compared against
+     * @return bool - Returns true if Weather Records Date and Times are Equal. Otherwise returns false.
+     */
+bool operator==(WeatherRecType &left, WeatherRecType &right);
+
+    /**
+     * @brief  Checks if a Weather Record is less than another Weather Record
+     *
+     * Uses the Date and Time for the check.
+     *
+     *
+     * @param left - Weather Record to compare
+     * @param right - Weather Record to be compared against
+     * @return bool - Returns true if Weather Record Date or Time is less than another Weather Record. Otherwise returns false.
+     */
+bool operator<(WeatherRecType &left, WeatherRecType &right);
+
+    /**
+     * @brief  Checks if a Weather Record is less than or equal to another Weather Record
+     *
+     * Uses the Date and Time for the check. Assumes that if the date and time matches,
+     * the data in each record will also be equal meaning they are the same record.
+     *
+     *
+     * @param left - Weather Record to compare
+     * @param right - Weather Record to be compared against
+     * @return bool - Returns true if Weather Record Date or Time is less than another Weather Record,
+     *                  or Weather Records Date and Times are equal. Otherwise returns false.
+     */
+bool operator<=(WeatherRecType &left, WeatherRecType &right);
+
+    /**
+     * @brief  Checks if a Weather Record is greater than another Weather Record
+     *
+     * Uses the Date and Time for the check.
+     *
+     *
+     * @param left - Weather Record to compare
+     * @param right - Weather Record to be compared against
+     * @return bool - Returns true if Weather Record Date or Time is greater than another Weather Record. Otherwise returns false.
+     */
+bool operator>(WeatherRecType &left, WeatherRecType &right);
+
+    /**
+     * @brief  Checks if a Weather Record is greater than or equal to another Weather Record
+     *
+     * Uses the Date and Time for the check. Assumes that if the date and time matches,
+     * the data in each record will also be equal meaning they are the same record.
+     *
+     *
+     * @param left - Weather Record to compare
+     * @param right - Weather Record to be compared against
+     * @return bool - Returns true if Weather Record Date or Time is greater than another Weather Record,
+     *                  or Weather Records Date and Times are equal. Otherwise returns false.
+     */
+bool operator>=(WeatherRecType &left, WeatherRecType &right);
+
+    /**
+     * @brief  Removes duplicate Weather Records from a Weather Log
+     *
+     *
+     * @param log - The Weather Log
+     * @return void
+     */
+void RemoveDuplicatesFromWeatherLog(WeatherLogType &log);
 //---------------------------------------------------------------------------------
 
 #endif // WEATHERRECUTILITIES_H_INCLUDED

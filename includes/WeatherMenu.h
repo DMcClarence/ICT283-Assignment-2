@@ -7,14 +7,13 @@
 //---------------------------------------------------------------------------------
 
 #include "WeatherMenuContext.h"
-#include "WeatherMenuStrategy.h"
 #include "WeatherRec.h"
 
 //---------------------------------------------------------------------------------
 
     /**
 	 * @file WeatherMenu.h
-	 * @brief  Defines functions to Run the Weather Menu
+	 * @brief  Defines function to Run the Weather Menu
 	 *
 	 *
 	 * @author 34085068

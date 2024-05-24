@@ -6,7 +6,7 @@
 
 //---------------------------------------------------------------------------------
 
-#include "WeatherMenuStrategy.h"
+#include "WeatherMenuOptions.h"
 #include "WeatherRec.h"
 
 //---------------------------------------------------------------------------------
@@ -21,6 +21,14 @@
 	 * @author 34085068
 	 * @version 01
 	 * @date 18/04/2024 Started
+	 *
+	 * @author 34085068
+	 * @version 02
+	 * @date 01/05/2024 Modify to pass functions instead of objects
+     *
+	 * @author 34085068
+	 * @version 03
+	 * @date 14/05/2024 Modify to use function pointers instead of std::function
 	 */
 class WeatherMenuContext
 {
@@ -32,13 +40,6 @@ class WeatherMenuContext
              */
         WeatherMenuContext();
 
-            /**
-             * @brief  Destructor for WeatherMenuContext Object.
-             *
-             *
-             */
-        ~WeatherMenuContext();
-
             /// Copy Constructor
             /// Deleted from Class as Object of this Class are not Designed to be Copied.
         WeatherMenuContext(const WeatherMenuContext& menu) = delete;
@@ -48,13 +49,13 @@ class WeatherMenuContext
         WeatherMenuContext& operator=(const WeatherMenuContext& menu) = delete;
 
             /**
-             * @brief  Sets the WeatherMenuStrategy to be used.
+             * @brief  Sets the Menu Option to be used.
              *
              *
-             * @param menuOption - The Address of an Object of a Type Derived from the WeatherMenuStrategy Abstract Class
+             * @param menuOption - The Menu Option to be Executed
              * @return bool - Returns true if Set Successful. Returns false if Set Failed.
              */
-        bool SetWeatherMenuStrategy(WeatherMenuStrategy *menuOption);
+        bool SetWeatherMenuStrategy(void (*menuOption)(WeatherLogType&));
 
             /**
              * @brief  Executes the WeatherMenuStrategy Object.
@@ -65,8 +66,8 @@ class WeatherMenuContext
              */
         bool ExecuteWeatherMenuOption(WeatherLogType &weatherLog);
     private:
-            /// A Pointer to an Object of a Type Derived from the WeatherMenyStrategy Abstract Class.
-        WeatherMenuStrategy *m_menuOption;
+            /// The Menu Option to be Executed.
+        void (*m_menuOption)(WeatherLogType&);
 };
 
 //---------------------------------------------------------------------------------
