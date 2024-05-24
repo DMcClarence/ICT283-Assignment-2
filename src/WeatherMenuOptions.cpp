@@ -40,6 +40,15 @@ void PrintTempMeanStdDevToScreen(WeatherLogType &weatherLog, int month, int year
     // Dedicated to Printing Total Solar Radiation to the Screen
 void PrintSolarRadToScreen(WeatherLogType &weatherLog, int month, int year);
 
+    // Dedicated to Printing the sPCC of Wind Speed and Temperature to the Screen
+void PrintStToScreen(WeatherLogType &weatherLog, int month);
+
+    // Dedicated to Printing the sPCC of Wind Speed and Solar Radiation to the Screen
+void PrintSrToScreen(WeatherLogType &weatherLog, int month);
+
+    // Dedicated to Printing the sPCC of Temperature and Solar Radiation to the Screen
+void PrintTrToScreen(WeatherLogType &weatherLog, int month);
+
     // Dedicated to Printing Mean and Standard Deviation of float data members to a File
 void PrintMeanStdDevToFile(WeatherLogType &weatherLog, float WeatherRecType::*p_Member, int month, int year, std::ofstream& output);
 
@@ -105,6 +114,24 @@ void WeatherMenuStrategy::SolarRadiationStrategy::Execute(WeatherLogType &weathe
 }
 
 //----------------------------------------------------------------------------
+void WeatherMenuStrategy::SPCCStrategy::Execute(WeatherLogType &weatherLog)
+{
+    int month;
+
+    std::cout << "Enter a Numerical Month: " << std::endl;
+    std::cin >> month;
+    std::cin.clear();
+
+    std::cout << std::endl;
+    std::cout << "Sample Pearson Correlation Coefficinet for " << MonthToString(month) << std::endl;
+    std::cout << std::endl;
+    PrintStToScreen(weatherLog, month);
+    PrintSrToScreen(weatherLog, month);
+    PrintTrToScreen(weatherLog, month);
+    std::cout << std::endl;
+}
+
+//----------------------------------------------------------------------------
 void WeatherMenuStrategy::PrintToFileStrategy::Execute(WeatherLogType &weatherLog)
 {
     std::ofstream output("WindSolarTemp.csv");
@@ -145,6 +172,81 @@ void PrintWindMeanStdDevToScreen(WeatherLogType &weatherLog, int month, int year
         std::cout << std::fixed << std::showpoint << std::setprecision(2);
         std::cout << "Average speed: " << avgWindSpeed << " km/h" << std::endl;
         std::cout << "Sample stdev: " << windSpeedStdDev << std::endl;
+    }
+}
+
+//----------------------------------------------------------------------------
+void PrintStToScreen(WeatherLogType &weatherLog, int month)
+{
+    Vector<float> tempData;
+    Vector<float> windSpeedData;
+    for(int year = 2010; year <= 2021; year++) // will be changed when the DS changes
+    {
+        ExtractValuesFromWeatherLog(weatherLog, month, year, &WeatherRecType::m_s, windSpeedData);
+        ExtractValuesFromWeatherLog(weatherLog, month, year, &WeatherRecType::m_t, tempData);
+    }
+
+    RemoveInvalidDataFromDataPairs(tempData, windSpeedData);
+
+    if(windSpeedData.GetSize() == 0 || tempData.GetSize() == 0)
+    {
+        std::cout << "No Data" << std::endl;
+    }
+    else
+    {
+        float s_t = StatsCalcs::CalcSPCCOfVectorf(windSpeedData, tempData);
+        std::cout << std::fixed << std::showpoint << std::setprecision(2);
+        std::cout << "S_T: " << s_t << std::endl;
+    }
+}
+
+//----------------------------------------------------------------------------
+void PrintSrToScreen(WeatherLogType &weatherLog, int month)
+{
+    Vector<float> solarRadData;
+    Vector<float> windSpeedData;
+    for(int year = 2010; year <= 2021; year++) // will be changed when the DS changes
+    {
+        ExtractValuesFromWeatherLog(weatherLog, month, year, &WeatherRecType::m_s, windSpeedData);
+        ExtractValuesFromWeatherLog(weatherLog, month, year, &WeatherRecType::m_sr, solarRadData);
+    }
+
+    RemoveInvalidDataFromDataPairs(solarRadData, windSpeedData);
+
+    if(windSpeedData.GetSize() == 0 || solarRadData.GetSize() == 0)
+    {
+        std::cout << "No Data" << std::endl;
+    }
+    else
+    {
+        float s_r = StatsCalcs::CalcSPCCOfVectorf(solarRadData, windSpeedData);
+        std::cout << std::fixed << std::showpoint << std::setprecision(2);
+        std::cout << "S_R: " << s_r << std::endl;
+    }
+}
+
+//----------------------------------------------------------------------------
+void PrintTrToScreen(WeatherLogType &weatherLog, int month)
+{
+    Vector<float> tempData;
+    Vector<float> solarRadData;
+    for(int year = 2010; year <= 2021; year++) // will be changed when the DS changes
+    {
+        ExtractValuesFromWeatherLog(weatherLog, month, year, &WeatherRecType::m_sr, solarRadData);
+        ExtractValuesFromWeatherLog(weatherLog, month, year, &WeatherRecType::m_t, tempData);
+    }
+
+    RemoveInvalidDataFromDataPairs(tempData, solarRadData);
+
+    if(solarRadData.GetSize() == 0 || tempData.GetSize() == 0)
+    {
+        std::cout << "No Data" << std::endl;
+    }
+    else
+    {
+        float t_r = StatsCalcs::CalcSPCCOfVectorf(solarRadData, tempData);
+        std::cout << std::fixed << std::showpoint << std::setprecision(2);
+        std::cout << "T_R: " << t_r << std::endl;
     }
 }
 

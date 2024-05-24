@@ -39,6 +39,8 @@
 void ExtractValuesFromWeatherLog(WeatherLogType &weatherLog, int month, int year,
                                     float WeatherRecType::*p_member, Vector<float> &extractedValues);
 
+void RemoveInvalidDataFromDataPairs(Vector<float> &data1, Vector<float> &data2);
+
     /**
      * @brief  Converts a month from an int to a string
      *

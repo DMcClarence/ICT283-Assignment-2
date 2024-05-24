@@ -38,7 +38,7 @@ void RunWeatherMenu(WeatherLogType &weatherLog)
     Vector<void (*)(WeatherLogType&)> menuOptions;
     menuOptions.PushBack(WeatherMenuStrategy::WindSpeedStrategy::Execute);
     menuOptions.PushBack(WeatherMenuStrategy::TemperatureStrategy::Execute);
-    menuOptions.PushBack(WeatherMenuStrategy::SolarRadiationStrategy::Execute);
+    menuOptions.PushBack(WeatherMenuStrategy::SPCCStrategy::Execute);
     menuOptions.PushBack(WeatherMenuStrategy::PrintToFileStrategy::Execute);
 
     WeatherMenuContext progMenu;
@@ -57,7 +57,8 @@ void DisplayWeatherMenu()
     std::cout << "Select an Option from 1 - 5: " << std::endl;
     std::cout << "      1. Display the Mean and Standard Deviation of the Wind Speed from a Specifed Year and Month." << std::endl;
     std::cout << "      2. Display the Mean and Standard Deviation of the Temperature for each Month from a Specified Year." << std::endl;
-    std::cout << "      3. Display the Total Solar Radiation for each Month from a Specified Year." << std::endl;
+    std::cout << "      3. Display the Sample Pearson Correlation Coefficients of Wind Speed/Temperature(S_T), " << std::endl;
+    std::cout << "         Wind Speed/Solar Radiation(S_R), and Temperature/Solar Radiation(T_R)." << std::endl;
     std::cout << "      4. Display the Mean and Standard Deviation of the Wind Speed and Temperature, and the Total Solar Radiation" << std::endl;
     std::cout << "         for each month of a Specified Year." << std::endl;
     std::cout << "      5. Exit the Program." << std::endl;
