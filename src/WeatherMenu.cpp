@@ -59,8 +59,8 @@ void DisplayWeatherMenu()
     std::cout << "      2. Display the Mean and Standard Deviation of the Temperature for each Month from a Specified Year." << std::endl;
     std::cout << "      3. Display the Sample Pearson Correlation Coefficients of Wind Speed/Temperature(S_T), " << std::endl;
     std::cout << "         Wind Speed/Solar Radiation(S_R), and Temperature/Solar Radiation(T_R)." << std::endl;
-    std::cout << "      4. Display the Mean and Standard Deviation of the Wind Speed and Temperature, and the Total Solar Radiation" << std::endl;
-    std::cout << "         for each month of a Specified Year." << std::endl;
+    std::cout << "      4. Display the Mean, Standard Deviation, and Mean Absolute Deviation of the Wind Speed and Temperature, " << std::endl;
+    std::cout << "         and the Total Solar Radiation for each month of a Specified Year." << std::endl;
     std::cout << "      5. Exit the Program." << std::endl;
     std::cout << "Choice: ";
 }

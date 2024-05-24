@@ -50,7 +50,7 @@ void PrintSrToScreen(WeatherLogType &weatherLog, int month);
 void PrintTrToScreen(WeatherLogType &weatherLog, int month);
 
     // Dedicated to Printing Mean and Standard Deviation of float data members to a File
-void PrintMeanStdDevToFile(WeatherLogType &weatherLog, float WeatherRecType::*p_Member, int month, int year, std::ofstream& output);
+void PrintMeanStdDevMadToFile(WeatherLogType &weatherLog, float WeatherRecType::*p_Member, int month, int year, std::ofstream& output);
 
     // Dedicated to Printing Total Solar Radiation to a File
     // Designed to be last on each line of a CSV file (no comma printed)
@@ -145,8 +145,8 @@ void WeatherMenuStrategy::PrintToFileStrategy::Execute(WeatherLogType &weatherLo
     for(int month = Jan; month <= Dec; month++)
     {
         output << MonthToString(month) << ",";
-        PrintMeanStdDevToFile(weatherLog, &WeatherRecType::m_s, month, year, output);
-        PrintMeanStdDevToFile(weatherLog, &WeatherRecType::m_t, month, year, output);
+        PrintMeanStdDevMadToFile(weatherLog, &WeatherRecType::m_s, month, year, output);
+        PrintMeanStdDevMadToFile(weatherLog, &WeatherRecType::m_t, month, year, output);
         PrintSolarRadToFile(weatherLog, month, year, output);
         output << std::endl;
     }
@@ -159,6 +159,8 @@ void PrintWindMeanStdDevToScreen(WeatherLogType &weatherLog, int month, int year
 {
     Vector<float> data;
     ExtractValuesFromWeatherLog(weatherLog, month, year, &WeatherRecType::m_s, data);
+
+    RemoveInvalidData(data);
 
     if(data.GetSize() == 0)
     {
@@ -256,6 +258,8 @@ void PrintTempMeanStdDevToScreen(WeatherLogType &weatherLog, int month, int year
     Vector<float> data;
     ExtractValuesFromWeatherLog(weatherLog, month, year, &WeatherRecType::m_t, data);
 
+    RemoveInvalidData(data);
+
     std::cout << MonthToString(month) << ": ";
     if(data.GetSize() == 0)
     {
@@ -276,6 +280,8 @@ void PrintSolarRadToScreen(WeatherLogType &weatherLog, int month, int year)
     Vector<float> data;
     ExtractValuesFromWeatherLog(weatherLog, month, year, &WeatherRecType::m_sr, data);
 
+    RemoveInvalidData(data);
+
     std::cout << MonthToString(month) << ": ";
     if(data.GetSize() == 0)
     {
@@ -290,10 +296,12 @@ void PrintSolarRadToScreen(WeatherLogType &weatherLog, int month, int year)
 }
 
 //----------------------------------------------------------------------------
-void PrintMeanStdDevToFile(WeatherLogType &weatherLog, float WeatherRecType::*p_Member, int month, int year, std::ofstream& output)
+void PrintMeanStdDevMadToFile(WeatherLogType &weatherLog, float WeatherRecType::*p_Member, int month, int year, std::ofstream& output)
 {
     Vector<float> data;
     ExtractValuesFromWeatherLog(weatherLog, month, year, p_Member, data);
+
+    RemoveInvalidData(data);
 
     if(data.GetSize() == 0)
     {
@@ -303,8 +311,9 @@ void PrintMeanStdDevToFile(WeatherLogType &weatherLog, float WeatherRecType::*p_
     {
         float avg = StatsCalcs::CalcMeanOfVectorf(data);
         float stdDev = StatsCalcs::CalcStdDevOfVectorf(data);
+        float mad = StatsCalcs::CalcMADOfVectorf(data);
         output << std::fixed << std::showpoint << std::setprecision(2);
-        output << avg << "(" << stdDev << "),";
+        output << avg << "(" << stdDev << ", " << mad << "),";
     }
 }
 
@@ -313,6 +322,8 @@ void PrintSolarRadToFile(WeatherLogType &weatherLog, int month, int year, std::o
 {
     Vector<float> data;
     ExtractValuesFromWeatherLog(weatherLog, month, year, &WeatherRecType::m_sr, data);
+
+    RemoveInvalidData(data);
 
     if(data.GetSize() == 0)
     {

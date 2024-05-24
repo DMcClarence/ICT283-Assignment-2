@@ -50,6 +50,17 @@ void ExtractValuesFromWeatherLog(WeatherLogType &weatherLog, int month, int year
         }
     }
 }
+//
+void RemoveInvalidData(Vector<float> &data)
+{
+    for(int i = data.GetSize() - 1; i >= 0; i--)
+    {
+        if(std::isnan(data[i]))
+        {
+            RemoveFromVector(data, i);
+        }
+    }
+}
 
 //---------------------------------------------------------------------------------
 void RemoveInvalidDataFromDataPairs(Vector<float> &data1, Vector<float> &data2)
