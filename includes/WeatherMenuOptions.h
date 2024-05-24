@@ -63,6 +63,20 @@ namespace WeatherMenuStrategy
     }
 
         /**
+         * @namespace SPCCStrategy
+         * @brief  Encapsulates sPCC's Execute Function
+         *
+         *
+         * @author 34085068
+         * @version 01
+         * @date 15/05/2024 Started
+         */
+    namespace SPCCStrategy
+    {
+        void Execute(WeatherLogType &weatherLog);
+    }
+
+        /**
          * @namespace PrintToFileStrategy
          * @brief  Encapsulates Print to File's Execute Function
          *

@@ -334,7 +334,7 @@ void ReadColIntoWeatherRec(std::string col, int colNum, const colOfInterest *wea
         }
         else
         {
-            weatherRec.m_sr = 0;
+            weatherRec.m_sr = NAN;
         }
     }
 }
@@ -351,7 +351,7 @@ bool CheckStringToFloatConversion(float &value, const std::string &strValue)
     catch(...)
     {
         converted = false;
-        value = 0;
+        value = NAN;
     }
 
     return converted;

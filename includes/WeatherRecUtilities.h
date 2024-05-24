@@ -40,6 +40,30 @@ void ExtractValuesFromWeatherLog(WeatherLogType &weatherLog, int month, int year
                                     float WeatherRecType::*p_member, Vector<float> &extractedValues);
 
     /**
+     * @brief  Removes any Data values that aren't valid.
+     *
+     * Looks specifically for values of NaN
+     *
+     * @param  data - Vector of Data Values
+     * @return void
+     */
+void RemoveInvalidData(Vector<float> &data);
+
+    /**
+     * @brief  Removes any Data values that aren't valid from a pair of Data Vectors.
+     *
+     * If an element in either Vector is invalid, that element is removed from both Vectors
+     * to ensure the data from each record matches up.
+     *
+     * Looks specifically for values of NaN.
+     *
+     * @param  data1 - Vector of Data Values
+     * @param  data2 - Vector of Data Values
+     * @return void
+     */
+void RemoveInvalidDataFromDataPairs(Vector<float> &data1, Vector<float> &data2);
+
+    /**
      * @brief  Converts a month from an int to a string
      *
      *

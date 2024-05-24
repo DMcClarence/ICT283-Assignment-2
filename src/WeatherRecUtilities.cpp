@@ -14,6 +14,8 @@
 #include "../includes/WeatherRecUtilities.h"
 
 #include <string>
+#include <cmath>
+#include <stdexcept>
 
 //----------------------------------------------------------------------------
 // Global variables/defines
@@ -26,7 +28,7 @@ const std::string months[12] = {"January",
                             "June",
                             "July",
                             "August",
-                            "Sepetember",
+                            "September",
                             "October",
                             "November",
                             "December"};
@@ -45,6 +47,35 @@ void ExtractValuesFromWeatherLog(WeatherLogType &weatherLog, int month, int year
         if(weatherLog[i].m_date.GetMonth() == month && weatherLog[i].m_date.GetYear() == year)
         {
             extractedValues.PushBack(weatherLog[i].*p_member);
+        }
+    }
+}
+//
+void RemoveInvalidData(Vector<float> &data)
+{
+    for(int i = data.GetSize() - 1; i >= 0; i--)
+    {
+        if(std::isnan(data[i]))
+        {
+            RemoveFromVector(data, i);
+        }
+    }
+}
+
+//---------------------------------------------------------------------------------
+void RemoveInvalidDataFromDataPairs(Vector<float> &data1, Vector<float> &data2)
+{
+    if(data1.GetSize() != data2.GetSize())
+    {
+        throw std::invalid_argument("Vectors aren't the same size");
+    }
+
+    for(int i = data1.GetSize() - 1; i >= 0; i--)
+    {
+        if(std::isnan(data1[i]) || std::isnan(data2[i]))
+        {
+            RemoveFromVector(data1, i);
+            RemoveFromVector(data2, i);
         }
     }
 }
