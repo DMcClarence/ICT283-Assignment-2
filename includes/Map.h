@@ -8,6 +8,7 @@
 
 #include <map>
 #include <utility>
+#include <cassert>
 
 //---------------------------------------------------------------------------------
 
@@ -84,6 +85,7 @@ Map<T1, T2>::~Map()
 template <class T1, class T2>
 T2& Map<T1, T2>::operator[](T1 key)
 {
+    assert(m_map.find(key) == m_map.end());
     return m_map[key];
 }
 
@@ -91,6 +93,7 @@ T2& Map<T1, T2>::operator[](T1 key)
 template <class T1, class T2>
 const T2& Map<T1, T2>::operator[](T1 key) const
 {
+    assert(m_map.find(key) == m_map.end());
     return m_map[key];
 }
 
