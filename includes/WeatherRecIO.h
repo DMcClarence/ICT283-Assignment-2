@@ -76,7 +76,7 @@ bool GetDataFileNameFromSrcFile(Stack<std::string> &fileNameStack);
 		 * @param weatherLog - The Vector to Read the Data into
 		 * @return bool - Returns true if Successful. Returns False if Failed.
 		 */
-bool ReadWeatherDataFromFile(std::string &filename, WeatherLogType &weatherLog);
+bool ReadWeatherDataFromFiles(Stack<std::string> &fileStack, WeatherLogType &weatherLog);
 
 //---------------------------------------------------------------------------------
 

@@ -13,6 +13,7 @@
 #include "../includes/WeatherRecIO.h"
 #include "../includes/WeatherRecUtilities.h"
 #include "../includes/Stack.h"
+#include "../includes/VectorUtilities.h"
 
 #include <fstream>
 #include <sstream>
@@ -204,16 +205,85 @@ bool GetDataFileNameFromSrcFile(Stack<std::string> &fileNameStack)
 }
 
 //----------------------------------------------------------------------------
-bool ReadWeatherDataFromFile(std::string &filename, WeatherLogType &weatherLog)
+bool ReadWeatherDataFromFiles(Stack<std::string> &fileStack, WeatherLogType &weatherLog)
 {
-    std::ifstream dataFile("data/" + filename);
-    if(dataFile.rdstate() != 0)
+    Vector<WeatherLogType> allData;
+
+    while(!fileStack.IsEmpty())
     {
-        std::cout << "Failed To Read File" << std::endl;
-        return false;
+        std::string filename;
+        fileStack.Pop(filename);
+        std::ifstream dataFile("data/" + filename);
+        if(dataFile.rdstate() != 0)
+        {
+            std::cout << "Failed To Read File: " << filename << std::endl;
+            return false;
+        }
+        WeatherLogType fileData;
+        dataFile >> fileData;
+        allData.PushBack(fileData);
+        dataFile.close();
     }
-    dataFile >> weatherLog;
-    dataFile.close();
+
+    if(allData.GetSize() > 0)
+    {
+        Vector<int> count;
+        for(int i = 0; i < allData.GetSize(); i++)
+        {
+            count.PushBack(0);
+        }
+
+        int prevLowest;
+
+        while(allData.GetSize() > 1)
+        {
+            WeatherRecType lowest = allData[0][count[0]];
+            prevLowest = 0;
+            for(int j = 1; j < allData.GetSize(); j++)
+            {
+                if(allData[j][count[j]].m_date < lowest.m_date)
+                {
+                    lowest = allData[j][count[j]];
+                    prevLowest = j;
+                }
+                else if(allData[j][count[j]].m_date == lowest.m_date && allData[j][count[j]].m_time < lowest.m_time)
+                {
+                    lowest = allData[j][count[j]];
+                    prevLowest = j;
+                }
+            }
+
+            if(weatherLog.GetSize() == 0)
+            {
+                weatherLog.PushBack(lowest);
+            }
+            else if(lowest.m_date != weatherLog[weatherLog.GetSize() - 1].m_date)
+            {
+                weatherLog.PushBack(lowest);
+            }
+            else if(lowest.m_date == weatherLog[weatherLog.GetSize() - 1].m_date && lowest.m_time != weatherLog[weatherLog.GetSize() - 1].m_time)
+            {
+                weatherLog.PushBack(lowest);
+            }
+
+            count[prevLowest]++;
+
+            for(int i = 0; i < allData.GetSize(); i++)
+            {
+                if(count[i] == allData[i].GetSize())
+                {
+                    RemoveFromVector(allData, i);
+                    RemoveFromVector(count, i);
+                }
+            }
+        }
+
+        while(count[0] < allData[0].GetSize())
+        {
+            weatherLog.PushBack(allData[0][count[0]]);
+            count[0]++;
+        }
+    }
 
     return true;
 }
