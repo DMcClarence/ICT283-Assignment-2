@@ -33,6 +33,7 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="includes/Date.h" />
+		<Unit filename="includes/Map.h" />
 		<Unit filename="includes/Stack.h" />
 		<Unit filename="includes/StatsCalcs.h" />
 		<Unit filename="includes/Time.h" />
