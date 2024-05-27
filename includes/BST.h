@@ -10,39 +10,6 @@
 #include <stdexcept>
 
 //---------------------------------------------------------------------------------
-    /**
-	 * @struct TreeNode
-	 * @brief  Binary Search Tree Node
-	 *
-	 *
-	 * @author 34085068
-	 * @version 01
-	 * @date 07/05/2024 Started
-	 *
-	 * @author 34085068
-	 * @version 02
-	 * @date 09/05/2024 Templated and Renamed Class to be reusable with different types.
-	 */
-template <class T>
-struct TreeNode
-{
-private:
-        /// Node Data
-    T m_data;
-        /// Left Node
-    TreeNode<T> *m_left = nullptr;
-        /// Right Node
-    TreeNode<T> *m_right = nullptr;
-
-    template <class T2>
-    friend class BST; // Makes code cleaner.
-
-//---------------------------------------------------------
-        /// For Testing Purposes
-    friend void RiOutOfOrderBstTest();
-    friend void InsertDuplicateNodesTest();
-//---------------------------------------------------------
-};
 
 //----------------------------------------------------------------------------
 
@@ -62,6 +29,10 @@ private:
 	 * @author 34085068
 	 * @version 03
 	 * @date 20/05/2024 Modify to be complete minimal BST class.
+     *
+	 * @author 34085068
+	 * @version 04
+	 * @date 27/05/2024 Move TreeNode to be Apart of BST class.
 	 */
 template <class T>
 class BST
@@ -153,45 +124,122 @@ public:
          * @return bool - Returns true if item is found. Otherwise returns false.
          */
     void Delete(const T& item);
-
-//---------------------------------------------------------
-        /// For Testing Purposes
-    friend void DeleteEmptyTreeTest();
-    friend void DeleteSingleNodeTreeTest();
-    friend void DeleteSmallTreeTest();
-    friend void DeleteLargeTreeTest();
-    friend void DeletePerformanceTest();
-    friend void RiEmptyTreeTest();
-    friend void RiOutOfOrderBstTest();
-    friend void InsertDuplicateNodesTest();
-//---------------------------------------------------------
-
 private:
-        /// Copy Tree Method
+        /**
+         * @struct TreeNode
+         * @brief  Binary Search Tree Node
+         *
+         *
+         * @author 34085068
+         * @version 01
+         * @date 07/05/2024 Started
+         *
+         * @author 34085068
+         * @version 02
+         * @date 09/05/2024 Templated and Renamed Class to be reusable with different types.
+         *
+         * @author 34085068
+         * @version 03
+         * @date 27/05/2024 Move TreeNode to be Apart of BST class.
+         */
+    template <class T2>
+    struct TreeNode
+    {
+            /// Node Data
+        T2 m_data;
+            /// Left Node
+        TreeNode<T2> *m_left = nullptr;
+            /// Right Node
+        TreeNode<T2> *m_right = nullptr;
+    };
+
+        /**
+         * @brief  Recursively copies TreeNodes
+         *
+         *
+         * @param newNode - The new Node
+         * @param node - The node to be copied
+         * @return void
+         */
     void Copy(TreeNode<T> *&newNode, TreeNode<T> *node);
 
-        /// Remove Single Node from Tree
+        /**
+         * @brief  Deletes a Single TreeNode from a BST
+         *
+         *
+         * @param deleteNode - The node to be deleted
+         * @return void
+         */
     void DeleteNode(TreeNode<T>*& deleteNode);
 
-        /// Recursive Delete Tree Method
+        /**
+         * @brief  Recursively Deletes an Entire BST
+         *
+         *
+         * @param node - The Current Node
+         * @return void
+         */
     void DeleteTree(TreeNode<T>*& node);
 
-        /// Insert Node to Tree
+        /**
+         * @brief  Recursively Inserts a TreeNode into a BST
+         *
+         *
+         * @param data - The data to stored
+         * @param node - The node to insert
+         * @return void
+         */
     void Insert(const T& data, TreeNode<T> *&node);
 
-        /// In-order Traversal
+        /**
+         * @brief  Recursively Processes each Node in a BST in In Order
+         *
+         *
+         * @param ProcessNode - The function to Process each node
+         * @param node - The Current Node
+         * @return void
+         */
     void InOrder(void (*ProcessNode)(const T&), TreeNode<T> *&node);
 
-        /// Pre-order Traversal
+        /**
+         * @brief  Recursively Processes each Node in a BST in Pre Order
+         *
+         *
+         * @param ProcessNode - The function to Process each node
+         * @param node - The Current Node
+         * @return void
+         */
     void PreOrder(void (*ProcessNode)(const T&), TreeNode<T> *&node);
 
-        /// Post-order Traversal
+        /**
+         * @brief  Recursively Processes each Node in a BST in Post Order
+         *
+         *
+         * @param ProcessNode - The function to Process each node
+         * @param node - The Current Node
+         * @return void
+         */
     void PostOrder(void (*ProcessNode)(const T&), TreeNode<T> *&node);
 
-        /// Search Tree
+        /**
+         * @brief  Searches the BST for a Specific Data item
+         *
+         *
+         * @param tree - The Tree to Search
+         * @param item - The Item to search for
+         * @return TreeNode - The node containing the item
+         */
     TreeNode<T>*& SearchTree(BST<T>& tree, const T& item);
 
-        /// Maintain Representation Invariant
+        /**
+         * @brief  Checks the Representation Invariant Property of the BST Holds True
+         *
+         * If violated the program will assert.
+         *
+         *
+         * @param node - The node being checked
+         * @return void
+         */
     void MaintainRI(TreeNode<T> *node);
 
         /// Root Node of the Tree
@@ -363,7 +411,7 @@ bool BST<T>::Search(const T& item)
 
 //----------------------------------------------------------------------------
 template <class T>
-TreeNode<T>*& BST<T>::SearchTree(BST<T>& tree, const T& item)
+BST<T>::TreeNode<T>*& BST<T>::SearchTree(BST<T>& tree, const T& item)
 {
     TreeNode<T>*& current = tree.m_root;
 
