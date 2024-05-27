@@ -59,6 +59,7 @@
 		<Unit filename="../src/WeatherRecIO.cpp" />
 		<Unit filename="../src/WeatherRecUtilities.cpp" />
 		<Unit filename="../src/WindSpeedMenuOption.cpp" />
+		<Unit filename="BstTest.cpp" />
 		<Unit filename="DateTest.cpp" />
 		<Unit filename="DateTest.h" />
 		<Unit filename="MenuTest.cpp" />

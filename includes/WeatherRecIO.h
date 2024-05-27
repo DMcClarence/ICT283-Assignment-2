@@ -12,6 +12,7 @@
 #include <string>
 
 using std::string;
+using std::ostream;
 
 //---------------------------------------------------------------------------------
         /**
@@ -23,7 +24,7 @@ using std::string;
          * @date 14/04/2024 34085068, Started
          */
 
-        /**
+    /**
 		 * @brief  Reads an std::istream object into a date object.
 		 *
 		 * Format of data in the std::istream object must be in the following format:
@@ -36,7 +37,19 @@ using std::string;
 		 */
 std::istream& operator>>(std::istream& input, Date& d);
 
-        /**
+    /**
+		 * @brief  Ouputs a Date Object.
+		 *
+		 * Outputs in the format "D/M/YYYY"
+		 *
+		 *
+		 * @param output - The ostream object
+		 * @param d - The date object
+		 * @return ostream&
+		 */
+ostream& operator<<(ostream& output, const Date& d);
+
+    /**
 		 * @brief  Reads an std::istream object into a time object.
 		 *
 		 * Format of data in the std::istream object must be in the following format:
@@ -49,7 +62,7 @@ std::istream& operator>>(std::istream& input, Date& d);
 		 */
 std::istream& operator>>(std::istream& input, Time& t);
 
-        /**
+    /**
 		 * @brief  Reads an std::istream object into a Vector of WeatherRecType.
 		 *
 		 *

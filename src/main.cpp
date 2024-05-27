@@ -16,6 +16,7 @@
 #include "../includes/WeatherRecUtilities.h"
 #include "../includes/Map.h"
 // #include "../includes/Stack.h"
+#include "../includes/BST.h"
 
 #include <iostream>
 #include <string>

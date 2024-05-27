@@ -106,7 +106,7 @@ class Date {
              * @param right - Date object to be compared against
              * @return bool - Returns true if Dates are Equal. Otherwise returns false.
              */
-        bool operator==(Date &right) const;
+        bool operator==(const Date &right) const;
 
             /**
              * @brief  Checks if Date is less than another Date
@@ -115,7 +115,7 @@ class Date {
              * @param right - Date object to be compared against
              * @return bool - Returns true if Date is less than another Date. Otherwise returns false.
              */
-        bool operator<(Date &right) const;
+        bool operator<(const Date &right) const;
 
             /**
              * @brief  Checks if Date is less than or equal to another Date.
@@ -124,7 +124,7 @@ class Date {
              * @param right - Date object to be compared against
              * @return bool - Returns true if Date is less than or equal too another Date. Otherwise returns false.
              */
-        bool operator<=(Date &right) const;
+        bool operator<=(const Date &right) const;
 
             /**
              * @brief  Checks if Date is greater than another Date.
@@ -133,7 +133,7 @@ class Date {
              * @param right - Date object to be compared against
              * @return bool - Returns true if Date is greater than another Date. Otherwise returns false.
              */
-        bool operator>(Date &right) const;
+        bool operator>(const Date &right) const;
 
             /**
              * @brief  Checks if Date is greater than or equal to another Date.
@@ -142,7 +142,7 @@ class Date {
              * @param right - Date object to be compared against
              * @return bool - Returns true if Date is less than or equal too another Date. Otherwise returns false.
              */
-        bool operator>=(Date &right) const;
+        bool operator>=(const Date &right) const;
 
             /**
              * @brief  Compares dates for inequality.
@@ -151,7 +151,7 @@ class Date {
              * @param right - Date object to be compared against
              * @return bool - Returns true if Dates are not Equal. Otherwise returns false.
              */
-        bool operator!=(Date &right) const;
+        bool operator!=(const Date &right) const;
 
     private:
             /// The Day

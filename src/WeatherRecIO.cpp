@@ -116,6 +116,14 @@ std::istream& operator>>(std::istream& input, Date& d)
 }
 
 //----------------------------------------------------------------------------
+ostream& operator<<(ostream& output, const Date& d)
+{
+    output << d.GetDay() << "/" << d.GetMonth() << "/" << d.GetYear();
+
+    return output;
+}
+
+//----------------------------------------------------------------------------
 std::istream& operator>>(std::istream& input, Time& t)
 {
     std::string hours;
