@@ -14,6 +14,7 @@
 #include "../includes/WeatherRecIO.h"
 #include "../includes/VectorUtilities.h"
 #include "../includes/WeatherRecUtilities.h"
+#include "../includes/Map.h"
 // #include "../includes/Stack.h"
 #include "../includes/BST.h"
 
@@ -34,24 +35,28 @@ int main()
     bool readSuccessful = false;
     Stack<std::string> fileStack;
     WeatherLogType weatherLog;
+    bool fileSuccess = false;
+    //Map<int, Map<int, Vector<int>>> // Outer map key is year, inner map key is month.
+
 
     readSuccessful = GetDataFileNameFromSrcFile(fileStack);
     if(readSuccessful)
     {
-        while(!fileStack.IsEmpty())
-        {
-            std::string fileName;
-            fileStack.Pop(fileName);
-            ReadWeatherDataFromFile(fileName, weatherLog);
-        }
+        fileSuccess = ReadWeatherDataFromFiles(fileStack, weatherLog);
     }
 
-        // Checks weatherLog isn't empty before running Weather Menu
-    if(weatherLog.GetSize() > 0)
+    if(fileSuccess)
     {
-        RemoveDuplicatesFromWeatherLog(weatherLog);
-        RunWeatherMenu(weatherLog);
+        if(weatherLog.GetSize() > 0)
+        {
+            // RemoveDuplicatesFromWeatherLog(weatherLog);
+            RunWeatherMenu(weatherLog);
+        }
     }
+        // Checks weatherLog isn't empty before running Weather Menu
+
+
+    std::cout << "Program Exiting..." << std::endl;
 
     return 0;
 }

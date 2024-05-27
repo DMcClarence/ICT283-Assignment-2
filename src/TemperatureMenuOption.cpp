@@ -16,16 +16,7 @@
 #include "../includes/StatsCalcs.h"
 
 #include <iostream>
-#include <string>
 #include <iomanip>
-
-using std::cout;
-using std::endl;
-using std::cin;
-using std::string;
-using std::fixed;
-using std::showpoint;
-using std::setprecision;
 
 //----------------------------------------------------------------------------
 // Global variables/defines
@@ -51,19 +42,32 @@ TemperatureMenuOption::TemperatureMenuOption()
 //----------------------------------------------------------------------------
 void TemperatureMenuOption::Execute(WeatherLogType &weatherLog)
 {
+    std::string yearStr;
     int year;
 
-    cout << "Enter a Year: " << endl;
-    cin >> year;
-    cin.clear();
+    std::cout << "Enter a Year: " << std::endl;
+    std::cin >> yearStr;
+    std::cin.clear();
+    std::cin.ignore(10000, '\n');
+    try
+    {
+        year = stoi(yearStr);
+    }
+    catch(...)
+    {
+        std::cout << std::endl;
+        std::cout << "Invalid Year" << std::endl;
+        std::cout << std::endl;
+        return;
+    }
 
-    cout << endl;
-    cout << year << endl;
+    std::cout << std::endl;
+    std::cout << year << std::endl;
     for(int month = Jan; month <= Dec; month++)
     {
         PrintTempMeanStdDevToScreen(weatherLog, month, year);
     }
-    cout << endl;
+    std::cout << std::endl;
 }
 
 //----------------------------------------------------------------------------
@@ -72,17 +76,17 @@ void PrintTempMeanStdDevToScreen(WeatherLogType &weatherLog, int month, int year
     Vector<float> data;
     ExtractValuesFromWeatherLog(weatherLog, month, year, &WeatherRecType::m_t, data);
 
-    cout << MonthToString(month) << ": ";
+    std::cout << MonthToString(month) << ": ";
     if(data.GetSize() == 0)
     {
-        cout << "No Data" << endl;
+        std::cout << "No Data" << std::endl;
     }
     else
     {
-        float avgTemp = CalcMeanOfVectorf(data);
-        float tempStdDev = CalcStdDevOfVectorf(data);
-        cout << fixed << showpoint << setprecision(2);
-        cout << "average: " << avgTemp << " degrees C, stdev: " << tempStdDev << endl;
+        float avgTemp = StatsCalcs::CalcMeanOfVectorf(data);
+        float tempStdDev = StatsCalcs::CalcStdDevOfVectorf(data);
+        std::cout << std::fixed << std::showpoint << std::setprecision(2);
+        std::cout << "average: " << avgTemp << " degrees C, stdev: " << tempStdDev << std::endl;
     }
 }
 

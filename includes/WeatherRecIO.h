@@ -11,7 +11,6 @@
 #include <iostream>
 #include <string>
 
-using std::istream;
 using std::string;
 using std::ostream;
 
@@ -25,20 +24,20 @@ using std::ostream;
          * @date 14/04/2024 34085068, Started
          */
 
-        /**
-		 * @brief  Reads an istream object into a date object.
+    /**
+		 * @brief  Reads an std::istream object into a date object.
 		 *
-		 * Format of data in the istream object must be in the following format:
+		 * Format of data in the std::istream object must be in the following format:
 		 * "D/M/YYYY"
 		 *
 		 *
-		 * @param input - The istream object
+		 * @param input - The std::istream object
 		 * @param d - The date object
-		 * @return istream&
+		 * @return std::istream&
 		 */
-istream& operator>>(istream& input, Date& d);
+std::istream& operator>>(std::istream& input, Date& d);
 
-        /**
+    /**
 		 * @brief  Ouputs a Date Object.
 		 *
 		 * Outputs in the format "D/M/YYYY"
@@ -50,37 +49,37 @@ istream& operator>>(istream& input, Date& d);
 		 */
 ostream& operator<<(ostream& output, const Date& d);
 
-        /**
-		 * @brief  Reads an istream object into a time object.
+    /**
+		 * @brief  Reads an std::istream object into a time object.
 		 *
-		 * Format of data in the istream object must be in the following format:
+		 * Format of data in the std::istream object must be in the following format:
 		 * "H:MM"
 		 *
 		 *
-		 * @param input - The istream object
+		 * @param input - The std::istream object
 		 * @param t - The time object
-		 * @return istream&
+		 * @return std::istream&
 		 */
-istream& operator>>(istream& input, Time& t);
+std::istream& operator>>(std::istream& input, Time& t);
 
-        /**
-		 * @brief  Reads an istream object into a Vector of WeatherRecType.
+    /**
+		 * @brief  Reads an std::istream object into a Vector of WeatherRecType.
 		 *
 		 *
-		 * @param input - The istream object
+		 * @param input - The std::istream object
 		 * @param data - Vector of WeatherRecType
-		 * @return istream&
+		 * @return std::istream&
 		 */
-istream& operator>>(istream& input, WeatherLogType& data);
+std::istream& operator>>(std::istream& input, WeatherLogType& data);
 
         /**
 		 * @brief  Gets the name of the Data File from the data_source.txt file.
 		 *
 		 *
-		 * @param dataFileName - String variable to store the name of the Data File
+		 * @param dataFileName - std::string variable to store the name of the Data File
 		 * @return bool - Returns true if Successful. Returns False if Failed.
 		 */
-bool GetDataFileNameFromSrcFile(Stack<string> &fileNameStack);
+bool GetDataFileNameFromSrcFile(Stack<std::string> &fileNameStack);
 
         /**
 		 * @brief  Reads the Data file into a Vector of WeatherRecType Objects.
@@ -90,7 +89,7 @@ bool GetDataFileNameFromSrcFile(Stack<string> &fileNameStack);
 		 * @param weatherLog - The Vector to Read the Data into
 		 * @return bool - Returns true if Successful. Returns False if Failed.
 		 */
-bool ReadWeatherDataFromFile(string &filename, WeatherLogType &weatherLog);
+bool ReadWeatherDataFromFiles(Stack<std::string> &fileStack, WeatherLogType &weatherLog);
 
 //---------------------------------------------------------------------------------
 

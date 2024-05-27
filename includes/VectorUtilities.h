@@ -120,25 +120,12 @@ void MergeVector(Vector<T> &vec, int first, int middle, int last);
 template <class T>
 void RemoveFromVector(Vector<T> &vec, int location)
 {
-        // Creates new Vector to add old Values without Value from Specified Location
-    Vector<T> temp;
-
-    for(int i = 0; i < vec.GetSize() - 1; i++)
+    for(int i = location; i < vec.GetSize() - 1; i++)
     {
-            // Adds all old Values before Specified Location
-        if(i < location)
-        {
-            temp.PushBack(vec[i]);
-        }
-            // Adds all old Values after Specified Location
-        else
-        {
-            temp.PushBack(vec[i + 1]);
-        }
+        vec[i] = vec[i + 1];
     }
 
-        // Copies new Vector into original Vector
-    vec = temp;
+    vec.PopBack();
 }
 
 //---------------------------------------------------------------------------------
