@@ -2,6 +2,10 @@
 #define WEATHERMENUOPTIONS_H_INCLUDED
 
 #include "../includes/WeatherRec.h"
+#include "BST.h"
+#include <map>
+
+#include "WeatherRecIO.h"
 
     /**
      * @namespace WeatherMenuStrategy
@@ -31,7 +35,7 @@ namespace WeatherMenuStrategy
          */
     namespace WindSpeedStrategy
     {
-        void Execute(WeatherLogType &weatherLog);
+        void Execute(WeatherLogType &weatherLog, std::map<int, std::map<int, Vector<int>>> &myMap, BST<KeyValue<int, WeatherRecType>> &myBst);
     }
 
         /**
@@ -45,7 +49,7 @@ namespace WeatherMenuStrategy
          */
     namespace TemperatureStrategy
     {
-        void Execute(WeatherLogType &weatherLog);
+        void Execute(WeatherLogType &weatherLog, std::map<int, std::map<int, Vector<int>>> &myMap, BST<KeyValue<int, WeatherRecType>> &myBst);
     }
 
         /**
@@ -59,7 +63,7 @@ namespace WeatherMenuStrategy
          */
     namespace SolarRadiationStrategy
     {
-        void Execute(WeatherLogType &weatherLog);
+        void Execute(WeatherLogType &weatherLog, std::map<int, std::map<int, Vector<int>>> &myMap, BST<KeyValue<int, WeatherRecType>> &myBst);
     }
 
         /**
@@ -73,7 +77,7 @@ namespace WeatherMenuStrategy
          */
     namespace SPCCStrategy
     {
-        void Execute(WeatherLogType &weatherLog);
+        void Execute(WeatherLogType &weatherLog, std::map<int, std::map<int, Vector<int>>> &myMap, BST<KeyValue<int, WeatherRecType>> &myBst);
     }
 
         /**
@@ -87,7 +91,7 @@ namespace WeatherMenuStrategy
          */
     namespace PrintToFileStrategy
     {
-        void Execute(WeatherLogType &weatherLog);
+        void Execute(WeatherLogType &weatherLog, std::map<int, std::map<int, Vector<int>>> &myMap, BST<KeyValue<int, WeatherRecType>> &myBst);
     }
 }
 

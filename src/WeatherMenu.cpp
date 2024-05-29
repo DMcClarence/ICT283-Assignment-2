@@ -28,14 +28,15 @@ void DisplayWeatherMenu();
 int GetUserSelection();
 
     // Dedicated to Executing the Weather Menu Option selected by the User
-void ExecuteSelection(int selection, WeatherMenuContext &progMenu, const Vector<void (*)(WeatherLogType&)> &menuOptions, WeatherLogType &weatherLog);
+void ExecuteSelection(int selection, WeatherMenuContext &progMenu, const Vector<void (*)(WeatherLogType&, std::map<int, std::map<int, Vector<int>>>&, BST<KeyValue<int, WeatherRecType>>&)> &menuOptions,
+                        WeatherLogType &weatherLog, std::map<int, std::map<int, Vector<int>>> &myMap, BST<KeyValue<int, WeatherRecType>> &myBst);
 
 //----------------------------------------------------------------------------
 // Function implementations
 
-void RunWeatherMenu(WeatherLogType &weatherLog)
+void RunWeatherMenu(WeatherLogType &weatherLog, std::map<int, std::map<int, Vector<int>>> &myMap, BST<KeyValue<int, WeatherRecType>> &myBst)
 {
-    Vector<void (*)(WeatherLogType&)> menuOptions;
+    Vector<void (*)(WeatherLogType&, std::map<int, std::map<int, Vector<int>>>&, BST<KeyValue<int, WeatherRecType>>&)> menuOptions;
     menuOptions.PushBack(WeatherMenuStrategy::WindSpeedStrategy::Execute);
     menuOptions.PushBack(WeatherMenuStrategy::TemperatureStrategy::Execute);
     menuOptions.PushBack(WeatherMenuStrategy::SPCCStrategy::Execute);
@@ -47,7 +48,7 @@ void RunWeatherMenu(WeatherLogType &weatherLog)
     {
         DisplayWeatherMenu();
         selection = GetUserSelection();
-        ExecuteSelection(selection, progMenu, menuOptions, weatherLog);
+        ExecuteSelection(selection, progMenu, menuOptions, weatherLog, myMap, myBst);
     }while(selection != 5);
 }
 
@@ -66,7 +67,8 @@ void DisplayWeatherMenu()
 }
 
 //----------------------------------------------------------------------------
-void ExecuteSelection(int selection, WeatherMenuContext &progMenu, const Vector<void (*)(WeatherLogType&)> &menuOptions, WeatherLogType &weatherLog)
+void ExecuteSelection(int selection, WeatherMenuContext &progMenu, const Vector<void (*)(WeatherLogType&, std::map<int, std::map<int, Vector<int>>>&, BST<KeyValue<int, WeatherRecType>>&)> &menuOptions,
+                        WeatherLogType &weatherLog, std::map<int, std::map<int, Vector<int>>> &myMap, BST<KeyValue<int, WeatherRecType>> &myBst)
 {
     if(selection == 5)
     {
@@ -76,7 +78,8 @@ void ExecuteSelection(int selection, WeatherMenuContext &progMenu, const Vector<
     if(selection > 0 && selection <= 4)
     {
         progMenu.SetWeatherMenuStrategy(menuOptions[selection - 1]);
-        progMenu.ExecuteWeatherMenuOption(weatherLog);
+        progMenu.ExecuteWeatherMenuOption(weatherLog, myMap, myBst);
+//        menuOptions[selection - 1](weatherLog);
     }
     else
     {

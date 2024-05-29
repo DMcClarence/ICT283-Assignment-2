@@ -50,7 +50,17 @@ void ExtractValuesFromWeatherLog(WeatherLogType &weatherLog, int month, int year
         }
     }
 }
-//
+
+//---------------------------------------------------------------------------------
+void ExtractValuesFromWeatherLog(WeatherLogType &weatherLog, float WeatherRecType::*p_member, Vector<float> &extractedValues)
+{
+    for(int i = 0; i < weatherLog.GetSize(); i++)
+    {
+        extractedValues.PushBack(weatherLog[i].*p_member);
+    }
+}
+
+//---------------------------------------------------------------------------------
 void RemoveInvalidData(Vector<float> &data)
 {
     for(int i = data.GetSize() - 1; i >= 0; i--)
@@ -67,7 +77,7 @@ void RemoveInvalidDataFromDataPairs(Vector<float> &data1, Vector<float> &data2)
 {
     if(data1.GetSize() != data2.GetSize())
     {
-        throw std::invalid_argument("Vectors aren't the same size");
+        throw std::invalid_argument("Specified Vectors can't be a pair.");
     }
 
     for(int i = data1.GetSize() - 1; i >= 0; i--)
@@ -193,3 +203,5 @@ void RemoveDuplicatesFromWeatherLog(WeatherLogType &log)
         }
     }
 }
+
+//----------------------------------------------------------------------------

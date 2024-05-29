@@ -11,8 +11,6 @@
 
 //---------------------------------------------------------------------------------
 
-//----------------------------------------------------------------------------
-
     /**
 	 * @class BST
 	 * @brief  Binary Search Tree
@@ -306,7 +304,7 @@ template <class T>
 void BST<T>::Insert(const T& data)
 {
     Insert(data, m_root);
-    MaintainRI(m_root);
+    //MaintainRI(m_root);
 }
 
 //----------------------------------------------------------------------------
@@ -451,11 +449,7 @@ void BST<T>::MaintainRI(TreeNode<T> *node)
         rightValid = (node->m_right->m_data > node->m_data);
     }
 
-    if(!leftValid || !rightValid)
-    {
-        Delete(m_root->m_data);
-        assert(leftValid && rightValid); // Might just throw an error instead of asserting?
-    }
+    assert(leftValid && rightValid);
 
     MaintainRI(node->m_left);
     MaintainRI(node->m_right);

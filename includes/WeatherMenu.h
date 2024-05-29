@@ -32,7 +32,7 @@
      * @param weatherLog - A Vector Containing WeatherRecType Objects
      * @return void
      */
-void RunWeatherMenu(WeatherLogType &weatherLog);
+void RunWeatherMenu(WeatherLogType &weatherLog, std::map<int, std::map<int, Vector<int>>> &myMap, BST<KeyValue<int, WeatherRecType>> &myBst);
 
 //---------------------------------------------------------------------------------
 

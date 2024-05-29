@@ -14,6 +14,7 @@
 #include "../includes/WeatherRecUtilities.h"
 #include "../includes/Stack.h"
 #include "../includes/VectorUtilities.h"
+#include "../includes/BSTUtilities.h"
 
 #include <fstream>
 #include <sstream>
@@ -68,6 +69,18 @@ void ReadColIntoWeatherRec(std::string col, int colNum, const colOfInterest *wea
     // Convert std::string to a Float
 bool CheckStringToFloatConversion(float &value, const std::string &strValue);
 
+Vector<int> InitFileLineCountVec(int numOfLogs);
+
+void indexRecordInMap(int index, WeatherRecType& rec, std::map<int, std::map<int, Vector<int>>> &indexedMap);
+
+int findEarliestRecordBetweenFiles(Vector<WeatherLogType>& log, Vector<int>& lineCount);
+
+KeyValue<int, WeatherRecType> assignRecKey(int key, WeatherRecType& rec);
+
+void RemoveforCompletedFiles(Vector<Vector<int>> &logs);
+
+void RemoveCompletedFiles(Vector<WeatherLogType> &logs, Vector<int> &lineCount);
+
 //----------------------------------------------------------------------------
 // Function implementations
 
@@ -116,12 +129,12 @@ std::istream& operator>>(std::istream& input, Date& d)
 }
 
 //----------------------------------------------------------------------------
-ostream& operator<<(ostream& output, const Date& d)
-{
-    output << d.GetDay() << "/" << d.GetMonth() << "/" << d.GetYear();
-
-    return output;
-}
+//std::ostream& operator<<(ostream& output, const Date& d)
+//{
+//    output << d.GetDay() << "/" << d.GetMonth() << "/" << d.GetYear();
+//
+//    return output;
+//}
 
 //----------------------------------------------------------------------------
 std::istream& operator>>(std::istream& input, Time& t)
@@ -213,9 +226,9 @@ bool GetDataFileNameFromSrcFile(Stack<std::string> &fileNameStack)
 }
 
 //----------------------------------------------------------------------------
-bool ReadWeatherDataFromFiles(Stack<std::string> &fileStack, WeatherLogType &weatherLog)
+bool ReadWeatherDataFromFiles(Stack<std::string> &fileStack, WeatherLogType &weatherLog, std::map<int, std::map<int, Vector<int>>> &weatherRecMap, BST<KeyValue<int, WeatherRecType>> &myBst)
 {
-    Vector<WeatherLogType> allData;
+    Vector<WeatherLogType> logs;
 
     while(!fileStack.IsEmpty())
     {
@@ -229,69 +242,57 @@ bool ReadWeatherDataFromFiles(Stack<std::string> &fileStack, WeatherLogType &wea
         }
         WeatherLogType fileData;
         dataFile >> fileData;
-        allData.PushBack(fileData);
+        logs.PushBack(fileData);
         dataFile.close();
     }
 
-    if(allData.GetSize() > 0)
+    Vector<KeyValue<int, WeatherRecType>> index;
+    KeyValue<int, WeatherRecType> keyVal;
+    if(logs.GetSize() > 0)
     {
-        Vector<int> count;
-        for(int i = 0; i < allData.GetSize(); i++)
+        Vector<int> lineCount = InitFileLineCountVec(logs.GetSize());
+
+        WeatherRecType earliestRec;
+        int earliestIndex;
+
+            // Add Values in Order
+        while(logs.GetSize() > 1)
         {
-            count.PushBack(0);
+            earliestIndex = findEarliestRecordBetweenFiles(logs, lineCount);
+            earliestRec = logs[earliestIndex][lineCount[earliestIndex]];
+
+            if(weatherLog.GetSize() == 0 ||
+                (earliestRec.m_date != weatherLog[weatherLog.GetSize() - 1].m_date) ||
+               (earliestRec.m_date == weatherLog[weatherLog.GetSize() - 1].m_date && earliestRec.m_time != weatherLog[weatherLog.GetSize() - 1].m_time))
+            {
+                weatherLog.PushBack(earliestRec);
+                keyVal = assignRecKey((weatherLog.GetSize() - 1), earliestRec);
+                index.PushBack(keyVal);
+                indexRecordInMap((weatherLog.GetSize() - 1), earliestRec, weatherRecMap);
+            }
+            lineCount[earliestIndex]++;
+
+            RemoveCompletedFiles(logs, lineCount);
+
         }
 
-        int prevLowest;
-
-        while(allData.GetSize() > 1)
+            // Add Remaining Values
+        while(lineCount[0] < logs[0].GetSize())
         {
-            WeatherRecType lowest = allData[0][count[0]];
-            prevLowest = 0;
-            for(int j = 1; j < allData.GetSize(); j++)
+            if(weatherLog.GetSize() == 0 ||
+                (logs[0][lineCount[0]].m_date != weatherLog[weatherLog.GetSize() - 1].m_date) ||
+               (logs[0][lineCount[0]].m_date == weatherLog[weatherLog.GetSize() - 1].m_date && logs[0][lineCount[0]].m_time != weatherLog[weatherLog.GetSize() - 1].m_time))
             {
-                if(allData[j][count[j]].m_date < lowest.m_date)
-                {
-                    lowest = allData[j][count[j]];
-                    prevLowest = j;
-                }
-                else if(allData[j][count[j]].m_date == lowest.m_date && allData[j][count[j]].m_time < lowest.m_time)
-                {
-                    lowest = allData[j][count[j]];
-                    prevLowest = j;
-                }
+                weatherLog.PushBack(logs[0][lineCount[0]]);
+                keyVal = assignRecKey(weatherLog.GetSize() - 1, logs[0][lineCount[0]]);
+                index.PushBack(keyVal);
+                indexRecordInMap((weatherLog.GetSize() - 1), logs[0][lineCount[0]], weatherRecMap);
             }
-
-            if(weatherLog.GetSize() == 0)
-            {
-                weatherLog.PushBack(lowest);
-            }
-            else if(lowest.m_date != weatherLog[weatherLog.GetSize() - 1].m_date)
-            {
-                weatherLog.PushBack(lowest);
-            }
-            else if(lowest.m_date == weatherLog[weatherLog.GetSize() - 1].m_date && lowest.m_time != weatherLog[weatherLog.GetSize() - 1].m_time)
-            {
-                weatherLog.PushBack(lowest);
-            }
-
-            count[prevLowest]++;
-
-            for(int i = 0; i < allData.GetSize(); i++)
-            {
-                if(count[i] == allData[i].GetSize())
-                {
-                    RemoveFromVector(allData, i);
-                    RemoveFromVector(count, i);
-                }
-            }
-        }
-
-        while(count[0] < allData[0].GetSize())
-        {
-            weatherLog.PushBack(allData[0][count[0]]);
-            count[0]++;
+            lineCount[0]++;
         }
     }
+
+    InsertSortedVectorToBST(0, (index.GetSize() - 1), myBst, index);
 
     return true;
 }
@@ -436,3 +437,62 @@ bool CheckStringToFloatConversion(float &value, const std::string &strValue)
 }
 
 //----------------------------------------------------------------------------
+Vector<int> InitFileLineCountVec(int numOfLogs)
+{
+    Vector<int> count;
+    for(int i = 0; i < numOfLogs; i++)
+    {
+        count.PushBack(0);
+    }
+
+    return count;
+}
+
+//----------------------------------------------------------------------------
+void indexRecordInMap(int index, WeatherRecType &rec, std::map<int, std::map<int, Vector<int>>> &indexedMap)
+{
+    indexedMap[rec.m_date.GetYear()][rec.m_date.GetMonth()].PushBack(index);
+}
+
+//----------------------------------------------------------------------------
+int findEarliestRecordBetweenFiles(Vector<WeatherLogType>& logs, Vector<int>& lineCount)
+{
+    int prevEarliestIndex = 0;
+
+    for(int i = 1; i < logs.GetSize(); i++)
+    {
+        if(logs[i][lineCount[i]].m_date < logs[prevEarliestIndex][lineCount[prevEarliestIndex]].m_date)
+        {
+            prevEarliestIndex = i;
+        }
+        else if(logs[i][lineCount[i]].m_date == logs[prevEarliestIndex][lineCount[prevEarliestIndex]].m_date && logs[i][lineCount[i]].m_time < logs[prevEarliestIndex][lineCount[prevEarliestIndex]].m_time)
+        {
+            prevEarliestIndex = i;
+        }
+    }
+
+    return prevEarliestIndex;
+}
+
+//----------------------------------------------------------------------------
+KeyValue<int, WeatherRecType> assignRecKey(int key, WeatherRecType& rec)
+{
+    KeyValue<int, WeatherRecType> indexRec;
+    indexRec.m_key = key;
+    indexRec.m_value = rec;
+
+    return indexRec;
+}
+
+//----------------------------------------------------------------------------
+void RemoveCompletedFiles(Vector<WeatherLogType> &logs, Vector<int> &lineCount)
+{
+    for(int i = 0; i < logs.GetSize(); i++)
+    {
+        if(lineCount[i] == logs[i].GetSize())
+        {
+            RemoveFromVector(logs, i);
+            RemoveFromVector(lineCount, i);
+        }
+    }
+}

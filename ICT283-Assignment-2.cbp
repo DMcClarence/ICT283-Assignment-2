@@ -33,6 +33,7 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="includes/BST.h" />
+		<Unit filename="includes/BSTUtilities.h" />
 		<Unit filename="includes/Date.h" />
 		<Unit filename="includes/Map.h" />
 		<Unit filename="includes/Stack.h" />

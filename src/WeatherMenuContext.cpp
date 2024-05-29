@@ -30,7 +30,7 @@ WeatherMenuContext::WeatherMenuContext()
 }
 
 //----------------------------------------------------------------------------
-bool WeatherMenuContext::SetWeatherMenuStrategy(void (*menuOption)(WeatherLogType&))
+bool WeatherMenuContext::SetWeatherMenuStrategy(void (*menuOption)(WeatherLogType&, std::map<int, std::map<int, Vector<int>>>&, BST<KeyValue<int, WeatherRecType>>&))
 {
     try
     {
@@ -45,11 +45,11 @@ bool WeatherMenuContext::SetWeatherMenuStrategy(void (*menuOption)(WeatherLogTyp
 }
 
 //----------------------------------------------------------------------------
-bool WeatherMenuContext::ExecuteWeatherMenuOption(WeatherLogType &weatherLog)
+bool WeatherMenuContext::ExecuteWeatherMenuOption(WeatherLogType &weatherLog, std::map<int, std::map<int, Vector<int>>> &myMap, BST<KeyValue<int, WeatherRecType>> &myBst)
 {
     try
     {
-        m_menuOption(weatherLog);
+        m_menuOption(weatherLog, myMap, myBst);
     }
     catch(...)
     {

@@ -8,11 +8,48 @@
 
 #include "WeatherRec.h"
 #include "Stack.h"
+#include "Map.h"
+#include "BST.h"
 #include <iostream>
 #include <string>
 
-using std::string;
-using std::ostream;
+template <class T1, class T2>
+struct KeyValue
+{
+    T1 m_key;
+    T2 m_value;
+
+    bool operator ==(const KeyValue<T1, T2>& right) const
+    {
+        return m_key == right.m_key;
+    }
+
+    bool operator!=(const KeyValue<T1, T2>& right) const
+    {
+        return m_key != right.m_key;
+    }
+
+    bool operator<(const KeyValue<T1, T2>& right) const
+    {
+        return m_key < right.m_key;
+    }
+
+    bool operator <=(const KeyValue<T1, T2>& right) const
+    {
+        return m_key <= right.m_key;
+    }
+
+    bool operator >(const KeyValue<T1, T2>& right) const
+    {
+        return m_key > right.m_key;
+    }
+
+    bool operator >=(const KeyValue<T1, T2>& right) const
+    {
+        return m_key >= right.m_key;
+    }
+};
+
 
 //---------------------------------------------------------------------------------
         /**
@@ -36,20 +73,20 @@ using std::ostream;
 		 * @return std::istream&
 		 */
 std::istream& operator>>(std::istream& input, Date& d);
+//
+//        /**
+//		 * @brief  Ouputs a Date Object.
+//		 *
+//		 * Outputs in the format "D/M/YYYY"
+//		 *
+//		 *
+//		 * @param output - The ostream object
+//		 * @param d - The date object
+//		 * @return ostream&
+//		 */
+//std::ostream& operator<<(ostream& output, const Date& d);
 
-    /**
-		 * @brief  Ouputs a Date Object.
-		 *
-		 * Outputs in the format "D/M/YYYY"
-		 *
-		 *
-		 * @param output - The ostream object
-		 * @param d - The date object
-		 * @return ostream&
-		 */
-ostream& operator<<(ostream& output, const Date& d);
-
-    /**
+        /**
 		 * @brief  Reads an std::istream object into a time object.
 		 *
 		 * Format of data in the std::istream object must be in the following format:
@@ -62,7 +99,7 @@ ostream& operator<<(ostream& output, const Date& d);
 		 */
 std::istream& operator>>(std::istream& input, Time& t);
 
-    /**
+        /**
 		 * @brief  Reads an std::istream object into a Vector of WeatherRecType.
 		 *
 		 *
@@ -89,7 +126,7 @@ bool GetDataFileNameFromSrcFile(Stack<std::string> &fileNameStack);
 		 * @param weatherLog - The Vector to Read the Data into
 		 * @return bool - Returns true if Successful. Returns False if Failed.
 		 */
-bool ReadWeatherDataFromFiles(Stack<std::string> &fileStack, WeatherLogType &weatherLog);
+bool ReadWeatherDataFromFiles(Stack<std::string> &fileStack, WeatherLogType &weatherLog, std::map<int, std::map<int, Vector<int>>> &weatherRecMap, BST<KeyValue<int, WeatherRecType>> &myBst);
 
 //---------------------------------------------------------------------------------
 

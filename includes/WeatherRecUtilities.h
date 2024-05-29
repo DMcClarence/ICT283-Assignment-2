@@ -39,6 +39,8 @@
 void ExtractValuesFromWeatherLog(WeatherLogType &weatherLog, int month, int year,
                                     float WeatherRecType::*p_member, Vector<float> &extractedValues);
 
+void ExtractValuesFromWeatherLog(WeatherLogType &weatherLog, float WeatherRecType::*p_member, Vector<float> &extractedValues);
+
     /**
      * @brief  Removes any Data values that aren't valid.
      *
@@ -163,6 +165,7 @@ bool operator>=(WeatherRecType &left, WeatherRecType &right);
      * @return void
      */
 void RemoveDuplicatesFromWeatherLog(WeatherLogType &log);
+
 //---------------------------------------------------------------------------------
 
 #endif // WEATHERRECUTILITIES_H_INCLUDED

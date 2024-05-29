@@ -36,25 +36,25 @@ int main()
     Stack<std::string> fileStack;
     WeatherLogType weatherLog;
     bool fileSuccess = false;
-    //Map<int, Map<int, Vector<int>>> // Outer map key is year, inner map key is month.
+    std::map<int, std::map<int, Vector<int>>> indexedWeatherLog; // Outer map key is year, inner map key is month.
+    BST<KeyValue<int, WeatherRecType>> myBst;
 
 
     readSuccessful = GetDataFileNameFromSrcFile(fileStack);
     if(readSuccessful)
     {
-        fileSuccess = ReadWeatherDataFromFiles(fileStack, weatherLog);
+        fileSuccess = ReadWeatherDataFromFiles(fileStack, weatherLog, indexedWeatherLog, myBst);
     }
 
     if(fileSuccess)
     {
+        // Checks weatherLog isn't empty before running Weather Menu
         if(weatherLog.GetSize() > 0)
         {
             // RemoveDuplicatesFromWeatherLog(weatherLog);
-            RunWeatherMenu(weatherLog);
+            RunWeatherMenu(weatherLog, indexedWeatherLog, myBst);
         }
     }
-        // Checks weatherLog isn't empty before running Weather Menu
-
 
     std::cout << "Program Exiting..." << std::endl;
 
