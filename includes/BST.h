@@ -85,7 +85,7 @@ public:
          *
          * @return void
          */
-    void InOrder(void (*ProcessNode)(const T&));
+    void InOrder(void (*ProcessNode)(T&)) const;
 
         /**
          * @brief  Executes Pre-Order Traversal.
@@ -95,7 +95,7 @@ public:
          *
          * @return void
          */
-    void PreOrder(void (*ProcessNode)(const T&));
+    void PreOrder(void (*ProcessNode)(const T&)) const;
 
         /**
          * @brief  Executes Pre-Order Traversal.
@@ -105,7 +105,7 @@ public:
          *
          * @return void
          */
-    void PostOrder(void (*ProcessNode)(const T&));
+    void PostOrder(void (*ProcessNode)(const T&)) const;
 
         /**
          * @brief  Searches BST for the existence of an item.
@@ -197,7 +197,7 @@ private:
          * @param node - The Current Node
          * @return void
          */
-    void InOrder(void (*ProcessNode)(const T&), TreeNode<T> *&node);
+    void InOrder(void (*ProcessNode)(T&), TreeNode<T> *node) const;
 
         /**
          * @brief  Recursively Processes each Node in a BST in Pre Order
@@ -207,7 +207,7 @@ private:
          * @param node - The Current Node
          * @return void
          */
-    void PreOrder(void (*ProcessNode)(const T&), TreeNode<T> *&node);
+    void PreOrder(void (*ProcessNode)(const T&), TreeNode<T> *&node) const;
 
         /**
          * @brief  Recursively Processes each Node in a BST in Post Order
@@ -217,7 +217,7 @@ private:
          * @param node - The Current Node
          * @return void
          */
-    void PostOrder(void (*ProcessNode)(const T&), TreeNode<T> *&node);
+    void PostOrder(void (*ProcessNode)(const T&), TreeNode<T> *&node) const;
 
         /**
          * @brief  Searches the BST for a Specific Data item
@@ -227,7 +227,7 @@ private:
          * @param item - The Item to search for
          * @return TreeNode - The node containing the item
          */
-    TreeNode<T>*& SearchTree(BST<T>& tree, const T& item);
+    TreeNode<T>* SearchTree(BST<T>& tree, const T& item);
 
         /**
          * @brief  Checks the Representation Invariant Property of the BST Holds True
@@ -333,14 +333,14 @@ void BST<T>::Insert(const T& data, TreeNode<T> *&node)
 
 //----------------------------------------------------------------------------
 template <class T>
-void BST<T>::InOrder(void (*ProcessNode)(const T&))
+void BST<T>::InOrder(void (*ProcessNode)(T&)) const
 {
     InOrder(ProcessNode, m_root);
 }
 
 //----------------------------------------------------------------------------
 template <class T>
-void BST<T>::InOrder(void (*ProcessNode)(const T&), TreeNode<T> *&node)
+void BST<T>::InOrder(void (*ProcessNode)(T&), TreeNode<T> *node) const
 {
     if(node == nullptr)
     {
@@ -354,14 +354,14 @@ void BST<T>::InOrder(void (*ProcessNode)(const T&), TreeNode<T> *&node)
 
 //----------------------------------------------------------------------------
 template <class T>
-void BST<T>::PreOrder(void (*ProcessNode)(const T&))
+void BST<T>::PreOrder(void (*ProcessNode)(const T&)) const
 {
     PreOrder(ProcessNode, m_root);
 }
 
 //----------------------------------------------------------------------------
 template <class T>
-void BST<T>::PreOrder(void (*ProcessNode)(const T&), TreeNode<T> *&node)
+void BST<T>::PreOrder(void (*ProcessNode)(const T&), TreeNode<T> *&node) const
 {
     if(node == nullptr)
     {
@@ -375,14 +375,14 @@ void BST<T>::PreOrder(void (*ProcessNode)(const T&), TreeNode<T> *&node)
 
 //----------------------------------------------------------------------------
 template <class T>
-void BST<T>::PostOrder(void (*ProcessNode)(const T&))
+void BST<T>::PostOrder(void (*ProcessNode)(const T&)) const
 {
     PostOrderTraversal(ProcessNode, m_root);
 }
 
 //----------------------------------------------------------------------------
 template <class T>
-void BST<T>::PostOrder(void (*ProcessNode)(const T&), TreeNode<T> *&node)
+void BST<T>::PostOrder(void (*ProcessNode)(const T&), TreeNode<T> *&node) const
 {
     if(node == nullptr)
     {
@@ -398,7 +398,7 @@ void BST<T>::PostOrder(void (*ProcessNode)(const T&), TreeNode<T> *&node)
 template <class T>
 bool BST<T>::Search(const T& item)
 {
-    TreeNode<T>*& node = SearchTree(*this, item);
+    TreeNode<T>* node = SearchTree(*this, item);
     if(node == nullptr)
     {
         return false;
@@ -409,9 +409,9 @@ bool BST<T>::Search(const T& item)
 
 //----------------------------------------------------------------------------
 template <class T>
-BST<T>::TreeNode<T>*& BST<T>::SearchTree(BST<T>& tree, const T& item)
+BST<T>::TreeNode<T>* BST<T>::SearchTree(BST<T>& tree, const T& item)
 {
-    TreeNode<T>*& current = tree.m_root;
+    TreeNode<T>* current = tree.m_root;
 
     while(current != nullptr && current->m_data != item)
     {

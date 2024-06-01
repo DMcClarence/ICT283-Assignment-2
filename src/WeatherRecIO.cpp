@@ -69,16 +69,19 @@ void ReadColIntoWeatherRec(std::string col, int colNum, const colOfInterest *wea
     // Convert std::string to a Float
 bool CheckStringToFloatConversion(float &value, const std::string &strValue);
 
+    // Returns a Vector with Count for Each File Set to 0
 Vector<int> InitFileLineCountVec(int numOfLogs);
 
+    // Indexes a Record by Year and Month
 void indexRecordInMap(int index, WeatherRecType& rec, std::map<int, std::map<int, Vector<int>>> &indexedMap);
 
+    // Finds the Earliest Dated/Timed Record between Logs
 int findEarliestRecordBetweenFiles(Vector<WeatherLogType>& log, Vector<int>& lineCount);
 
+    // Assigns a Key value to a Record
 KeyValue<int, WeatherRecType> assignRecKey(int key, WeatherRecType& rec);
 
-void RemoveforCompletedFiles(Vector<Vector<int>> &logs);
-
+    // Removes logs for Completed Files
 void RemoveCompletedFiles(Vector<WeatherLogType> &logs, Vector<int> &lineCount);
 
 //----------------------------------------------------------------------------
@@ -226,7 +229,7 @@ bool GetDataFileNameFromSrcFile(Stack<std::string> &fileNameStack)
 }
 
 //----------------------------------------------------------------------------
-bool ReadWeatherDataFromFiles(Stack<std::string> &fileStack, WeatherLogType &weatherLog, std::map<int, std::map<int, Vector<int>>> &weatherRecMap, BST<KeyValue<int, WeatherRecType>> &myBst)
+bool ReadWeatherDataFromFiles(Stack<std::string> &fileStack, WeatherLogType &weatherLog, std::map<int, std::map<int, Vector<int>>> &weatherRecMap, BST<int> &myBst)
 {
     Vector<WeatherLogType> logs;
 
@@ -248,6 +251,9 @@ bool ReadWeatherDataFromFiles(Stack<std::string> &fileStack, WeatherLogType &wea
 
     Vector<KeyValue<int, WeatherRecType>> index;
     KeyValue<int, WeatherRecType> keyVal;
+    Vector<int> yearMonths;
+    int temp;
+    int currentIndex = 0;
     if(logs.GetSize() > 0)
     {
         Vector<int> lineCount = InitFileLineCountVec(logs.GetSize());
@@ -269,6 +275,8 @@ bool ReadWeatherDataFromFiles(Stack<std::string> &fileStack, WeatherLogType &wea
                 keyVal = assignRecKey((weatherLog.GetSize() - 1), earliestRec);
                 index.PushBack(keyVal);
                 indexRecordInMap((weatherLog.GetSize() - 1), earliestRec, weatherRecMap);
+                temp = (earliestRec.m_date.GetYear() * 100) + earliestRec.m_date.GetMonth();
+                yearMonths.PushBack(temp);
             }
             lineCount[earliestIndex]++;
 
@@ -287,12 +295,15 @@ bool ReadWeatherDataFromFiles(Stack<std::string> &fileStack, WeatherLogType &wea
                 keyVal = assignRecKey(weatherLog.GetSize() - 1, logs[0][lineCount[0]]);
                 index.PushBack(keyVal);
                 indexRecordInMap((weatherLog.GetSize() - 1), logs[0][lineCount[0]], weatherRecMap);
+                temp = (logs[0][lineCount[0]].m_date.GetYear() * 100) + logs[0][lineCount[0]].m_date.GetMonth();
+                yearMonths.PushBack(temp);
             }
             lineCount[0]++;
         }
     }
 
-    InsertSortedVectorToBST(0, (index.GetSize() - 1), myBst, index);
+    MergeSortVector(yearMonths);
+    InsertSortedVectorToBST(0, (yearMonths.GetSize() - 1), myBst, yearMonths);
 
     return true;
 }

@@ -7,7 +7,6 @@
 //---------------------------------------------------------------------------------
 
 #include "WeatherRec.h"
-
 #include <string>
 
 //---------------------------------------------------------------------------------
@@ -39,6 +38,15 @@
 void ExtractValuesFromWeatherLog(WeatherLogType &weatherLog, int month, int year,
                                     float WeatherRecType::*p_member, Vector<float> &extractedValues);
 
+    /**
+     * @brief  Extracts float values from a WeatherLogType object.
+     *
+     *
+     * @param  weatherLog - The WeatherLogType object for values to be extracted from
+     * @param  WeatherRecType::*p_member - The WeatherRecType member to be extracted
+     * @param  extractedValues - float Vector to store the values in
+     * @return void
+     */
 void ExtractValuesFromWeatherLog(WeatherLogType &weatherLog, float WeatherRecType::*p_member, Vector<float> &extractedValues);
 
     /**
