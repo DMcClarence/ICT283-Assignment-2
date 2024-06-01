@@ -11,7 +11,6 @@
 #include <cassert>
 
 //---------------------------------------------------------------------------------
-
 	/**
 	 * @class Map
 	 * @brief  Encapsulates an STL Map
@@ -24,6 +23,7 @@ template <class T1, class T2>
 class Map
 {
 public:
+    typedef typename std::map<T1, T2>::iterator MapIterator;
         /**
          * @brief  Creates a Default Map object.
          *
@@ -41,6 +41,8 @@ public:
         /**
          * @brief Returns a Reference to a value in a map
          *
+         * If map key doesn't exist, it will be created and added to the map.
+         *
          *
          * @param  key - The location in the map
          * @return T2& - Reference to value in the map
@@ -49,6 +51,8 @@ public:
 
         /**
          * @brief Returns a const Reference to a value in an map
+         *
+         * If map key doesn't exist, it will be created and added to the map.
          *
          *
          * @param  key - The location of the map
@@ -63,6 +67,9 @@ public:
          * @return bool - Returns true if successful. Otherwise returns false
          */
     bool Insert(T1 key, T2 value);
+
+    MapIterator Begin();
+    MapIterator End();
 
 private:
         /// Encapsulated STL Map
@@ -85,7 +92,6 @@ Map<T1, T2>::~Map()
 template <class T1, class T2>
 T2& Map<T1, T2>::operator[](T1 key)
 {
-    assert(m_map.find(key) == m_map.end());
     return m_map[key];
 }
 
@@ -93,7 +99,6 @@ T2& Map<T1, T2>::operator[](T1 key)
 template <class T1, class T2>
 const T2& Map<T1, T2>::operator[](T1 key) const
 {
-    assert(m_map.find(key) == m_map.end());
     return m_map[key];
 }
 
@@ -111,6 +116,18 @@ bool Map<T1, T2>::Insert(T1 key, T2 value)
     }
 
     return true;
+}
+
+template <class T1, class T2>
+typename Map<T1, T2>::MapIterator Map<T1, T2>::Begin()
+{
+    return m_map.begin();
+}
+
+template <class T1, class T2>
+typename Map<T1, T2>::MapIterator Map<T1, T2>::End()
+{
+    return m_map.end();
 }
 
 //---------------------------------------------------------------------------------

@@ -73,7 +73,7 @@ bool CheckStringToFloatConversion(float &value, const std::string &strValue);
 Vector<int> InitFileLineCountVec(int numOfLogs);
 
     // Indexes a Record by Year and Month
-void indexRecordInMap(int index, WeatherRecType& rec, std::map<int, std::map<int, Vector<int>>> &indexedMap);
+void indexRecordInMap(int index, WeatherRecType& rec, Map<int, Map<int, Vector<int>>> &indexedMap);
 
     // Finds the Earliest Dated/Timed Record between Logs
 int findEarliestRecordBetweenFiles(Vector<WeatherLogType>& log, Vector<int>& lineCount);
@@ -130,14 +130,6 @@ std::istream& operator>>(std::istream& input, Date& d)
 
     return input;
 }
-
-//----------------------------------------------------------------------------
-//std::ostream& operator<<(ostream& output, const Date& d)
-//{
-//    output << d.GetDay() << "/" << d.GetMonth() << "/" << d.GetYear();
-//
-//    return output;
-//}
 
 //----------------------------------------------------------------------------
 std::istream& operator>>(std::istream& input, Time& t)
@@ -229,7 +221,7 @@ bool GetDataFileNameFromSrcFile(Stack<std::string> &fileNameStack)
 }
 
 //----------------------------------------------------------------------------
-bool ReadWeatherDataFromFiles(Stack<std::string> &fileStack, WeatherLogType &weatherLog, std::map<int, std::map<int, Vector<int>>> &weatherRecMap, BST<int> &myBst)
+bool ReadWeatherDataFromFiles(Stack<std::string> &fileStack, WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &weatherRecMap, BST<int> &myBst)
 {
     Vector<WeatherLogType> logs;
 
@@ -460,7 +452,7 @@ Vector<int> InitFileLineCountVec(int numOfLogs)
 }
 
 //----------------------------------------------------------------------------
-void indexRecordInMap(int index, WeatherRecType &rec, std::map<int, std::map<int, Vector<int>>> &indexedMap)
+void indexRecordInMap(int index, WeatherRecType &rec, Map<int, Map<int, Vector<int>>> &indexedMap)
 {
     indexedMap[rec.m_date.GetYear()][rec.m_date.GetMonth()].PushBack(index);
 }

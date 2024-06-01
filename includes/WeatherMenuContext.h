@@ -55,7 +55,7 @@ class WeatherMenuContext
              * @param menuOption - The Menu Option to be Executed
              * @return bool - Returns true if Set Successful. Returns false if Set Failed.
              */
-        bool SetWeatherMenuStrategy(void (*menuOption)(WeatherLogType&, std::map<int, std::map<int, Vector<int>>>&, BST<int>&));
+        bool SetWeatherMenuStrategy(void (*menuOption)(WeatherLogType&, Map<int, Map<int, Vector<int>>>&, BST<int>&));
 
             /**
              * @brief  Executes the WeatherMenuStrategy Object.
@@ -64,10 +64,10 @@ class WeatherMenuContext
              * @param weatherLog - A Vector of WeatherRecType Objects
              * @return bool - Returns true if Execution Successful. Returns false if Execution Failed.
              */
-        bool ExecuteWeatherMenuOption(WeatherLogType &weatherLog, std::map<int, std::map<int, Vector<int>>> &myMap, BST<int> &myBst);
+        bool ExecuteWeatherMenuOption(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst);
     private:
             /// The Menu Option to be Executed.
-        void (*m_menuOption)(WeatherLogType&, std::map<int, std::map<int, Vector<int>>>&, BST<int>&);
+        void (*m_menuOption)(WeatherLogType&, Map<int, Map<int, Vector<int>>>&, BST<int>&);
 };
 
 //---------------------------------------------------------------------------------

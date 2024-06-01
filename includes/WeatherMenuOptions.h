@@ -35,7 +35,7 @@ namespace WeatherMenuStrategy
          */
     namespace WindSpeedStrategy
     {
-        void Execute(WeatherLogType &weatherLog, std::map<int, std::map<int, Vector<int>>> &myMap, BST<int> &myBst);
+        void Execute(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst);
     }
 
         /**
@@ -49,7 +49,7 @@ namespace WeatherMenuStrategy
          */
     namespace TemperatureStrategy
     {
-        void Execute(WeatherLogType &weatherLog, std::map<int, std::map<int, Vector<int>>> &myMap, BST<int> &myBst);
+        void Execute(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst);
     }
 
         /**
@@ -63,7 +63,7 @@ namespace WeatherMenuStrategy
          */
     namespace SolarRadiationStrategy
     {
-        void Execute(WeatherLogType &weatherLog, std::map<int, std::map<int, Vector<int>>> &myMap, BST<int> &myBst);
+        void Execute(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst);
     }
 
         /**
@@ -77,7 +77,7 @@ namespace WeatherMenuStrategy
          */
     namespace SPCCStrategy
     {
-        void Execute(WeatherLogType &weatherLog, std::map<int, std::map<int, Vector<int>>> &myMap, BST<int> &myBst);
+        void Execute(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst);
     }
 
         /**
@@ -91,7 +91,7 @@ namespace WeatherMenuStrategy
          */
     namespace PrintToFileStrategy
     {
-        void Execute(WeatherLogType &weatherLog, std::map<int, std::map<int, Vector<int>>> &myMap, BST<int> &myBst);
+        void Execute(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst);
     }
 }
 

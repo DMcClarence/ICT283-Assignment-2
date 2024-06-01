@@ -36,7 +36,7 @@ int main()
     Stack<std::string> fileStack;
     WeatherLogType weatherLog;
     bool fileSuccess = false;
-    std::map<int, std::map<int, Vector<int>>> indexedWeatherLog; // Outer map key is year, inner map key is month.
+    Map<int, Map<int, Vector<int>>> indexedWeatherLog; // Outer map key is year, inner map key is month.
     BST<int> myBst;
 
     readSuccessful = GetDataFileNameFromSrcFile(fileStack);
