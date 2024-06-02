@@ -32,34 +32,40 @@ enum months {Jan = 1, Feb = 2, Mar = 3, Apr = 4, May = 5, Jun = 6, Jul = 7, Aug 
     // Not Designed for client use, hence why they're not prototyped in the interface.
 
     // Dedicated to Printing Mean and Standard Deviation of Wind Speed to the Screen
-void PrintWindMeanStdDevToScreen(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst, int month, int year);
+void PrintWindMeanStdDevToScreen(Vector<float>& windSpeedData);
 
     // Dedicated to Printing Mean and Standard Deviation of Temperature to the Screen
-void PrintTempMeanStdDevToScreen(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst, int month, int year);
+void PrintTempMeanStdDevToScreen(Vector<float>& tempData);
 
     // Dedicated to Printing Total Solar Radiation to the Screen
-void PrintSolarRadToScreen(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst, int month, int year);
+void PrintSolarRadToScreen(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &weatherMap, BST<int> &yearMonthBST, int month, int year);
 
     // Dedicated to Printing the sPCC of Wind Speed and Temperature to the Screen
-void PrintStToScreen(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst, int month);
+void PrintStToScreen(Vector<float>& windSpeedData, Vector<float>& tempData);
 
     // Dedicated to Printing the sPCC of Wind Speed and Solar Radiation to the Screen
-void PrintSrToScreen(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst, int month);
+void PrintSrToScreen(Vector<float>& windSpeedData, Vector<float>& solarRadData);
 
     // Dedicated to Printing the sPCC of Temperature and Solar Radiation to the Screen
-void PrintTrToScreen(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst, int month);
+void PrintTrToScreen(Vector<float>& tempData, Vector<float>& solarRadData);
 
     // Dedicated to Printing Mean and Standard Deviation of float data members to a File
-void PrintMeanStdDevMadToFile(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst, float WeatherRecType::*p_Member, int month, int year, std::ofstream& output);
+void PrintMeanStdDevMadToFile(std::ofstream& output, Vector<float>& data);
 
     // Dedicated to Printing Total Solar Radiation to a File
     // Designed to be last on each line of a CSV file (no comma printed)
-void PrintSolarRadToFile(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst, int month, int year, std::ofstream& output);
+void PrintSolarRadToFile(std::ofstream& output, Vector<float>& data);
+
+    // Returns a Vector<float> of the Record Data from a Specific Month and Year for a specific Data Members
+Vector<float> GetRequestedData(WeatherLogType& weatherLog, int month, int year, Map<int, Map<int, Vector<int>>> weatherMap, BST<int>& yeatMonthBST, float WeatherRecType::*p_Member);
+
+    // Retrieves the Record Data Pairs from a Specific Month of Every Stored Year
+void GetRequestedDataPair(WeatherLogType& weatherLog, int month, Map<int, Map<int, Vector<int>>>& weatherMap, BST<int>& yearMonthBST, Vector<float>& firstDataMem, Vector<float>& secondDataMem, float WeatherRecType::*p1_Member, float WeatherRecType::*p2_Member);
 
 //----------------------------------------------------------------------------
 // Function implementations
 
-void WeatherMenuStrategy::WindSpeedStrategy::Execute(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst)
+void WeatherMenuStrategy::WindSpeedStrategy::Execute(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &weatherMap, BST<int> &yearMonthBST)
 {
     int year;
     int month;
@@ -72,13 +78,53 @@ void WeatherMenuStrategy::WindSpeedStrategy::Execute(WeatherLogType &weatherLog,
     std::cin.clear();
     std::cout << std::endl;
 
+    Vector<float> windSpeedData = GetRequestedData(weatherLog, month, year, weatherMap, yearMonthBST, &WeatherRecType::m_s);
+    RemoveInvalidData(windSpeedData);
+
     std::cout << MonthToString(month) << " " << year << ": ";
-    PrintWindMeanStdDevToScreen(weatherLog, myMap, myBst, month, year);
+    if(windSpeedData.GetSize() == 0)
+    {
+        std::cout << "No Data" << std::endl;
+    }
+    else
+    {
+        PrintWindMeanStdDevToScreen(windSpeedData);
+    }
     std::cout << std::endl;
 }
 
 //----------------------------------------------------------------------------
-void WeatherMenuStrategy::TemperatureStrategy::Execute(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst)
+void WeatherMenuStrategy::TemperatureStrategy::Execute(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &weatherMap, BST<int> &yearMonthBST)
+{
+    int year;
+
+    std::cout << "Enter a Year: " << std::endl;
+    std::cin >> year;
+    std::cin.clear();
+    Vector<float> tempData;
+
+    std::cout << std::endl;
+    std::cout << year << std::endl;
+    for(int month = Jan; month <= Dec; month++)
+    {
+        tempData = GetRequestedData(weatherLog, month, year, weatherMap, yearMonthBST, &WeatherRecType::m_t);
+        RemoveInvalidData(tempData);
+
+        std::cout << MonthToString(month) << ": ";
+        if(tempData.GetSize() == 0)
+        {
+            std::cout << "No Data" << std::endl;
+        }
+        else
+        {
+            PrintTempMeanStdDevToScreen(tempData);
+        }
+    }
+    std::cout << std::endl;
+}
+
+//----------------------------------------------------------------------------
+void WeatherMenuStrategy::SolarRadiationStrategy::Execute(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &weatherMap, BST<int> &yearMonthBST)
 {
     int year;
 
@@ -90,31 +136,13 @@ void WeatherMenuStrategy::TemperatureStrategy::Execute(WeatherLogType &weatherLo
     std::cout << year << std::endl;
     for(int month = Jan; month <= Dec; month++)
     {
-        PrintTempMeanStdDevToScreen(weatherLog, myMap, myBst, month, year);
+        PrintSolarRadToScreen(weatherLog, weatherMap, yearMonthBST, month, year);
     }
     std::cout << std::endl;
 }
 
 //----------------------------------------------------------------------------
-void WeatherMenuStrategy::SolarRadiationStrategy::Execute(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst)
-{
-    int year;
-
-    std::cout << "Enter a Year: " << std::endl;
-    std::cin >> year;
-    std::cin.clear();
-
-    std::cout << std::endl;
-    std::cout << year << std::endl;
-    for(int month = Jan; month <= Dec; month++)
-    {
-        PrintSolarRadToScreen(weatherLog, myMap, myBst, month, year);
-    }
-    std::cout << std::endl;
-}
-
-//----------------------------------------------------------------------------
-void WeatherMenuStrategy::SPCCStrategy::Execute(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst)
+void WeatherMenuStrategy::SPCCStrategy::Execute(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &weatherMap, BST<int> &yearMonthBST)
 {
     int month;
 
@@ -122,17 +150,29 @@ void WeatherMenuStrategy::SPCCStrategy::Execute(WeatherLogType &weatherLog, Map<
     std::cin >> month;
     std::cin.clear();
 
+    std::pair<Vector<float>, Vector<float>> st;
+    std::pair<Vector<float>, Vector<float>> sr;
+    std::pair<Vector<float>, Vector<float>> tr;
+
     std::cout << std::endl;
     std::cout << "Sample Pearson Correlation Coefficinet for " << MonthToString(month) << std::endl;
     std::cout << std::endl;
-    PrintStToScreen(weatherLog, myMap, myBst, month);
-    PrintSrToScreen(weatherLog, myMap, myBst, month);
-    PrintTrToScreen(weatherLog, myMap, myBst, month);
+    GetRequestedDataPair(weatherLog, month, weatherMap, yearMonthBST, st.first, st.second, &WeatherRecType::m_s, &WeatherRecType::m_t);
+    RemoveInvalidDataFromDataPairs(st.first, st.second);
+    PrintStToScreen(st.first, st.second);
+
+    GetRequestedDataPair(weatherLog, month, weatherMap, yearMonthBST, sr.first, sr.second, &WeatherRecType::m_s, &WeatherRecType::m_sr);
+    RemoveInvalidDataFromDataPairs(sr.first, sr.second);
+    PrintSrToScreen(sr.first, sr.second);
+
+    GetRequestedDataPair(weatherLog, month, weatherMap, yearMonthBST, tr.first, tr.second, &WeatherRecType::m_t, &WeatherRecType::m_sr);
+    RemoveInvalidDataFromDataPairs(tr.first, tr.second);
+    PrintTrToScreen(tr.first, tr.second);
     std::cout << std::endl;
 }
 
 //----------------------------------------------------------------------------
-void WeatherMenuStrategy::PrintToFileStrategy::Execute(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst)
+void WeatherMenuStrategy::PrintToFileStrategy::Execute(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &weatherMap, BST<int> &yearMonthBST)
 {
     std::ofstream output("WindSolarTemp.csv");
     int year;
@@ -141,13 +181,24 @@ void WeatherMenuStrategy::PrintToFileStrategy::Execute(WeatherLogType &weatherLo
     std::cin >> year;
     std::cin.clear();
 
+    Vector<float> data;
+
     output << year << std::endl;
     for(int month = Jan; month <= Dec; month++)
     {
         output << MonthToString(month) << ",";
-        PrintMeanStdDevMadToFile(weatherLog, myMap, myBst, &WeatherRecType::m_s, month, year, output);
-        PrintMeanStdDevMadToFile(weatherLog, myMap, myBst, &WeatherRecType::m_t, month, year, output);
-        PrintSolarRadToFile(weatherLog, myMap, myBst, month, year, output);
+
+        data = GetRequestedData(weatherLog, month, year, weatherMap, yearMonthBST, &WeatherRecType::m_s);
+        RemoveInvalidData(data);
+        PrintMeanStdDevMadToFile(output, data);
+
+        data = GetRequestedData(weatherLog, month, year, weatherMap, yearMonthBST, &WeatherRecType::m_t);
+        RemoveInvalidData(data);
+        PrintMeanStdDevMadToFile(output, data);
+
+        data = GetRequestedData(weatherLog, month, year, weatherMap, yearMonthBST, &WeatherRecType::m_sr);
+        RemoveInvalidData(data);
+        PrintSolarRadToFile(output, data);
         output << std::endl;
     }
 
@@ -155,106 +206,19 @@ void WeatherMenuStrategy::PrintToFileStrategy::Execute(WeatherLogType &weatherLo
 }
 
 //----------------------------------------------------------------------------
-void PrintWindMeanStdDevToScreen(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst, int month, int year)
+void PrintWindMeanStdDevToScreen(Vector<float>& windSpeedData)
 {
-    Vector<int> requestedRecs;
-//    try
-//    {
-//        requestedRecs = myMap.at(year).at(month);
-//    }
-//    catch(...)
-//    {
-//        std::cout << "No Data" << std::endl;
-//        return;
-//    }
-    if(myBst.Search(CreateMonthYearKey(year, month)))
-    {
-        requestedRecs = myMap[year][month];
-    }
-    else
-    {
-        std::cout << "No Data" << std::endl;
-        return;
-    }
-
-    WeatherLogType log;
-    for(int i = 0; i < requestedRecs.GetSize(); i++)
-    {
-        log.PushBack(weatherLog[requestedRecs[i]]);
-    }
-
-    Vector<float> data;
-    ExtractValuesFromWeatherLog(log, month, year, &WeatherRecType::m_s, data);
-
-    RemoveInvalidData(data);
-
-    if(data.GetSize() == 0)
-    {
-        std::cout << "No Data" << std::endl;
-    }
-    else
-    {
-        float avgWindSpeed = StatsCalcs::CalcMeanOfVectorf(data);
-        float windSpeedStdDev = StatsCalcs::CalcStdDevOfVectorf(data);
-        std::cout << std::endl;
-        std::cout << std::fixed << std::showpoint << std::setprecision(2);
-        std::cout << "Average speed: " << avgWindSpeed << " km/h" << std::endl;
-        std::cout << "Sample stdev: " << windSpeedStdDev << std::endl;
-    }
+    float avgWindSpeed = StatsCalcs::CalcMeanOfVectorf(windSpeedData);
+    float windSpeedStdDev = StatsCalcs::CalcStdDevOfVectorf(windSpeedData);
+    std::cout << std::endl;
+    std::cout << std::fixed << std::showpoint << std::setprecision(2);
+    std::cout << "Average speed: " << avgWindSpeed << " km/h" << std::endl;
+    std::cout << "Sample stdev: " << windSpeedStdDev << std::endl;
 }
 
 //----------------------------------------------------------------------------
-void PrintStToScreen(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst, int month)
+void PrintStToScreen(Vector<float>& windSpeedData, Vector<float>& tempData)
 {
-    Vector<Vector<int>> requestedRecs;
-//    try
-//    {
-//        for(Map<int, Map<int, Vector<int>>>::iterator itr = myMap.begin(); itr != myMap.end(); itr++)
-//        {
-//            Map<int, Vector<int>>& innerMyMap = itr->second;
-//            if(innerMyMap.find(month) != innerMyMap.end())
-//            {
-//                requestedRecs.PushBack(innerMyMap.at(month));
-//            }
-//
-//        }
-//    }
-//    catch(...)
-//    {
-//        std::cout << "No Data" << std::endl;
-//        return;
-//    }
-
-    for(Map<int, Map<int, Vector<int>>>::iterator itr = myMap.Begin(); itr != myMap.End(); itr++)
-    {
-        int key = (itr->first * 100) + month;
-        if(myBst.Search(key))
-        {
-            requestedRecs.PushBack(myMap[itr->first][month]);
-        }
-    }
-    if(requestedRecs.GetSize() == 0)
-    {
-        std::cout << "No Data" << std::endl;
-        return;
-    }
-
-    WeatherLogType log;
-    for(int i = 0; i < requestedRecs.GetSize(); i++)
-    {
-        for(int j = 0; j < requestedRecs[i].GetSize(); j++)
-        {
-            log.PushBack(weatherLog[requestedRecs[i][j]]);
-        }
-    }
-
-    Vector<float> tempData;
-    Vector<float> windSpeedData;
-    ExtractValuesFromWeatherLog(log, &WeatherRecType::m_s, windSpeedData);
-    ExtractValuesFromWeatherLog(log, &WeatherRecType::m_t, tempData);
-
-    RemoveInvalidDataFromDataPairs(tempData, windSpeedData);
-
     if(windSpeedData.GetSize() == 0 || tempData.GetSize() == 0)
     {
         std::cout << "No Data" << std::endl;
@@ -268,56 +232,8 @@ void PrintStToScreen(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>>
 }
 
 //----------------------------------------------------------------------------
-void PrintSrToScreen(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst, int month)
+void PrintSrToScreen(Vector<float>& windSpeedData, Vector<float>& solarRadData)
 {
-    Vector<Vector<int>> requestedRecs;
-//    try
-//    {
-//        for(Map<int, Map<int, Vector<int>>>::iterator itr = myMap.begin(); itr != myMap.end(); itr++)
-//        {
-//            Map<int, Vector<int>>& innerMyMap = itr->second;
-//            if(innerMyMap.find(month) != innerMyMap.end())
-//            {
-//                requestedRecs.PushBack(innerMyMap.at(month));
-//            }
-//        }
-//    }
-//    catch(...)
-//    {
-//        std::cout << "No Data" << std::endl;
-//        return;
-//    }
-
-    for(Map<int, Map<int, Vector<int>>>::iterator itr = myMap.Begin(); itr != myMap.End(); itr++)
-    {
-        int key = (itr->first * 100) + month;
-        if(myBst.Search(key))
-        {
-            requestedRecs.PushBack(myMap[itr->first][month]);
-        }
-    }
-    if(requestedRecs.GetSize() == 0)
-    {
-        std::cout << "No Data" << std::endl;
-        return;
-    }
-
-    WeatherLogType log;
-    for(int i = 0; i < requestedRecs.GetSize(); i++)
-    {
-        for(int j = 0; j < requestedRecs[i].GetSize(); j++)
-        {
-            log.PushBack(weatherLog[requestedRecs[i][j]]);
-        }
-    }
-    Vector<float> solarRadData;
-    Vector<float> windSpeedData;
-
-    ExtractValuesFromWeatherLog(log, &WeatherRecType::m_s, windSpeedData);
-    ExtractValuesFromWeatherLog(log, &WeatherRecType::m_sr, solarRadData);
-
-    RemoveInvalidDataFromDataPairs(solarRadData, windSpeedData);
-
     if(windSpeedData.GetSize() == 0 || solarRadData.GetSize() == 0)
     {
         std::cout << "No Data" << std::endl;
@@ -331,56 +247,8 @@ void PrintSrToScreen(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>>
 }
 
 //----------------------------------------------------------------------------
-void PrintTrToScreen(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst, int month)
+void PrintTrToScreen(Vector<float>& tempData, Vector<float>& solarRadData)
 {
-    Vector<Vector<int>> requestedRecs;
-//    try
-//    {
-//        for(Map<int, Map<int, Vector<int>>>::iterator itr = myMap.begin(); itr != myMap.end(); itr++)
-//        {
-//            Map<int, Vector<int>>& innerMyMap = itr->second;
-//            if(innerMyMap.find(month) != innerMyMap.end())
-//            {
-//                requestedRecs.PushBack(innerMyMap.at(month));
-//            }
-//        }
-//    }
-//    catch(...)
-//    {
-//        std::cout << "No Data" << std::endl;
-//        return;
-//    }
-
-    for(Map<int, Map<int, Vector<int>>>::iterator itr = myMap.Begin(); itr != myMap.End(); itr++)
-    {
-        int key = (itr->first * 100) + month;
-        if(myBst.Search(key))
-        {
-            requestedRecs.PushBack(myMap[itr->first][month]);
-        }
-    }
-    if(requestedRecs.GetSize() == 0)
-    {
-        std::cout << "No Data" << std::endl;
-        return;
-    }
-
-    WeatherLogType log;
-    for(int i = 0; i < requestedRecs.GetSize(); i++)
-    {
-        for(int j = 0; j < requestedRecs[i].GetSize(); j++)
-        {
-            log.PushBack(weatherLog[requestedRecs[i][j]]);
-        }
-    }
-    Vector<float> tempData;
-    Vector<float> solarRadData;
-
-    ExtractValuesFromWeatherLog(log, &WeatherRecType::m_sr, solarRadData);
-    ExtractValuesFromWeatherLog(log, &WeatherRecType::m_t, tempData);
-
-    RemoveInvalidDataFromDataPairs(tempData, solarRadData);
-
     if(solarRadData.GetSize() == 0 || tempData.GetSize() == 0)
     {
         std::cout << "No Data" << std::endl;
@@ -394,57 +262,22 @@ void PrintTrToScreen(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>>
 }
 
 //----------------------------------------------------------------------------
-void PrintTempMeanStdDevToScreen(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst, int month, int year)
+void PrintTempMeanStdDevToScreen(Vector<float>& tempData)
 {
-    Vector<int> requestedRecs;
-
-    int key = (year * 100) + month;
-    if(myBst.Search(key))
-    {
-        requestedRecs = myMap[year][month];
-    }
-    else
-    {
-        std::cout << MonthToString(month) << ": ";
-        std::cout << "No Data" << std::endl;
-        return;
-    }
-
-    WeatherLogType log;
-    for(int i = 0; i < requestedRecs.GetSize(); i++)
-    {
-        log.PushBack(weatherLog[requestedRecs[i]]);
-    }
-
-    Vector<float> data;
-
-    ExtractValuesFromWeatherLog(log, month, year, &WeatherRecType::m_t, data);
-
-    RemoveInvalidData(data);
-
-    std::cout << MonthToString(month) << ": ";
-    if(data.GetSize() == 0)
-    {
-        std::cout << "No Data" << std::endl;
-    }
-    else
-    {
-        float avgTemp = StatsCalcs::CalcMeanOfVectorf(data);
-        float tempStdDev = StatsCalcs::CalcStdDevOfVectorf(data);
-        std::cout << std::fixed << std::showpoint << std::setprecision(2);
-        std::cout << "average: " << avgTemp << " degrees C, stdev: " << tempStdDev << std::endl;
-    }
+    float avgTemp = StatsCalcs::CalcMeanOfVectorf(tempData);
+    float tempStdDev = StatsCalcs::CalcStdDevOfVectorf(tempData);
+    std::cout << std::fixed << std::showpoint << std::setprecision(2);
+    std::cout << "average: " << avgTemp << " degrees C, stdev: " << tempStdDev << std::endl;
 }
 
 //----------------------------------------------------------------------------
-void PrintSolarRadToScreen(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst, int month, int year)
+void PrintSolarRadToScreen(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &weatherMap, BST<int> &yearMonthBST, int month, int year)
 {
     Vector<int> requestedRecs;
 
-    int key = (year * 100) + month;
-    if(myBst.Search(key))
+    if(yearMonthBST.Search(CreateMonthYearKey(year, month)))
     {
-        requestedRecs = myMap[year][month];
+        requestedRecs = weatherMap[year][month];
     }
     else
     {
@@ -478,32 +311,8 @@ void PrintSolarRadToScreen(WeatherLogType &weatherLog, Map<int, Map<int, Vector<
 }
 
 //----------------------------------------------------------------------------
-void PrintMeanStdDevMadToFile(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst, float WeatherRecType::*p_Member, int month, int year, std::ofstream& output)
+void PrintMeanStdDevMadToFile(std::ofstream& output, Vector<float>& data)
 {
-    Vector<int> requestedRecs;
-
-    int key = (year * 100) + month;
-    if(myBst.Search(key))
-    {
-        requestedRecs = myMap[year][month];
-    }
-    else
-    {
-        output << " ,";
-        return;
-    }
-
-    WeatherLogType log;
-    for(int i = 0; i < requestedRecs.GetSize(); i++)
-    {
-        log.PushBack(weatherLog[requestedRecs[i]]);
-    }
-
-    Vector<float> data;
-    ExtractValuesFromWeatherLog(log, month, year, p_Member, data);
-
-    RemoveInvalidData(data);
-
     if(data.GetSize() == 0)
     {
         output << " ,";
@@ -519,32 +328,8 @@ void PrintMeanStdDevMadToFile(WeatherLogType &weatherLog, Map<int, Map<int, Vect
 }
 
 //----------------------------------------------------------------------------
-void PrintSolarRadToFile(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst, int month, int year, std::ofstream& output)
+void PrintSolarRadToFile(std::ofstream& output, Vector<float>& data)
 {
-    Vector<int> requestedRecs;
-
-    int key = (year * 100) + month;
-    if(myBst.Search(key))
-    {
-        requestedRecs = myMap[year][month];
-    }
-    else
-    {
-        output << " ,";
-        return;
-    }
-
-    WeatherLogType log;
-    for(int i = 0; i < requestedRecs.GetSize(); i++)
-    {
-        log.PushBack(weatherLog[requestedRecs[i]]);
-    }
-
-    Vector<float> data;
-    ExtractValuesFromWeatherLog(weatherLog, month, year, &WeatherRecType::m_sr, data);
-
-    RemoveInvalidData(data);
-
     if(data.GetSize() == 0)
     {
         output << " ";
@@ -555,6 +340,54 @@ void PrintSolarRadToFile(WeatherLogType &weatherLog, Map<int, Map<int, Vector<in
         output << std::fixed << std::showpoint << std::setprecision(2);
         output << totalRad;
     }
+}
+
+//----------------------------------------------------------------------------
+Vector<float> GetRequestedData(WeatherLogType& weatherLog, int month, int year, Map<int, Map<int, Vector<int>>> weatherMap, BST<int>& yearMonthBST, float WeatherRecType::*p_Member)
+{
+    Vector<int> recordIndexes;
+    Vector<float> data;
+
+    if(yearMonthBST.Search(CreateMonthYearKey(year, month)))
+    {
+        recordIndexes = weatherMap[year][month];
+
+        WeatherLogType log;
+        for(int i = 0; i < recordIndexes.GetSize(); i++)
+        {
+            log.PushBack(weatherLog[recordIndexes[i]]);
+        }
+
+        ExtractValuesFromWeatherLog(log, month, year, p_Member, data);
+    }
+
+    return data;
+}
+
+//----------------------------------------------------------------------------
+void GetRequestedDataPair(WeatherLogType& weatherLog, int month, Map<int, Map<int, Vector<int>>>& weatherMap, BST<int>& yearMonthBST, Vector<float>& firstDataMem, Vector<float>& secondDataMem, float WeatherRecType::*p1_Member, float WeatherRecType::*p2_Member)
+{
+    Vector<Vector<int>> recordIndexes;
+
+    for(Map<int, Map<int, Vector<int>>>::iterator itr = weatherMap.Begin(); itr != weatherMap.End(); itr++)
+    {
+        if(yearMonthBST.Search(CreateMonthYearKey(itr->first, month)))
+        {
+            recordIndexes.PushBack(weatherMap[itr->first][month]);
+        }
+    }
+
+    WeatherLogType log;
+    for(int i = 0; i < recordIndexes.GetSize(); i++)
+    {
+        for(int j = 0; j < recordIndexes[i].GetSize(); j++)
+        {
+            log.PushBack(weatherLog[recordIndexes[i][j]]);
+        }
+    }
+
+    ExtractValuesFromWeatherLog(log, p1_Member, firstDataMem);
+    ExtractValuesFromWeatherLog(log, p2_Member, secondDataMem);
 }
 
 //----------------------------------------------------------------------------

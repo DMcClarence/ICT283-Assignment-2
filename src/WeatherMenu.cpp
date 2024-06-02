@@ -28,7 +28,7 @@ void DisplayWeatherMenu();
 int GetUserSelection();
 
     // Dedicated to Executing the Weather Menu Option selected by the User
-void ExecuteSelection(int selection, WeatherMenuContext &progMenu, const Vector<void (*)(WeatherLogType&, Map<int, Map<int, Vector<int>>>&, BST<int>&)> &menuOptions,
+void ExecuteSelection(int selection, const Vector<void (*)(WeatherLogType&, Map<int, Map<int, Vector<int>>>&, BST<int>&)> &menuOptions,
                         WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst);
 
 //----------------------------------------------------------------------------
@@ -42,13 +42,12 @@ void RunWeatherMenu(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> 
     menuOptions.PushBack(WeatherMenuStrategy::SPCCStrategy::Execute);
     menuOptions.PushBack(WeatherMenuStrategy::PrintToFileStrategy::Execute);
 
-    WeatherMenuContext progMenu;
     int selection;
     do
     {
         DisplayWeatherMenu();
         selection = GetUserSelection();
-        ExecuteSelection(selection, progMenu, menuOptions, weatherLog, myMap, myBst);
+        ExecuteSelection(selection, menuOptions, weatherLog, myMap, myBst);
     }while(selection != 5);
 }
 
@@ -67,7 +66,7 @@ void DisplayWeatherMenu()
 }
 
 //----------------------------------------------------------------------------
-void ExecuteSelection(int selection, WeatherMenuContext &progMenu, const Vector<void (*)(WeatherLogType&, Map<int, Map<int, Vector<int>>>&, BST<int>&)> &menuOptions,
+void ExecuteSelection(int selection, const Vector<void (*)(WeatherLogType&, Map<int, Map<int, Vector<int>>>&, BST<int>&)> &menuOptions,
                         WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst)
 {
     if(selection == 5)
@@ -77,9 +76,7 @@ void ExecuteSelection(int selection, WeatherMenuContext &progMenu, const Vector<
 
     if(selection > 0 && selection <= 4)
     {
-        progMenu.SetWeatherMenuStrategy(menuOptions[selection - 1]);
-        progMenu.ExecuteWeatherMenuOption(weatherLog, myMap, myBst);
-//        menuOptions[selection - 1](weatherLog);
+        menuOptions[selection - 1](weatherLog, myMap, myBst);
     }
     else
     {
