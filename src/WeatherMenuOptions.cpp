@@ -183,23 +183,44 @@ void WeatherMenuStrategy::PrintToFileStrategy::Execute(WeatherLogType &weatherLo
 
     Vector<float> data;
 
-    output << year << std::endl;
+    bool isData = false;
     for(int month = Jan; month <= Dec; month++)
     {
-        output << MonthToString(month) << ",";
+        if(yearMonthBST.Search(CreateMonthYearKey(year, month)))
+        {
+            isData = true;
+            break;
+        }
+    }
 
-        data = GetRequestedData(weatherLog, month, year, weatherMap, yearMonthBST, &WeatherRecType::m_s);
-        RemoveInvalidData(data);
-        PrintMeanStdDevMadToFile(output, data);
+    output << year << std::endl;
 
-        data = GetRequestedData(weatherLog, month, year, weatherMap, yearMonthBST, &WeatherRecType::m_t);
-        RemoveInvalidData(data);
-        PrintMeanStdDevMadToFile(output, data);
+    if(!isData)
+    {
+        output << "No Data" << std::endl;
+        return;
+    }
 
-        data = GetRequestedData(weatherLog, month, year, weatherMap, yearMonthBST, &WeatherRecType::m_sr);
-        RemoveInvalidData(data);
-        PrintSolarRadToFile(output, data);
-        output << std::endl;
+    for(int month = Jan; month <= Dec; month++)
+    {
+        std::tuple<Vector<float>, Vector<float>, Vector<float>> data;
+        std::get<0>(data) = GetRequestedData(weatherLog, month, year, weatherMap, yearMonthBST, &WeatherRecType::m_s);
+        RemoveInvalidData(std::get<0>(data));
+
+        std::get<1>(data) = GetRequestedData(weatherLog, month, year, weatherMap, yearMonthBST, &WeatherRecType::m_t);
+        RemoveInvalidData(std::get<1>(data));
+
+        std::get<2>(data) = GetRequestedData(weatherLog, month, year, weatherMap, yearMonthBST, &WeatherRecType::m_sr);
+        RemoveInvalidData(std::get<2>(data));
+
+        if(std::get<0>(data).GetSize() != 0 || std::get<1>(data).GetSize() != 0 || std::get<2>(data).GetSize() != 0)
+        {
+            output << MonthToString(month) << ",";
+            PrintMeanStdDevMadToFile(output, std::get<0>(data));
+            PrintMeanStdDevMadToFile(output, std::get<1>(data));
+            PrintSolarRadToFile(output, std::get<2>(data));
+            output << std::endl;
+        }
     }
 
     output.close();

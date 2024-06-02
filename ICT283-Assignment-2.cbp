@@ -42,7 +42,6 @@
 		<Unit filename="includes/Vector.h" />
 		<Unit filename="includes/VectorUtilities.h" />
 		<Unit filename="includes/WeatherMenu.h" />
-		<Unit filename="includes/WeatherMenuContext.h" />
 		<Unit filename="includes/WeatherMenuOptions.h" />
 		<Unit filename="includes/WeatherRec.h" />
 		<Unit filename="includes/WeatherRecIO.h" />
@@ -51,7 +50,6 @@
 		<Unit filename="src/StatsCalcs.cpp" />
 		<Unit filename="src/Time.cpp" />
 		<Unit filename="src/WeatherMenu.cpp" />
-		<Unit filename="src/WeatherMenuContext.cpp" />
 		<Unit filename="src/WeatherMenuOptions.cpp" />
 		<Unit filename="src/WeatherRecIO.cpp" />
 		<Unit filename="src/WeatherRecUtilities.cpp" />
