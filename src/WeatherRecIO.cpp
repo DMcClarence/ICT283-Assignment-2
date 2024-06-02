@@ -63,7 +63,10 @@ void ReadDateFromCol(std::istringstream &col, WeatherRecType &temp);
     // Reads a Time Object from a Column Stream
 void ReadTimeFromCol(std::istringstream &col, WeatherRecType &temp);
 
-    // Reads a Column into a WeatherRecType Object
+    // Reads the Date/Time Column into a WetherRecTypeObject
+void ReadDateTimeIntoWeatherRec(std::string col, WeatherRecType &weatherRec);
+
+    // Reads a Data Column into a WeatherRecType Object
 void ReadColIntoWeatherRec(std::string col, int colNum, const colOfInterest *weatherRecCols, WeatherRecType &weatherRec);
 
     // Convert std::string to a Float
@@ -78,11 +81,14 @@ void indexRecordInMap(int index, WeatherRecType& rec, Map<int, Map<int, Vector<i
     // Finds the Earliest Dated/Timed Record between Logs
 int findEarliestRecordBetweenFiles(Vector<WeatherLogType>& log, Vector<int>& lineCount);
 
-    // Assigns a Key value to a Record
-KeyValue<int, WeatherRecType> assignRecKey(int key, WeatherRecType& rec);
-
     // Removes logs for Completed Files
 void RemoveCompletedFiles(Vector<WeatherLogType> &logs, Vector<int> &lineCount);
+
+bool CheckStoreRecordConditions(WeatherRecType& rec, WeatherLogType& log);
+
+void StoreWeatherRecord(WeatherRecType& rec, WeatherLogType& log, Map<int, Map<int, Vector<int>>>& logMap, Vector<int>& keyStorage);
+
+void CreateWeatherLog(Vector<WeatherLogType>& logs, WeatherLogType& weatherLog, Map<int, Map<int, Vector<int>>>& weatherMap, BST<int>& yearMonthBST);
 
 //----------------------------------------------------------------------------
 // Function implementations
@@ -188,7 +194,24 @@ std::istream& operator>>(std::istream& input, WeatherLogType& data)
         {
             std::string column;
             std::getline(colStream, column, ',');
-            ReadColIntoWeatherRec(column, col, weatherRecCols, tempWeatherRec);
+            if(col == weatherRecCols[WAST].colNum)
+            {
+                try
+                {
+                    ReadDateTimeIntoWeatherRec(column, tempWeatherRec);
+                }
+                catch(...)
+                {
+                        // Skip Entire line because without a Date/Time
+                        // the Record is useless
+                    break;
+                }
+            }
+            else
+            {
+                ReadColIntoWeatherRec(column, col, weatherRecCols, tempWeatherRec);
+            }
+
             column.clear();
             col++;
         }
@@ -221,7 +244,7 @@ bool GetDataFileNameFromSrcFile(Stack<std::string> &fileNameStack)
 }
 
 //----------------------------------------------------------------------------
-bool ReadWeatherDataFromFiles(Stack<std::string> &fileStack, WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &weatherRecMap, BST<int> &myBst)
+bool ReadWeatherDataFromFiles(Stack<std::string> &fileStack, WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &weatherMap, BST<int> &yearMonthBST)
 {
     Vector<WeatherLogType> logs;
 
@@ -241,61 +264,11 @@ bool ReadWeatherDataFromFiles(Stack<std::string> &fileStack, WeatherLogType &wea
         dataFile.close();
     }
 
-    Vector<KeyValue<int, WeatherRecType>> index;
-    KeyValue<int, WeatherRecType> keyVal;
     Vector<int> yearMonths;
-    int temp;
-    int currentIndex = 0;
     if(logs.GetSize() > 0)
     {
-        Vector<int> lineCount = InitFileLineCountVec(logs.GetSize());
-
-        WeatherRecType earliestRec;
-        int earliestIndex;
-
-            // Add Values in Order
-        while(logs.GetSize() > 1)
-        {
-            earliestIndex = findEarliestRecordBetweenFiles(logs, lineCount);
-            earliestRec = logs[earliestIndex][lineCount[earliestIndex]];
-
-            if(weatherLog.GetSize() == 0 ||
-                (earliestRec.m_date != weatherLog[weatherLog.GetSize() - 1].m_date) ||
-               (earliestRec.m_date == weatherLog[weatherLog.GetSize() - 1].m_date && earliestRec.m_time != weatherLog[weatherLog.GetSize() - 1].m_time))
-            {
-                weatherLog.PushBack(earliestRec);
-                keyVal = assignRecKey((weatherLog.GetSize() - 1), earliestRec);
-                index.PushBack(keyVal);
-                indexRecordInMap((weatherLog.GetSize() - 1), earliestRec, weatherRecMap);
-                temp = (earliestRec.m_date.GetYear() * 100) + earliestRec.m_date.GetMonth();
-                yearMonths.PushBack(temp);
-            }
-            lineCount[earliestIndex]++;
-
-            RemoveCompletedFiles(logs, lineCount);
-
-        }
-
-            // Add Remaining Values
-        while(lineCount[0] < logs[0].GetSize())
-        {
-            if(weatherLog.GetSize() == 0 ||
-                (logs[0][lineCount[0]].m_date != weatherLog[weatherLog.GetSize() - 1].m_date) ||
-               (logs[0][lineCount[0]].m_date == weatherLog[weatherLog.GetSize() - 1].m_date && logs[0][lineCount[0]].m_time != weatherLog[weatherLog.GetSize() - 1].m_time))
-            {
-                weatherLog.PushBack(logs[0][lineCount[0]]);
-                keyVal = assignRecKey(weatherLog.GetSize() - 1, logs[0][lineCount[0]]);
-                index.PushBack(keyVal);
-                indexRecordInMap((weatherLog.GetSize() - 1), logs[0][lineCount[0]], weatherRecMap);
-                temp = (logs[0][lineCount[0]].m_date.GetYear() * 100) + logs[0][lineCount[0]].m_date.GetMonth();
-                yearMonths.PushBack(temp);
-            }
-            lineCount[0]++;
-        }
+        CreateWeatherLog(logs, weatherLog, weatherMap, yearMonthBST);
     }
-
-    MergeSortVector(yearMonths);
-    InsertSortedVectorToBST(0, (yearMonths.GetSize() - 1), myBst, yearMonths);
 
     return true;
 }
@@ -373,25 +346,23 @@ void ReadTimeFromCol(std::istringstream &col, WeatherRecType &temp)
 }
 
 //----------------------------------------------------------------------------
+void ReadDateTimeIntoWeatherRec(std::string col, WeatherRecType &weatherRec)
+{
+    std::istringstream dateTime(col);
+    try
+    {
+        ReadDateFromCol(dateTime, weatherRec);
+        ReadTimeFromCol(dateTime, weatherRec);
+    }
+    catch(...)
+    {
+        throw;
+    }
+}
+
+//----------------------------------------------------------------------------
 void ReadColIntoWeatherRec(std::string col, int colNum, const colOfInterest *weatherRecCols, WeatherRecType &weatherRec)
 {
-    if(colNum == weatherRecCols[WAST].colNum)
-    {
-        std::istringstream dateTime(col);
-        try
-        {
-            ReadDateFromCol(dateTime, weatherRec);
-            ReadTimeFromCol(dateTime, weatherRec);
-        }
-        catch(...)
-        {
-            std::cout << "Error Reading Date/Time" << std::endl;
-            exit(-1);
-        }
-
-        return;
-    }
-
     float value;
     CheckStringToFloatConversion(value, col);
 
@@ -478,16 +449,6 @@ int findEarliestRecordBetweenFiles(Vector<WeatherLogType>& logs, Vector<int>& li
 }
 
 //----------------------------------------------------------------------------
-KeyValue<int, WeatherRecType> assignRecKey(int key, WeatherRecType& rec)
-{
-    KeyValue<int, WeatherRecType> indexRec;
-    indexRec.m_key = key;
-    indexRec.m_value = rec;
-
-    return indexRec;
-}
-
-//----------------------------------------------------------------------------
 void RemoveCompletedFiles(Vector<WeatherLogType> &logs, Vector<int> &lineCount)
 {
     for(int i = 0; i < logs.GetSize(); i++)
@@ -498,4 +459,71 @@ void RemoveCompletedFiles(Vector<WeatherLogType> &logs, Vector<int> &lineCount)
             RemoveFromVector(lineCount, i);
         }
     }
+}
+
+//----------------------------------------------------------------------------
+bool CheckStoreRecordConditions(WeatherRecType& rec, WeatherLogType& log)
+{
+        // One of the following conditions must be met:
+            // 1. Nothing in the log
+            // 2. The date of the record is different to the previously added record
+            // 3. The date is the same, but the time is different
+
+        // Conditions assume the data is added in linear order.
+
+    if(log.GetSize() == 0 ||
+        (rec.m_date != log[log.GetSize() - 1].m_date) ||
+        (rec.m_date == log[log.GetSize() - 1].m_date && rec.m_time != log[log.GetSize() - 1].m_time))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+//----------------------------------------------------------------------------
+void StoreWeatherRecord(WeatherRecType& rec, WeatherLogType& log, Map<int, Map<int, Vector<int>>>& logMap, Vector<int>& keyStorage)
+{
+    log.PushBack(rec);
+    indexRecordInMap((log.GetSize() - 1), rec, logMap);
+    keyStorage.PushBack(CreateMonthYearKey(rec.m_date.GetYear(), rec.m_date.GetMonth()));
+}
+
+//----------------------------------------------------------------------------
+void CreateWeatherLog(Vector<WeatherLogType>& logs, WeatherLogType& weatherLog, Map<int, Map<int, Vector<int>>>& weatherMap, BST<int>& yearMonthBST)
+{
+    Vector<int> yearMonths;
+    Vector<int> lineCount = InitFileLineCountVec(logs.GetSize());
+
+    WeatherRecType earliestRec;
+
+        // Add Values in Order
+    while(logs.GetSize() > 1)
+    {
+        int earliestIndex = findEarliestRecordBetweenFiles(logs, lineCount);
+        earliestRec = logs[earliestIndex][lineCount[earliestIndex]];
+
+        if(CheckStoreRecordConditions(earliestRec, weatherLog))
+        {
+            StoreWeatherRecord(earliestRec, weatherLog, weatherMap, yearMonths);
+        }
+        lineCount[earliestIndex]++;
+
+        RemoveCompletedFiles(logs, lineCount);
+
+    }
+
+        // Add Remaining Values
+    while(lineCount[0] < logs[0].GetSize())
+    {
+        earliestRec = logs[0][lineCount[0]];
+        if(CheckStoreRecordConditions(earliestRec, weatherLog))
+        {
+            StoreWeatherRecord(earliestRec, weatherLog, weatherMap, yearMonths);
+        }
+        lineCount[0]++;
+    }
+
+    MergeSortVector(yearMonths);
+    InsertSortedVectorToBST(0, (yearMonths.GetSize() - 1), yearMonthBST, yearMonths);
 }

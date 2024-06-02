@@ -205,3 +205,9 @@ void RemoveDuplicatesFromWeatherLog(WeatherLogType &log)
 }
 
 //----------------------------------------------------------------------------
+int CreateMonthYearKey(int year, int month)
+{
+    return (year * 100) + month;
+}
+
+//----------------------------------------------------------------------------

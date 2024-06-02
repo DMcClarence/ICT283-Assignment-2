@@ -174,6 +174,18 @@ bool operator>=(WeatherRecType &left, WeatherRecType &right);
      */
 void RemoveDuplicatesFromWeatherLog(WeatherLogType &log);
 
+    /**
+     * @brief  Creates a Key for the Month/Year Pair of the Record.
+     *
+     * Key is a Concat of the Year followed by the Month.
+     *
+     * @param year - The Year of the Record
+     * @param month - The Month pf the Record
+     * @return int - The Created Key
+     */
+    //
+int CreateMonthYearKey(int year, int month);
+
 //---------------------------------------------------------------------------------
 
 #endif // WEATHERRECUTILITIES_H_INCLUDED

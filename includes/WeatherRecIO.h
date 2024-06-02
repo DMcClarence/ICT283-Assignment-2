@@ -13,43 +13,6 @@
 #include <iostream>
 #include <string>
 
-template <class T1, class T2>
-struct KeyValue
-{
-    T1 m_key;
-    T2 m_value;
-
-    bool operator ==(const KeyValue<T1, T2>& right) const
-    {
-        return m_key == right.m_key;
-    }
-
-    bool operator!=(const KeyValue<T1, T2>& right) const
-    {
-        return m_key != right.m_key;
-    }
-
-    bool operator<(const KeyValue<T1, T2>& right) const
-    {
-        return m_key < right.m_key;
-    }
-
-    bool operator <=(const KeyValue<T1, T2>& right) const
-    {
-        return m_key <= right.m_key;
-    }
-
-    bool operator >(const KeyValue<T1, T2>& right) const
-    {
-        return m_key > right.m_key;
-    }
-
-    bool operator >=(const KeyValue<T1, T2>& right) const
-    {
-        return m_key >= right.m_key;
-    }
-};
-
 //---------------------------------------------------------------------------------
         /**
          * @file WeatherRecIO.h
@@ -113,7 +76,7 @@ bool GetDataFileNameFromSrcFile(Stack<std::string> &fileNameStack);
 		 * @param weatherLog - The Vector to Read the Data into
 		 * @return bool - Returns true if Successful. Returns False if Failed.
 		 */
-bool ReadWeatherDataFromFiles(Stack<std::string> &fileStack, WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &weatherRecMap, BST<int> &myBst);
+bool ReadWeatherDataFromFiles(Stack<std::string> &fileStack, WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &weatherMap, BST<int> &yearMonthBST);
 
 //---------------------------------------------------------------------------------
 

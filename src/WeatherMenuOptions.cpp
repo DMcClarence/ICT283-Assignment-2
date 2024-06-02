@@ -16,8 +16,6 @@
 #include "../includes/WeatherRecUtilities.h"
 #include "../includes/StatsCalcs.h"
 
-#include "../includes/WeatherRecIO.h"
-
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -169,8 +167,7 @@ void PrintWindMeanStdDevToScreen(WeatherLogType &weatherLog, Map<int, Map<int, V
 //        std::cout << "No Data" << std::endl;
 //        return;
 //    }
-    int key = (year * 100) + month;
-    if(myBst.Search(key))
+    if(myBst.Search(CreateMonthYearKey(year, month)))
     {
         requestedRecs = myMap[year][month];
     }
@@ -181,7 +178,6 @@ void PrintWindMeanStdDevToScreen(WeatherLogType &weatherLog, Map<int, Map<int, V
     }
 
     WeatherLogType log;
-    KeyValue<int, WeatherRecType> temp;
     for(int i = 0; i < requestedRecs.GetSize(); i++)
     {
         log.PushBack(weatherLog[requestedRecs[i]]);
@@ -229,7 +225,7 @@ void PrintStToScreen(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>>
 //        return;
 //    }
 
-    for(Map<int, Map<int, Vector<int>>>::MapIterator itr = myMap.Begin(); itr != myMap.End(); itr++)
+    for(Map<int, Map<int, Vector<int>>>::iterator itr = myMap.Begin(); itr != myMap.End(); itr++)
     {
         int key = (itr->first * 100) + month;
         if(myBst.Search(key))
@@ -292,7 +288,7 @@ void PrintSrToScreen(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>>
 //        return;
 //    }
 
-    for(Map<int, Map<int, Vector<int>>>::MapIterator itr = myMap.Begin(); itr != myMap.End(); itr++)
+    for(Map<int, Map<int, Vector<int>>>::iterator itr = myMap.Begin(); itr != myMap.End(); itr++)
     {
         int key = (itr->first * 100) + month;
         if(myBst.Search(key))
@@ -355,7 +351,7 @@ void PrintTrToScreen(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>>
 //        return;
 //    }
 
-    for(Map<int, Map<int, Vector<int>>>::MapIterator itr = myMap.Begin(); itr != myMap.End(); itr++)
+    for(Map<int, Map<int, Vector<int>>>::iterator itr = myMap.Begin(); itr != myMap.End(); itr++)
     {
         int key = (itr->first * 100) + month;
         if(myBst.Search(key))
@@ -415,7 +411,6 @@ void PrintTempMeanStdDevToScreen(WeatherLogType &weatherLog, Map<int, Map<int, V
     }
 
     WeatherLogType log;
-    KeyValue<int, WeatherRecType> temp;
     for(int i = 0; i < requestedRecs.GetSize(); i++)
     {
         log.PushBack(weatherLog[requestedRecs[i]]);
@@ -459,7 +454,6 @@ void PrintSolarRadToScreen(WeatherLogType &weatherLog, Map<int, Map<int, Vector<
     }
 
     WeatherLogType log;
-    KeyValue<int, WeatherRecType> temp;
     for(int i = 0; i < requestedRecs.GetSize(); i++)
     {
         log.PushBack(weatherLog[requestedRecs[i]]);
@@ -500,7 +494,6 @@ void PrintMeanStdDevMadToFile(WeatherLogType &weatherLog, Map<int, Map<int, Vect
     }
 
     WeatherLogType log;
-    KeyValue<int, WeatherRecType> temp;
     for(int i = 0; i < requestedRecs.GetSize(); i++)
     {
         log.PushBack(weatherLog[requestedRecs[i]]);
@@ -542,7 +535,6 @@ void PrintSolarRadToFile(WeatherLogType &weatherLog, Map<int, Map<int, Vector<in
     }
 
     WeatherLogType log;
-    KeyValue<int, WeatherRecType> temp;
     for(int i = 0; i < requestedRecs.GetSize(); i++)
     {
         log.PushBack(weatherLog[requestedRecs[i]]);

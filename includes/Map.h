@@ -23,7 +23,6 @@ template <class T1, class T2>
 class Map
 {
 public:
-    typedef typename std::map<T1, T2>::iterator MapIterator;
         /**
          * @brief  Creates a Default Map object.
          *
@@ -68,8 +67,30 @@ public:
          */
     bool Insert(T1 key, T2 value);
 
-    MapIterator Begin();
-    MapIterator End();
+        /**
+         * @brief Defines an iterator for the Encapsulated STL map Class.
+         *
+         *
+         */
+    typedef typename std::map<T1, T2>::iterator iterator;
+
+        /**
+         * @brief Returns an iterator pointing to the first element of the Map.
+         *
+         *
+         * @return iterator - The beginning elemement in the map
+         */
+    iterator Begin();
+
+        /**
+         * @brief Returns an iterator pointing to the element Past the End of the Map.
+         *
+         * Past the End means the first Address after the Final Element of the Map
+         *
+         *
+         * @return iterator - Element Past the End of the Map
+         */
+    iterator End();
 
 private:
         /// Encapsulated STL Map
@@ -118,14 +139,16 @@ bool Map<T1, T2>::Insert(T1 key, T2 value)
     return true;
 }
 
+//---------------------------------------------------------------------------------
 template <class T1, class T2>
-typename Map<T1, T2>::MapIterator Map<T1, T2>::Begin()
+typename Map<T1, T2>::iterator Map<T1, T2>::Begin()
 {
     return m_map.begin();
 }
 
+//---------------------------------------------------------------------------------
 template <class T1, class T2>
-typename Map<T1, T2>::MapIterator Map<T1, T2>::End()
+typename Map<T1, T2>::iterator Map<T1, T2>::End()
 {
     return m_map.end();
 }
