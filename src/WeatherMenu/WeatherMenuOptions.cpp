@@ -12,9 +12,9 @@
 //----------------------------------------------------------------------------
 // Includes
 
-#include "../includes/WeatherMenuOptions.h"
-#include "../includes/WeatherRecUtilities.h"
-#include "../includes/StatsCalcs.h"
+#include "../../includes/WeatherMenu/WeatherMenuOptions.h"
+#include "../../includes/WeatherRec/WeatherRecUtilities.h"
+#include "../../includes/StatsCalcs/StatsCalcs.h"
 
 #include <iostream>
 #include <iomanip>
@@ -38,7 +38,7 @@ void PrintWindMeanStdDevToScreen(Vector<float>& windSpeedData);
 void PrintTempMeanStdDevToScreen(Vector<float>& tempData);
 
     // Dedicated to Printing Total Solar Radiation to the Screen
-void PrintSolarRadToScreen(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &weatherMap, BST<int> &yearMonthBST, int month, int year);
+void PrintSolarRadToScreen(Vector<float>& solarRadData);
 
     // Dedicated to Printing the sPCC of Wind Speed and Temperature to the Screen
 void PrintStToScreen(Vector<float>& windSpeedData, Vector<float>& tempData);
@@ -79,9 +79,9 @@ void WeatherMenuStrategy::WindSpeedStrategy::Execute(WeatherLogType &weatherLog,
     std::cout << std::endl;
 
     Vector<float> windSpeedData = GetRequestedData(weatherLog, month, year, weatherMap, yearMonthBST, &WeatherRecType::m_s);
-    RemoveInvalidData(windSpeedData);
+    WeatherRecUtilities::RemoveInvalidData(windSpeedData);
 
-    std::cout << MonthToString(month) << " " << year << ": ";
+    std::cout << WeatherRecUtilities::MonthToString(month) << " " << year << ": ";
     if(windSpeedData.GetSize() == 0)
     {
         std::cout << "No Data" << std::endl;
@@ -108,9 +108,9 @@ void WeatherMenuStrategy::TemperatureStrategy::Execute(WeatherLogType &weatherLo
     for(int month = Jan; month <= Dec; month++)
     {
         tempData = GetRequestedData(weatherLog, month, year, weatherMap, yearMonthBST, &WeatherRecType::m_t);
-        RemoveInvalidData(tempData);
+        WeatherRecUtilities::RemoveInvalidData(tempData);
 
-        std::cout << MonthToString(month) << ": ";
+        std::cout << WeatherRecUtilities::MonthToString(month) << ": ";
         if(tempData.GetSize() == 0)
         {
             std::cout << "No Data" << std::endl;
@@ -131,14 +131,25 @@ void WeatherMenuStrategy::SolarRadiationStrategy::Execute(WeatherLogType &weathe
     std::cout << "Enter a Year: " << std::endl;
     std::cin >> year;
     std::cin.clear();
+    Vector<float> solarRadData;
 
     std::cout << std::endl;
     std::cout << year << std::endl;
     for(int month = Jan; month <= Dec; month++)
     {
-        PrintSolarRadToScreen(weatherLog, weatherMap, yearMonthBST, month, year);
+        solarRadData = GetRequestedData(weatherLog, month, year, weatherMap, yearMonthBST, &WeatherRecType::m_t);
+        WeatherRecUtilities::RemoveInvalidData(solarRadData);
+
+        std::cout << WeatherRecUtilities::MonthToString(month) << ": ";
+        if(solarRadData.GetSize() == 0)
+        {
+            std::cout << "No Data" << std::endl;
+        }
+        else
+        {
+            PrintSolarRadToScreen(solarRadData);
+        }
     }
-    std::cout << std::endl;
 }
 
 //----------------------------------------------------------------------------
@@ -155,18 +166,18 @@ void WeatherMenuStrategy::SPCCStrategy::Execute(WeatherLogType &weatherLog, Map<
     std::pair<Vector<float>, Vector<float>> tr;
 
     std::cout << std::endl;
-    std::cout << "Sample Pearson Correlation Coefficinet for " << MonthToString(month) << std::endl;
+    std::cout << "Sample Pearson Correlation Coefficinet for " << WeatherRecUtilities::MonthToString(month) << std::endl;
     std::cout << std::endl;
     GetRequestedDataPair(weatherLog, month, weatherMap, yearMonthBST, st.first, st.second, &WeatherRecType::m_s, &WeatherRecType::m_t);
-    RemoveInvalidDataFromDataPairs(st.first, st.second);
+    WeatherRecUtilities::RemoveInvalidDataFromDataPairs(st.first, st.second);
     PrintStToScreen(st.first, st.second);
 
     GetRequestedDataPair(weatherLog, month, weatherMap, yearMonthBST, sr.first, sr.second, &WeatherRecType::m_s, &WeatherRecType::m_sr);
-    RemoveInvalidDataFromDataPairs(sr.first, sr.second);
+    WeatherRecUtilities::RemoveInvalidDataFromDataPairs(sr.first, sr.second);
     PrintSrToScreen(sr.first, sr.second);
 
     GetRequestedDataPair(weatherLog, month, weatherMap, yearMonthBST, tr.first, tr.second, &WeatherRecType::m_t, &WeatherRecType::m_sr);
-    RemoveInvalidDataFromDataPairs(tr.first, tr.second);
+    WeatherRecUtilities::RemoveInvalidDataFromDataPairs(tr.first, tr.second);
     PrintTrToScreen(tr.first, tr.second);
     std::cout << std::endl;
 }
@@ -186,7 +197,7 @@ void WeatherMenuStrategy::PrintToFileStrategy::Execute(WeatherLogType &weatherLo
     bool isData = false;
     for(int month = Jan; month <= Dec; month++)
     {
-        if(yearMonthBST.Search(CreateMonthYearKey(year, month)))
+        if(yearMonthBST.Search(WeatherRecUtilities::CreateMonthYearKey(year, month)))
         {
             isData = true;
             break;
@@ -205,17 +216,17 @@ void WeatherMenuStrategy::PrintToFileStrategy::Execute(WeatherLogType &weatherLo
     {
         std::tuple<Vector<float>, Vector<float>, Vector<float>> data;
         std::get<0>(data) = GetRequestedData(weatherLog, month, year, weatherMap, yearMonthBST, &WeatherRecType::m_s);
-        RemoveInvalidData(std::get<0>(data));
+        WeatherRecUtilities::RemoveInvalidData(std::get<0>(data));
 
         std::get<1>(data) = GetRequestedData(weatherLog, month, year, weatherMap, yearMonthBST, &WeatherRecType::m_t);
-        RemoveInvalidData(std::get<1>(data));
+        WeatherRecUtilities::RemoveInvalidData(std::get<1>(data));
 
         std::get<2>(data) = GetRequestedData(weatherLog, month, year, weatherMap, yearMonthBST, &WeatherRecType::m_sr);
-        RemoveInvalidData(std::get<2>(data));
+        WeatherRecUtilities::RemoveInvalidData(std::get<2>(data));
 
         if(std::get<0>(data).GetSize() != 0 || std::get<1>(data).GetSize() != 0 || std::get<2>(data).GetSize() != 0)
         {
-            output << MonthToString(month) << ",";
+            output << WeatherRecUtilities::MonthToString(month) << ",";
             PrintMeanStdDevMadToFile(output, std::get<0>(data));
             PrintMeanStdDevMadToFile(output, std::get<1>(data));
             PrintSolarRadToFile(output, std::get<2>(data));
@@ -292,43 +303,11 @@ void PrintTempMeanStdDevToScreen(Vector<float>& tempData)
 }
 
 //----------------------------------------------------------------------------
-void PrintSolarRadToScreen(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &weatherMap, BST<int> &yearMonthBST, int month, int year)
+void PrintSolarRadToScreen(Vector<float>& solarRadData)
 {
-    Vector<int> requestedRecs;
-
-    if(yearMonthBST.Search(CreateMonthYearKey(year, month)))
-    {
-        requestedRecs = weatherMap[year][month];
-    }
-    else
-    {
-        std::cout << MonthToString(month) << ": ";
-        std::cout << "No Data" << std::endl;
-        return;
-    }
-
-    WeatherLogType log;
-    for(int i = 0; i < requestedRecs.GetSize(); i++)
-    {
-        log.PushBack(weatherLog[requestedRecs[i]]);
-    }
-
-    Vector<float> data;
-    ExtractValuesFromWeatherLog(log, month, year, &WeatherRecType::m_sr, data);
-
-    RemoveInvalidData(data);
-
-    std::cout << MonthToString(month) << ": ";
-    if(data.GetSize() == 0)
-    {
-        std::cout << "No Data" << std::endl;
-    }
-    else
-    {
-        float totalSR = StatsCalcs::CalcSumOfVectorf(data);
-        std::cout << std::fixed << std::showpoint << std::setprecision(2);
-        std::cout << totalSR<< " kWh/m^2" << std::endl;
-    }
+    float totalSR = StatsCalcs::CalcSumOfVectorf(solarRadData);
+    std::cout << std::fixed << std::showpoint << std::setprecision(2);
+    std::cout << totalSR<< " kWh/m^2" << std::endl;
 }
 
 //----------------------------------------------------------------------------
@@ -369,7 +348,7 @@ Vector<float> GetRequestedData(WeatherLogType& weatherLog, int month, int year, 
     Vector<int> recordIndexes;
     Vector<float> data;
 
-    if(yearMonthBST.Search(CreateMonthYearKey(year, month)))
+    if(yearMonthBST.Search(WeatherRecUtilities::CreateMonthYearKey(year, month)))
     {
         recordIndexes = weatherMap[year][month];
 
@@ -379,7 +358,7 @@ Vector<float> GetRequestedData(WeatherLogType& weatherLog, int month, int year, 
             log.PushBack(weatherLog[recordIndexes[i]]);
         }
 
-        ExtractValuesFromWeatherLog(log, month, year, p_Member, data);
+        WeatherRecUtilities::ExtractValuesFromWeatherLog(log, month, year, p_Member, data);
     }
 
     return data;
@@ -392,7 +371,7 @@ void GetRequestedDataPair(WeatherLogType& weatherLog, int month, Map<int, Map<in
 
     for(Map<int, Map<int, Vector<int>>>::iterator itr = weatherMap.Begin(); itr != weatherMap.End(); itr++)
     {
-        if(yearMonthBST.Search(CreateMonthYearKey(itr->first, month)))
+        if(yearMonthBST.Search(WeatherRecUtilities::CreateMonthYearKey(itr->first, month)))
         {
             recordIndexes.PushBack(weatherMap[itr->first][month]);
         }
@@ -407,8 +386,15 @@ void GetRequestedDataPair(WeatherLogType& weatherLog, int month, Map<int, Map<in
         }
     }
 
-    ExtractValuesFromWeatherLog(log, p1_Member, firstDataMem);
-    ExtractValuesFromWeatherLog(log, p2_Member, secondDataMem);
+    WeatherRecUtilities::ExtractValuesFromWeatherLog(log, p1_Member, firstDataMem);
+    WeatherRecUtilities::ExtractValuesFromWeatherLog(log, p2_Member, secondDataMem);
 }
 
 //----------------------------------------------------------------------------
+void WeatherMenuStrategy::WeatherMenuContext::InitWeatherMenuContext(Vector<void (*)(WeatherLogType&, Map<int, Map<int, Vector<int>>>&, BST<int>&)>& menuOptions)
+{
+    menuOptions.PushBack(WeatherMenuStrategy::WindSpeedStrategy::Execute);
+    menuOptions.PushBack(WeatherMenuStrategy::TemperatureStrategy::Execute);
+    menuOptions.PushBack(WeatherMenuStrategy::SPCCStrategy::Execute);
+    menuOptions.PushBack(WeatherMenuStrategy::PrintToFileStrategy::Execute);
+}

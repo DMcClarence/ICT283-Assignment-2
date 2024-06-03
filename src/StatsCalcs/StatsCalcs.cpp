@@ -10,7 +10,7 @@
 //----------------------------------------------------------------------------
 // Includes
 
-#include "../includes/StatsCalcs.h"
+#include "../../includes/StatsCalcs/StatsCalcs.h"
 
 #include <cmath>
 

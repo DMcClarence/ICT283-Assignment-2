@@ -10,11 +10,11 @@
 //----------------------------------------------------------------------------
 // Includes
 
-#include "../includes/WeatherRecIO.h"
-#include "../includes/WeatherRecUtilities.h"
-#include "../includes/Stack.h"
-#include "../includes/VectorUtilities.h"
-#include "../includes/BSTUtilities.h"
+#include "../../includes/WeatherRec/WeatherRecIO.h"
+#include "../../includes/WeatherRec/WeatherRecUtilities.h"
+#include "../../includes/Stack/Stack.h"
+#include "../../includes/Vector/VectorUtilities.h"
+#include "../../includes/BST/BSTUtilities.h"
 
 #include <fstream>
 #include <sstream>
@@ -223,7 +223,7 @@ std::istream& operator>>(std::istream& input, WeatherLogType& data)
 }
 
 //----------------------------------------------------------------------------
-bool GetDataFileNameFromSrcFile(Stack<std::string> &fileNameStack)
+bool WeatherRecIO::GetDataFileNameFromSrcFile(Stack<std::string> &fileNameStack)
 {
     std::ifstream dataSource("data/data_source.txt");
     std::string fileName;
@@ -244,7 +244,7 @@ bool GetDataFileNameFromSrcFile(Stack<std::string> &fileNameStack)
 }
 
 //----------------------------------------------------------------------------
-bool ReadWeatherDataFromFiles(Stack<std::string> &fileStack, WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &weatherMap, BST<int> &yearMonthBST)
+bool WeatherRecIO::ReadWeatherDataFromFiles(Stack<std::string> &fileStack, WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &weatherMap, BST<int> &yearMonthBST)
 {
     Vector<WeatherLogType> logs;
 
@@ -371,7 +371,7 @@ void ReadColIntoWeatherRec(std::string col, int colNum, const colOfInterest *wea
         // that the Sensor was offline.
     if(colNum == weatherRecCols[S].colNum)
     {
-        ToKMperHr(value);
+        WeatherRecUtilities::ToKMperHr(value);
         weatherRec.m_s = value;
     }
     else if(colNum == weatherRecCols[T].colNum)
@@ -382,7 +382,7 @@ void ReadColIntoWeatherRec(std::string col, int colNum, const colOfInterest *wea
     {
         if(value >= 100)
         {
-            TokWh(value);
+            WeatherRecUtilities::TokWh(value);
             weatherRec.m_sr = value;
         }
         else
@@ -455,8 +455,8 @@ void RemoveCompletedFiles(Vector<WeatherLogType> &logs, Vector<int> &lineCount)
     {
         if(lineCount[i] == logs[i].GetSize())
         {
-            RemoveFromVector(logs, i);
-            RemoveFromVector(lineCount, i);
+            VectorUtilities::RemoveFromVector(logs, i);
+            VectorUtilities::RemoveFromVector(lineCount, i);
         }
     }
 }
@@ -486,7 +486,7 @@ void StoreWeatherRecord(WeatherRecType& rec, WeatherLogType& log, Map<int, Map<i
 {
     log.PushBack(rec);
     indexRecordInMap((log.GetSize() - 1), rec, logMap);
-    keyStorage.PushBack(CreateMonthYearKey(rec.m_date.GetYear(), rec.m_date.GetMonth()));
+    keyStorage.PushBack(WeatherRecUtilities::CreateMonthYearKey(rec.m_date.GetYear(), rec.m_date.GetMonth()));
 }
 
 //----------------------------------------------------------------------------
@@ -524,6 +524,6 @@ void CreateWeatherLog(Vector<WeatherLogType>& logs, WeatherLogType& weatherLog, 
         lineCount[0]++;
     }
 
-    MergeSortVector(yearMonths);
-    InsertSortedVectorToBST(0, (yearMonths.GetSize() - 1), yearMonthBST, yearMonths);
+    VectorUtilities::MergeSortVector(yearMonths);
+    BSTUtilities::InsertSortedVectorToBST(0, (yearMonths.GetSize() - 1), yearMonthBST, yearMonths);
 }

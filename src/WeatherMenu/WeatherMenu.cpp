@@ -10,8 +10,8 @@
 //----------------------------------------------------------------------------
 // Includes
 
-#include "../includes/WeatherMenu.h"
-#include "../includes/WeatherMenuOptions.h"
+#include "../../includes/WeatherMenu/WeatherMenu.h"
+#include "../../includes/WeatherMenu/WeatherMenuOptions.h"
 
 #include <iostream>
 
@@ -28,19 +28,17 @@ void DisplayWeatherMenu();
 int GetUserSelection();
 
     // Dedicated to Executing the Weather Menu Option selected by the User
-void ExecuteSelection(int selection, const Vector<void (*)(WeatherLogType&, Map<int, Map<int, Vector<int>>>&, BST<int>&)> &menuOptions,
-                        WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst);
+void ExecuteSelection(int selection, Vector<void (*)(WeatherLogType&, Map<int, Map<int, Vector<int>>>&, BST<int>&)>& menuOptions,
+                      WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst);
 
 //----------------------------------------------------------------------------
 // Function implementations
 
-void RunWeatherMenu(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst)
+void WeatherMenu::RunWeatherMenu(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst)
 {
+        // Set Up Weather Menu Strategy Context
     Vector<void (*)(WeatherLogType&, Map<int, Map<int, Vector<int>>>&, BST<int>&)> menuOptions;
-    menuOptions.PushBack(WeatherMenuStrategy::WindSpeedStrategy::Execute);
-    menuOptions.PushBack(WeatherMenuStrategy::TemperatureStrategy::Execute);
-    menuOptions.PushBack(WeatherMenuStrategy::SPCCStrategy::Execute);
-    menuOptions.PushBack(WeatherMenuStrategy::PrintToFileStrategy::Execute);
+    WeatherMenuStrategy::WeatherMenuContext::InitWeatherMenuContext(menuOptions);
 
     int selection;
     do
@@ -66,8 +64,8 @@ void DisplayWeatherMenu()
 }
 
 //----------------------------------------------------------------------------
-void ExecuteSelection(int selection, const Vector<void (*)(WeatherLogType&, Map<int, Map<int, Vector<int>>>&, BST<int>&)> &menuOptions,
-                        WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst)
+void ExecuteSelection(int selection, Vector<void (*)(WeatherLogType&, Map<int, Map<int, Vector<int>>>&, BST<int>&)>& menuOptions,
+                      WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst)
 {
     if(selection == 5)
     {

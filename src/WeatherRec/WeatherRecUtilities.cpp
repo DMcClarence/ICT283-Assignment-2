@@ -10,8 +10,8 @@
 //----------------------------------------------------------------------------
 // Includes
 
-#include "../includes/VectorUtilities.h"
-#include "../includes/WeatherRecUtilities.h"
+#include "../../includes/Vector/VectorUtilities.h"
+#include "../../includes/WeatherRec/WeatherRecUtilities.h"
 
 #include <string>
 #include <cmath>
@@ -39,7 +39,7 @@ const std::string months[12] = {"January",
 //----------------------------------------------------------------------------
 // Function implementations
 
-void ExtractValuesFromWeatherLog(WeatherLogType &weatherLog, int month, int year,
+void WeatherRecUtilities::ExtractValuesFromWeatherLog(WeatherLogType &weatherLog, int month, int year,
                                     float WeatherRecType::*p_member, Vector<float> &extractedValues)
 {
     for(int i = 0; i < weatherLog.GetSize(); i++)
@@ -52,7 +52,7 @@ void ExtractValuesFromWeatherLog(WeatherLogType &weatherLog, int month, int year
 }
 
 //---------------------------------------------------------------------------------
-void ExtractValuesFromWeatherLog(WeatherLogType &weatherLog, float WeatherRecType::*p_member, Vector<float> &extractedValues)
+void WeatherRecUtilities::ExtractValuesFromWeatherLog(WeatherLogType &weatherLog, float WeatherRecType::*p_member, Vector<float> &extractedValues)
 {
     for(int i = 0; i < weatherLog.GetSize(); i++)
     {
@@ -61,19 +61,19 @@ void ExtractValuesFromWeatherLog(WeatherLogType &weatherLog, float WeatherRecTyp
 }
 
 //---------------------------------------------------------------------------------
-void RemoveInvalidData(Vector<float> &data)
+void WeatherRecUtilities::RemoveInvalidData(Vector<float> &data)
 {
     for(int i = data.GetSize() - 1; i >= 0; i--)
     {
         if(std::isnan(data[i]))
         {
-            RemoveFromVector(data, i);
+            VectorUtilities::RemoveFromVector(data, i);
         }
     }
 }
 
 //---------------------------------------------------------------------------------
-void RemoveInvalidDataFromDataPairs(Vector<float> &data1, Vector<float> &data2)
+void WeatherRecUtilities::RemoveInvalidDataFromDataPairs(Vector<float> &data1, Vector<float> &data2)
 {
     if(data1.GetSize() != data2.GetSize())
     {
@@ -84,27 +84,27 @@ void RemoveInvalidDataFromDataPairs(Vector<float> &data1, Vector<float> &data2)
     {
         if(std::isnan(data1[i]) || std::isnan(data2[i]))
         {
-            RemoveFromVector(data1, i);
-            RemoveFromVector(data2, i);
+            VectorUtilities::RemoveFromVector(data1, i);
+            VectorUtilities::RemoveFromVector(data2, i);
         }
     }
 }
 
 //---------------------------------------------------------------------------------
-std::string MonthToString(int month)
+std::string WeatherRecUtilities::MonthToString(int month)
 {
     assert(month > 0 && month <= 12);
     return months[month - 1];
 }
 
 //---------------------------------------------------------------------------------
-void ToKMperHr(float &speed)
+void WeatherRecUtilities::ToKMperHr(float &speed)
 {
     speed *= 3.6;
 }
 
 //---------------------------------------------------------------------------------
-void TokWh(float &solarRad)
+void WeatherRecUtilities::TokWh(float &solarRad)
 {
     solarRad *= (1.0 / 6.0);
     solarRad /= 1000;
@@ -186,16 +186,16 @@ bool operator>=(WeatherRecType &left, WeatherRecType &right)
 }
 
 //----------------------------------------------------------------------------
-void RemoveDuplicatesFromWeatherLog(WeatherLogType &log)
+void WeatherRecUtilities::RemoveDuplicatesFromWeatherLog(WeatherLogType &log)
 {
-    MergeSortVector(log);
+    VectorUtilities::MergeSortVector(log);
 
     int i = 0;
     while(i < log.GetSize() - 1)
     {
         if(log[i] == log[i + 1])
         {
-            RemoveFromVector(log, i + 1);
+            VectorUtilities::RemoveFromVector(log, i + 1);
         }
         else
         {
@@ -205,7 +205,7 @@ void RemoveDuplicatesFromWeatherLog(WeatherLogType &log)
 }
 
 //----------------------------------------------------------------------------
-int CreateMonthYearKey(int year, int month)
+int WeatherRecUtilities::CreateMonthYearKey(int year, int month)
 {
     return (year * 100) + month;
 }

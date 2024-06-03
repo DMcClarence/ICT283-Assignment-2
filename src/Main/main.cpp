@@ -10,13 +10,13 @@
 //----------------------------------------------------------------------------
 // Includes
 
-#include "../includes/WeatherMenu.h"
-#include "../includes/WeatherRecIO.h"
-#include "../includes/VectorUtilities.h"
-#include "../includes/WeatherRecUtilities.h"
-#include "../includes/Map.h"
-// #include "../includes/Stack.h"
-#include "../includes/BST.h"
+#include "../../includes/WeatherMenu/WeatherMenu.h"
+#include "../../includes/WeatherRec/WeatherRecIO.h"
+#include "../../includes/Vector/VectorUtilities.h"
+#include "../../includes/WeatherRec/WeatherRecUtilities.h"
+#include "../../includes/Map/Map.h"
+// #include "../../includes/Stack/Stack.h"
+#include "../../includes/BST/BST.h"
 
 #include <iostream>
 #include <string>
@@ -39,10 +39,10 @@ int main()
     Map<int, Map<int, Vector<int>>> weatherMap; // Outer map key is year, inner map key is month.
     BST<int> yearMonthBST;
 
-    readSuccessful = GetDataFileNameFromSrcFile(fileStack);
+    readSuccessful = WeatherRecIO::GetDataFileNameFromSrcFile(fileStack);
     if(readSuccessful)
     {
-        fileSuccess = ReadWeatherDataFromFiles(fileStack, weatherLog, weatherMap, yearMonthBST);
+        fileSuccess = WeatherRecIO::ReadWeatherDataFromFiles(fileStack, weatherLog, weatherMap, yearMonthBST);
     }
 
     if(fileSuccess)
@@ -50,8 +50,7 @@ int main()
         // Checks weatherLog isn't empty before running Weather Menu
         if(weatherLog.GetSize() > 0)
         {
-            // RemoveDuplicatesFromWeatherLog(weatherLog);
-            RunWeatherMenu(weatherLog, weatherMap, yearMonthBST);
+            WeatherMenu::RunWeatherMenu(weatherLog, weatherMap, yearMonthBST);
         }
     }
 

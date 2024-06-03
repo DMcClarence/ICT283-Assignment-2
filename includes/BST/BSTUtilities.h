@@ -7,17 +7,19 @@
 //---------------------------------------------------------------------------------
 
 #include "BST.h"
-#include "Vector.h"
+#include "../Vector/Vector.h"
+
+//---------------------------------------------------------------------------------
+namespace BSTUtilities
+{
+    template <class T1, class T2>
+    void InsertSortedVectorToBST(int start, int end, BST<T1> &bst, Vector<T2> &vec);
+}
 
 //---------------------------------------------------------------------------------
 
 template <class T1, class T2>
-void InsertSortedVectorToBST(int start, int end, BST<T1> &bst, Vector<T2> &vec);
-
-//---------------------------------------------------------------------------------
-
-template <class T1, class T2>
-void InsertSortedVectorToBST(int start, int end, BST<T1> &bst, Vector<T2> &vec)
+void BSTUtilities::InsertSortedVectorToBST(int start, int end, BST<T1> &bst, Vector<T2> &vec)
 {
     if(start > end)
     {
@@ -32,8 +34,8 @@ void InsertSortedVectorToBST(int start, int end, BST<T1> &bst, Vector<T2> &vec)
 
     int mid = (start + end) / 2;
     bst.Insert(vec[mid]);
-    InsertSortedVectorToBST(start, (mid - 1), bst, vec);
-    InsertSortedVectorToBST((mid + 1), end, bst, vec);
+    BSTUtilities::InsertSortedVectorToBST(start, (mid - 1), bst, vec);
+    BSTUtilities::InsertSortedVectorToBST((mid + 1), end, bst, vec);
 }
 
 //---------------------------------------------------------------------------------

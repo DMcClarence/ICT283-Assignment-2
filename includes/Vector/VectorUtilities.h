@@ -6,84 +6,88 @@
 
 //---------------------------------------------------------------------------------
 
-#include "Vector.h"
-#include "WeatherRecIO.h"
+#include "../Vector/Vector.h"
+#include "../WeatherRec/WeatherRecIO.h"
 
 //---------------------------------------------------------------------------------
 
 	/**
-	 * @file VectorUtilities.h
-	 * @brief  Defines and Implements Utility Functions for the Vector class
+	 * @namespace VectorUtilities
+	 * @brief  Defines Utility Functions for the Vector class
 	 *
 	 * @author 34085068
 	 * @version 01
 	 * @date 18/04/2024 34085068, Started
+	 *
+	 * @author 34085068
+	 * @version 01
+	 * @date 03/06/2024 34085068, Encapsulated into a namespace
 	 */
+namespace VectorUtilities
+{
+    //    /**
+    //     * @brief Inserts a value at a specified location in a Vector.
+    //     *
+    //     *
+    //     * @param vec - The Vector to insert the value to
+    //     * @param value - The value to be inserted
+    //     * @param location - The index of the array
+    //     * @return bool - True if value inserted Sucessfully, False if insert fails
+    //     */
+    //template <class T>
+    //bool InsertToVector(Vector<T> &vec, const T value, int location);
+
+        /**
+         * @brief Removes a value at a specified location in a Vector.
+         *
+         *
+         * @param vec - The Vector for the value to be removed from
+         * @param location - The index of the array
+         * @return void
+         */
+    template <class T>
+    void RemoveFromVector(Vector<T> &vec, int location);
+
+        /**
+         * @brief Sorts a Vector using the Merge Sort Algorithm
+         *
+         *
+         * @param vec - The Vector to be sorted
+         * @return void
+         */
+    template <class T>
+    void MergeSortVector(Vector<T> &vec);
+
+        /**
+         * @brief Sorts a Vector using the Merge Sort Algorithm
+         *
+         *
+         * @param vec - The Vector to be sorted
+         * @param first - The first index of the Vector
+         * @param last - The last index of the Vector
+         * @return void
+         */
+    template <class T>
+    void MergeSortVector(Vector<T> &vec, int first, int last);
+
+        /**
+         * @brief
+         *
+         *
+         * @param vec - The Vector
+         * @param first
+         * @param middle
+         * @param last
+         * @return void
+         */
+    template <class T>
+    void MergeVector(Vector<T> &vec, int first, int middle, int last);
+}
 
 //---------------------------------------------------------------------------------
 
-//    /**
-//     * @brief Inserts a value at a specified location in a Vector.
-//     *
-//     *
-//     * @param vec - The Vector to insert the value to
-//     * @param value - The value to be inserted
-//     * @param location - The index of the array
-//     * @return bool - True if value inserted Sucessfully, False if insert fails
-//     */
 //template <class T>
-//bool InsertToVector(Vector<T> &vec, const T value, int location);
-
-    /**
-     * @brief Removes a value at a specified location in a Vector.
-     *
-     *
-     * @param vec - The Vector for the value to be removed from
-     * @param location - The index of the array
-     * @return void
-     */
-template <class T>
-void RemoveFromVector(Vector<T> &vec, int location);
-
-    /**
-     * @brief Sorts a Vector using the Merge Sort Algorithm
-     *
-     *
-     * @param vec - The Vector to be sorted
-     * @return void
-     */
-template <class T>
-void MergeSortVector(Vector<T> &vec);
-
-    /**
-     * @brief Sorts a Vector using the Merge Sort Algorithm
-     *
-     *
-     * @param vec - The Vector to be sorted
-     * @param first - The first index of the Vector
-     * @param last - The last index of the Vector
-     * @return void
-     */
-template <class T>
-void MergeSortVector(Vector<T> &vec, int first, int last);
-
-    /**
-     * @brief
-     *
-     *
-     * @param vec - The Vector
-     * @param first
-     * @param middle
-     * @param last
-     * @return void
-     */
-template <class T>
-void MergeVector(Vector<T> &vec, int first, int middle, int last);
-
-//---------------------------------------------------------------------------------
-
-//template <class T>
-//bool InsertToVector(Vector<T> &vec, const T value, int location)
+//bool VectorUtilities::InsertToVector(Vector<T> &vec, const T value, int location)
 //{
 //        // Create New Vector to add old and new Values to
 //    int newVecSize = vec.GetSize() + 1;
@@ -118,7 +122,7 @@ void MergeVector(Vector<T> &vec, int first, int middle, int last);
 //
 //---------------------------------------------------------------------------------
 template <class T>
-void RemoveFromVector(Vector<T> &vec, int location)
+void VectorUtilities::RemoveFromVector(Vector<T> &vec, int location)
 {
     for(int i = location; i < vec.GetSize() - 1; i++)
     {
@@ -130,7 +134,7 @@ void RemoveFromVector(Vector<T> &vec, int location)
 
 //---------------------------------------------------------------------------------
 template <class T>
-void MergeSortVector(Vector<T> &vec)
+void VectorUtilities::MergeSortVector(Vector<T> &vec)
 {
     int first = 0;
     int last = vec.GetSize() - 1;
@@ -140,7 +144,7 @@ void MergeSortVector(Vector<T> &vec)
 
 //---------------------------------------------------------------------------------
 template <class T>
-void MergeSortVector(Vector<T> &vec, int first, int last)
+void VectorUtilities::MergeSortVector(Vector<T> &vec, int first, int last)
 {
         // Returns if Vector is already sorted
     if(first >= last)
@@ -160,7 +164,7 @@ void MergeSortVector(Vector<T> &vec, int first, int last)
 
 //---------------------------------------------------------------------------------
 template <class T>
-void MergeVector(Vector<T> &vec, int first, int middle, int last)
+void VectorUtilities::MergeVector(Vector<T> &vec, int first, int middle, int last)
 {
     int leftVecSize = (middle - first) + 1;
     int rightVecSize = last - middle;

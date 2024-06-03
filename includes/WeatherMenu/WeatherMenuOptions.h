@@ -1,11 +1,11 @@
 #ifndef WEATHERMENUOPTIONS_H_INCLUDED
 #define WEATHERMENUOPTIONS_H_INCLUDED
 
-#include "../includes/WeatherRec.h"
-#include "BST.h"
-#include <map>
-
-#include "WeatherRecIO.h"
+#include "../WeatherRec/WeatherRec.h"
+#include "../BST/BST.h"
+#include "../Map/Map.h"
+#include "../Vector/Vector.h"
+#include "WeatherMenuOptions.h"
 
     /**
      * @namespace WeatherMenuStrategy
@@ -22,6 +22,10 @@
      */
 namespace WeatherMenuStrategy
 {
+    namespace WeatherMenuContext
+    {
+        void InitWeatherMenuContext(Vector<void (*)(WeatherLogType&, Map<int, Map<int, Vector<int>>>&, BST<int>&)>& menuOptions);
+    }
         /**
          * @namespace WindSpeedStrategy
          * @brief  Encapsulates Wind Menu's Execute Function
