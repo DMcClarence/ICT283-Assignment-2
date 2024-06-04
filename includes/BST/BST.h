@@ -205,11 +205,10 @@ private:
          * @brief  Searches the BST for a Specific Data item
          *
          *
-         * @param tree - The Tree to Search
          * @param item - The Item to search for
          * @return TreeNode - The node containing the item
          */
-    TreeNode<T>* SearchTree(BST<T>& tree, const T& item);
+    TreeNode<T>* SearchTree(const T& item);
 
         /// Root Node of the Tree
     TreeNode<T>* m_root;
@@ -368,7 +367,7 @@ void BST<T>::PostOrder(void (*ProcessNode)(const T&), TreeNode<T> *&node) const
 template <class T>
 bool BST<T>::Search(const T& item)
 {
-    TreeNode<T>* node = SearchTree(*this, item);
+    const TreeNode<T>* node = SearchTree(item);
     if(node == nullptr)
     {
         return false;
@@ -379,9 +378,9 @@ bool BST<T>::Search(const T& item)
 
 //----------------------------------------------------------------------------
 template <class T>
-BST<T>::TreeNode<T>* BST<T>::SearchTree(BST<T>& tree, const T& item)
+BST<T>::TreeNode<T>* BST<T>::SearchTree(const T& item)
 {
-    TreeNode<T>* current = tree.m_root;
+    TreeNode<T>* current = m_root;
 
     while(current != nullptr && current->m_data != item)
     {

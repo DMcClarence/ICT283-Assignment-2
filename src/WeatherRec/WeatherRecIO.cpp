@@ -66,7 +66,7 @@ void ReadTimeFromCol(std::istringstream &col, WeatherRecType &temp);
 void ReadDateTimeIntoWeatherRec(std::string col, WeatherRecType &weatherRec);
 
     // Reads a Data Column into a WeatherRecType Object
-void ReadColIntoWeatherRec(std::string col, int colNum, const colOfInterest *weatherRecCols, WeatherRecType &weatherRec);
+void ReadColIntoWeatherRec(const std::string& col, int colNum, const colOfInterest *weatherRecCols, WeatherRecType &weatherRec);
 
     // Convert std::string to a Float
 bool CheckStringToFloatConversion(float &value, const std::string &strValue);
@@ -75,10 +75,10 @@ bool CheckStringToFloatConversion(float &value, const std::string &strValue);
 Vector<int> InitFileLineCountVec(int numOfLogs);
 
     // Indexes a Record by Year and Month
-void indexRecordInMap(int index, WeatherRecType& rec, Map<int, Map<int, Vector<int>>> &indexedMap);
+void indexRecordInMap(int index, const WeatherRecType& rec, Map<int, Map<int, Vector<int>>> &indexedMap);
 
     // Finds the Earliest Dated/Timed Record between Logs
-int findEarliestRecordBetweenFiles(Vector<WeatherLogType>& log, Vector<int>& lineCount);
+int findEarliestRecordBetweenFiles(const Vector<WeatherLogType>& log, const Vector<int>& lineCount);
 
     // Removes logs for Completed Files
 void RemoveCompletedFiles(Vector<WeatherLogType> &logs, Vector<int> &lineCount);
@@ -360,7 +360,7 @@ void ReadDateTimeIntoWeatherRec(std::string col, WeatherRecType &weatherRec)
 }
 
 //----------------------------------------------------------------------------
-void ReadColIntoWeatherRec(std::string col, int colNum, const colOfInterest *weatherRecCols, WeatherRecType &weatherRec)
+void ReadColIntoWeatherRec(const std::string& col, int colNum, const colOfInterest *weatherRecCols, WeatherRecType &weatherRec)
 {
     float value;
     CheckStringToFloatConversion(value, col);
@@ -422,13 +422,13 @@ Vector<int> InitFileLineCountVec(int numOfLogs)
 }
 
 //----------------------------------------------------------------------------
-void indexRecordInMap(int index, WeatherRecType &rec, Map<int, Map<int, Vector<int>>> &indexedMap)
+void indexRecordInMap(int index, const WeatherRecType &rec, Map<int, Map<int, Vector<int>>> &indexedMap)
 {
     indexedMap[rec.m_date.GetYear()][rec.m_date.GetMonth()].PushBack(index);
 }
 
 //----------------------------------------------------------------------------
-int findEarliestRecordBetweenFiles(Vector<WeatherLogType>& logs, Vector<int>& lineCount)
+int findEarliestRecordBetweenFiles(const Vector<WeatherLogType>& logs, const Vector<int>& lineCount)
 {
     int prevEarliestIndex = 0;
 

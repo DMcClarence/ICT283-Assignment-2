@@ -28,7 +28,7 @@ void DisplayWeatherMenu();
 int GetUserSelection();
 
     // Dedicated to Executing the Weather Menu Option selected by the User
-void ExecuteSelection(int selection, Vector<void (*)(WeatherDataStorage&)>& menuOptions, WeatherDataStorage& weatherData);
+void ExecuteSelection(int selection, const Vector<void (*)(WeatherDataStorage&)>& menuOptions, WeatherDataStorage& weatherData);
 
 //----------------------------------------------------------------------------
 // Function implementations
@@ -63,7 +63,7 @@ void DisplayWeatherMenu()
 }
 
 //----------------------------------------------------------------------------
-void ExecuteSelection(int selection, Vector<void (*)(WeatherDataStorage&)>& menuOptions, WeatherDataStorage& weatherData)
+void ExecuteSelection(int selection, const Vector<void (*)(WeatherDataStorage&)>& menuOptions, WeatherDataStorage& weatherData)
 {
     if(selection == 5)
     {

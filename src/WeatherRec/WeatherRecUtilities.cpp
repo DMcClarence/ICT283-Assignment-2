@@ -114,7 +114,7 @@ void WeatherRecUtilities::TokWh(float &solarRad)
 }
 
 //----------------------------------------------------------------------------
-bool operator==(WeatherRecType &left, WeatherRecType &right)
+bool operator==(const WeatherRecType &left, const WeatherRecType &right)
 {
     if((left.m_date == right.m_date) && (left.m_time == right.m_time))
     {
@@ -125,7 +125,7 @@ bool operator==(WeatherRecType &left, WeatherRecType &right)
 }
 
 //----------------------------------------------------------------------------
-bool operator!=(WeatherRecType &left, WeatherRecType &right)
+bool operator!=(const WeatherRecType &left, const WeatherRecType &right)
 {
     if((left.m_date != right.m_date) || (left.m_time != right.m_time))
     {
@@ -136,7 +136,7 @@ bool operator!=(WeatherRecType &left, WeatherRecType &right)
 }
 
 //----------------------------------------------------------------------------
-bool operator<(WeatherRecType &left, WeatherRecType &right)
+bool operator<(const WeatherRecType &left, const WeatherRecType &right)
 {
     bool isLessThan = false;
 
@@ -157,7 +157,7 @@ bool operator<(WeatherRecType &left, WeatherRecType &right)
 }
 
 //----------------------------------------------------------------------------
-bool operator<=(WeatherRecType &left, WeatherRecType &right)
+bool operator<=(const WeatherRecType &left, const WeatherRecType &right)
 {
     if((left < right) || (left == right))
     {
@@ -168,7 +168,7 @@ bool operator<=(WeatherRecType &left, WeatherRecType &right)
 }
 
 //----------------------------------------------------------------------------
-bool operator>(WeatherRecType &left, WeatherRecType &right)
+bool operator>(const WeatherRecType &left, const WeatherRecType &right)
 {
     bool isGreaterThan = false;
 
@@ -189,7 +189,7 @@ bool operator>(WeatherRecType &left, WeatherRecType &right)
 }
 
 //----------------------------------------------------------------------------
-bool operator>=(WeatherRecType &left, WeatherRecType &right)
+bool operator>=(const WeatherRecType &left, const WeatherRecType &right)
 {
     if((left > right) || (left == right))
     {

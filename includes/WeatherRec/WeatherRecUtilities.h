@@ -138,7 +138,7 @@ namespace WeatherRecUtilities
      * @param right - Weather Record to be compared against
      * @return bool - Returns true if Weather Records Date and Times are Equal. Otherwise returns false.
      */
-bool operator==(WeatherRecType &left, WeatherRecType &right);
+bool operator==(const WeatherRecType &left, const WeatherRecType &right);
 
     /**
      * @brief  Compares Weather Records for inequality.
@@ -151,7 +151,7 @@ bool operator==(WeatherRecType &left, WeatherRecType &right);
      * @param right - Weather Record to be compared against
      * @return bool - Returns true if Weather Records Date and Times are not equal. Otherwise returns false.
      */
-bool operator!=(WeatherRecType &left, WeatherRecType &right);
+bool operator!=(const WeatherRecType &left, const WeatherRecType &right);
 
     /**
      * @brief  Checks if a Weather Record is less than another Weather Record
@@ -163,7 +163,7 @@ bool operator!=(WeatherRecType &left, WeatherRecType &right);
      * @param right - Weather Record to be compared against
      * @return bool - Returns true if Weather Record Date or Time is less than another Weather Record. Otherwise returns false.
      */
-bool operator<(WeatherRecType &left, WeatherRecType &right);
+bool operator<(const WeatherRecType &left, const WeatherRecType &right);
 
     /**
      * @brief  Checks if a Weather Record is less than or equal to another Weather Record
@@ -177,7 +177,7 @@ bool operator<(WeatherRecType &left, WeatherRecType &right);
      * @return bool - Returns true if Weather Record Date or Time is less than another Weather Record,
      *                  or Weather Records Date and Times are equal. Otherwise returns false.
      */
-bool operator<=(WeatherRecType &left, WeatherRecType &right);
+bool operator<=(const WeatherRecType &left, const WeatherRecType &right);
 
     /**
      * @brief  Checks if a Weather Record is greater than another Weather Record
@@ -189,7 +189,7 @@ bool operator<=(WeatherRecType &left, WeatherRecType &right);
      * @param right - Weather Record to be compared against
      * @return bool - Returns true if Weather Record Date or Time is greater than another Weather Record. Otherwise returns false.
      */
-bool operator>(WeatherRecType &left, WeatherRecType &right);
+bool operator>(const WeatherRecType &left, const WeatherRecType &right);
 
     /**
      * @brief  Checks if a Weather Record is greater than or equal to another Weather Record
@@ -203,7 +203,7 @@ bool operator>(WeatherRecType &left, WeatherRecType &right);
      * @return bool - Returns true if Weather Record Date or Time is greater than another Weather Record,
      *                  or Weather Records Date and Times are equal. Otherwise returns false.
      */
-bool operator>=(WeatherRecType &left, WeatherRecType &right);
+bool operator>=(const WeatherRecType &left, const WeatherRecType &right);
 
 //---------------------------------------------------------------------------------
 

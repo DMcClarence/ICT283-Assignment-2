@@ -90,7 +90,7 @@ class Time
              * @param right - Time object to be compared against
              * @return bool - Returns true if Dates are Equal. Otherwise returns false.
              */
-        bool operator==(Time &right) const;
+        bool operator==(const Time &right) const;
 
             /**
              * @brief  Checks if Time is less than another Time
@@ -99,7 +99,7 @@ class Time
              * @param right - Time object to be compared against
              * @return bool - Returns true if Time is less than another Time. Otherwise returns false.
              */
-        bool operator<(Time &right) const;
+        bool operator<(const Time &right) const;
 
             /**
              * @brief  Checks if Time is less than or equal to another Time.
@@ -108,7 +108,7 @@ class Time
              * @param right - Time object to be compared against
              * @return bool - Returns true if Time is less than or equal too another Time. Otherwise returns false.
              */
-        bool operator<=(Time &right) const;
+        bool operator<=(const Time &right) const;
 
             /**
              * @brief  Checks if Time is greater than another Time.
@@ -117,7 +117,7 @@ class Time
              * @param right - Time object to be compared against
              * @return bool - Returns true if Time is greater than another Time. Otherwise returns false.
              */
-        bool operator>(Time &right) const;
+        bool operator>(const Time &right) const;
 
             /**
              * @brief  Checks if Time is greater than or equal to another Time.
@@ -126,7 +126,7 @@ class Time
              * @param right - Time object to be compared against
              * @return bool - Returns true if Time is less than or equal too another Time. Otherwise returns false.
              */
-        bool operator>=(Time &right) const;
+        bool operator>=(const Time &right) const;
 
             /**
              * @brief  Compares dates for inequality.
@@ -135,7 +135,7 @@ class Time
              * @param right - Time object to be compared against
              * @return bool - Returns true if Dates are not Equal. Otherwise returns false.
              */
-        bool operator!=(Time &right) const;
+        bool operator!=(const Time &right) const;
 
     private:
             /// Hours: Values 0-23

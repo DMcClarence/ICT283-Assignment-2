@@ -60,7 +60,7 @@ void Time::SetMinutes(int mins)
 }
 
 //----------------------------------------------------------------------------
-bool Time::operator==(Time &right) const
+bool Time::operator==(const Time &right) const
 {
     if((m_hours == right.m_hours) && (m_minutes == right.m_minutes))
     {
@@ -71,7 +71,7 @@ bool Time::operator==(Time &right) const
 }
 
 //----------------------------------------------------------------------------
-bool Time::operator<(Time &right) const
+bool Time::operator<(const Time &right) const
 {
     bool isLessThan = false;
 
@@ -92,7 +92,7 @@ bool Time::operator<(Time &right) const
 }
 
 //----------------------------------------------------------------------------
-bool Time::operator<=(Time &right) const
+bool Time::operator<=(const Time &right) const
 {
     if((*this < right) || (*this == right))
     {
@@ -103,7 +103,7 @@ bool Time::operator<=(Time &right) const
 }
 
 //----------------------------------------------------------------------------
-bool Time::operator>(Time &right) const
+bool Time::operator>(const Time &right) const
 {
     bool isGreaterThan = false;
 
@@ -124,7 +124,7 @@ bool Time::operator>(Time &right) const
 }
 
 //----------------------------------------------------------------------------
-bool Time::operator>=(Time &right) const
+bool Time::operator>=(const Time &right) const
 {
     if((*this > right) || (*this == right))
     {
@@ -135,7 +135,7 @@ bool Time::operator>=(Time &right) const
 }
 
 //----------------------------------------------------------------------------
-bool Time::operator!=(Time &right) const
+bool Time::operator!=(const Time &right) const
 {
     if(*this == right)
     {

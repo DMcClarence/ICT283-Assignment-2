@@ -32,29 +32,29 @@ enum months {Jan = 1, Feb = 2, Mar = 3, Apr = 4, May = 5, Jun = 6, Jul = 7, Aug 
     // Not Designed for client use, hence why they're not prototyped in the interface.
 
     // Dedicated to Printing Mean and Standard Deviation of Wind Speed to the Screen
-void PrintWindMeanStdDevToScreen(Vector<float>& windSpeedData);
+void PrintWindMeanStdDevToScreen(const Vector<float>& windSpeedData);
 
     // Dedicated to Printing Mean and Standard Deviation of Temperature to the Screen
-void PrintTempMeanStdDevToScreen(Vector<float>& tempData);
+void PrintTempMeanStdDevToScreen(const Vector<float>& tempData);
 
     // Dedicated to Printing Total Solar Radiation to the Screen
-void PrintSolarRadToScreen(Vector<float>& solarRadData);
+void PrintSolarRadToScreen(const Vector<float>& solarRadData);
 
     // Dedicated to Printing the sPCC of Wind Speed and Temperature to the Screen
-void PrintStToScreen(Vector<float>& windSpeedData, Vector<float>& tempData);
+void PrintStToScreen(const Vector<float>& windSpeedData, const Vector<float>& tempData);
 
     // Dedicated to Printing the sPCC of Wind Speed and Solar Radiation to the Screen
-void PrintSrToScreen(Vector<float>& windSpeedData, Vector<float>& solarRadData);
+void PrintSrToScreen(const Vector<float>& windSpeedData, const Vector<float>& solarRadData);
 
     // Dedicated to Printing the sPCC of Temperature and Solar Radiation to the Screen
-void PrintTrToScreen(Vector<float>& tempData, Vector<float>& solarRadData);
+void PrintTrToScreen(const Vector<float>& tempData, const Vector<float>& solarRadData);
 
     // Dedicated to Printing Mean and Standard Deviation of float data members to a File
-void PrintMeanStdDevMadToFile(std::ofstream& output, Vector<float>& data);
+void PrintMeanStdDevMadToFile(std::ofstream& output, const Vector<float>& data);
 
     // Dedicated to Printing Total Solar Radiation to a File
     // Designed to be last on each line of a CSV file (no comma printed)
-void PrintSolarRadToFile(std::ofstream& output, Vector<float>& data);
+void PrintSolarRadToFile(std::ofstream& output, const Vector<float>& data);
 
     // Returns a Vector<float> of the Record Data from a Specific Month and Year for a specific Data Members
 Vector<float> GetRequestedData(WeatherDataStorage& weatherData, int month, int year, float WeatherRecType::*p_Member);
@@ -258,7 +258,7 @@ void WeatherMenuStrategy::PrintToFileStrategy::Execute(WeatherDataStorage& weath
 }
 
 //----------------------------------------------------------------------------
-void PrintWindMeanStdDevToScreen(Vector<float>& windSpeedData)
+void PrintWindMeanStdDevToScreen(const Vector<float>& windSpeedData)
 {
     float avgWindSpeed = StatsCalcs::CalcMeanOfVectorf(windSpeedData);
     float windSpeedStdDev = StatsCalcs::CalcStdDevOfVectorf(windSpeedData);
@@ -269,7 +269,7 @@ void PrintWindMeanStdDevToScreen(Vector<float>& windSpeedData)
 }
 
 //----------------------------------------------------------------------------
-void PrintStToScreen(Vector<float>& windSpeedData, Vector<float>& tempData)
+void PrintStToScreen(const Vector<float>& windSpeedData, const Vector<float>& tempData)
 {
     if(windSpeedData.GetSize() == 0 || tempData.GetSize() == 0)
     {
@@ -284,7 +284,7 @@ void PrintStToScreen(Vector<float>& windSpeedData, Vector<float>& tempData)
 }
 
 //----------------------------------------------------------------------------
-void PrintSrToScreen(Vector<float>& windSpeedData, Vector<float>& solarRadData)
+void PrintSrToScreen(const Vector<float>& windSpeedData, const Vector<float>& solarRadData)
 {
     if(windSpeedData.GetSize() == 0 || solarRadData.GetSize() == 0)
     {
@@ -299,7 +299,7 @@ void PrintSrToScreen(Vector<float>& windSpeedData, Vector<float>& solarRadData)
 }
 
 //----------------------------------------------------------------------------
-void PrintTrToScreen(Vector<float>& tempData, Vector<float>& solarRadData)
+void PrintTrToScreen(const Vector<float>& tempData, const Vector<float>& solarRadData)
 {
     if(solarRadData.GetSize() == 0 || tempData.GetSize() == 0)
     {
@@ -314,7 +314,7 @@ void PrintTrToScreen(Vector<float>& tempData, Vector<float>& solarRadData)
 }
 
 //----------------------------------------------------------------------------
-void PrintTempMeanStdDevToScreen(Vector<float>& tempData)
+void PrintTempMeanStdDevToScreen(const Vector<float>& tempData)
 {
     float avgTemp = StatsCalcs::CalcMeanOfVectorf(tempData);
     float tempStdDev = StatsCalcs::CalcStdDevOfVectorf(tempData);
@@ -323,7 +323,7 @@ void PrintTempMeanStdDevToScreen(Vector<float>& tempData)
 }
 
 //----------------------------------------------------------------------------
-void PrintSolarRadToScreen(Vector<float>& solarRadData)
+void PrintSolarRadToScreen(const Vector<float>& solarRadData)
 {
     float totalSR = StatsCalcs::CalcSumOfVectorf(solarRadData);
     std::cout << std::fixed << std::showpoint << std::setprecision(2);
@@ -331,7 +331,7 @@ void PrintSolarRadToScreen(Vector<float>& solarRadData)
 }
 
 //----------------------------------------------------------------------------
-void PrintMeanStdDevMadToFile(std::ofstream& output, Vector<float>& data)
+void PrintMeanStdDevMadToFile(std::ofstream& output, const Vector<float>& data)
 {
     if(data.GetSize() == 0)
     {
@@ -348,7 +348,7 @@ void PrintMeanStdDevMadToFile(std::ofstream& output, Vector<float>& data)
 }
 
 //----------------------------------------------------------------------------
-void PrintSolarRadToFile(std::ofstream& output, Vector<float>& data)
+void PrintSolarRadToFile(std::ofstream& output, const Vector<float>& data)
 {
     if(data.GetSize() == 0)
     {
@@ -389,7 +389,7 @@ void GetRequestedDataPair(WeatherDataStorage& weatherData, int month, Vector<flo
 {
     Vector<Vector<int>> recordIndexes;
 
-    for(Map<int, Map<int, Vector<int>>>::iterator itr = weatherData.m_weatherLogMap.Begin(); itr != weatherData.m_weatherLogMap.End(); itr++)
+    for(Map<int, Map<int, Vector<int>>>::iterator itr = weatherData.m_weatherLogMap.Begin(); itr != weatherData.m_weatherLogMap.End(); ++itr)
     {
         if(weatherData.m_yearMonthBST.Search(WeatherRecUtilities::CreateMonthYearKey(itr->first, month)))
         {
