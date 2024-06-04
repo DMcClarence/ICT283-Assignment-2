@@ -12,7 +12,6 @@
 
 #include "../../includes/WeatherRec/WeatherRecIO.h"
 #include "../../includes/WeatherRec/WeatherRecUtilities.h"
-#include "../../includes/Stack/Stack.h"
 #include "../../includes/Vector/VectorUtilities.h"
 #include "../../includes/BST/BSTUtilities.h"
 
@@ -84,11 +83,11 @@ int findEarliestRecordBetweenFiles(Vector<WeatherLogType>& log, Vector<int>& lin
     // Removes logs for Completed Files
 void RemoveCompletedFiles(Vector<WeatherLogType> &logs, Vector<int> &lineCount);
 
-bool CheckStoreRecordConditions(WeatherRecType& rec, WeatherLogType& log);
+    // Stores a WeatherRecord in the WeatherDataStorage object
+void StoreWeatherRecord(WeatherRecType& rec, WeatherDataStorage& weatherData, Vector<int>& keyStorage);
 
-void StoreWeatherRecord(WeatherRecType& rec, WeatherLogType& log, Map<int, Map<int, Vector<int>>>& logMap, Vector<int>& keyStorage);
-
-void CreateWeatherLog(Vector<WeatherLogType>& logs, WeatherLogType& weatherLog, Map<int, Map<int, Vector<int>>>& weatherMap, BST<int>& yearMonthBST);
+    // Stores Weather Logs into the WeatherDataStorage object.
+void CreateWeatherLog(Vector<WeatherLogType>& logs, WeatherDataStorage& weatherData);
 
 //----------------------------------------------------------------------------
 // Function implementations
@@ -244,7 +243,7 @@ bool WeatherRecIO::GetDataFileNameFromSrcFile(Stack<std::string> &fileNameStack)
 }
 
 //----------------------------------------------------------------------------
-bool WeatherRecIO::ReadWeatherDataFromFiles(Stack<std::string> &fileStack, WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &weatherMap, BST<int> &yearMonthBST)
+bool WeatherRecIO::ReadWeatherDataFromFiles(Stack<std::string> &fileStack, WeatherDataStorage& weatherData)
 {
     Vector<WeatherLogType> logs;
 
@@ -267,7 +266,7 @@ bool WeatherRecIO::ReadWeatherDataFromFiles(Stack<std::string> &fileStack, Weath
     Vector<int> yearMonths;
     if(logs.GetSize() > 0)
     {
-        CreateWeatherLog(logs, weatherLog, weatherMap, yearMonthBST);
+        CreateWeatherLog(logs, weatherData);
     }
 
     return true;
@@ -462,35 +461,15 @@ void RemoveCompletedFiles(Vector<WeatherLogType> &logs, Vector<int> &lineCount)
 }
 
 //----------------------------------------------------------------------------
-bool CheckStoreRecordConditions(WeatherRecType& rec, WeatherLogType& log)
+void StoreWeatherRecord(WeatherRecType& rec, WeatherDataStorage& weatherData, Vector<int>& keyStorage)
 {
-        // One of the following conditions must be met:
-            // 1. Nothing in the log
-            // 2. The date of the record is different to the previously added record
-            // 3. The date is the same, but the time is different
-
-        // Conditions assume the data is added in linear order.
-
-    if(log.GetSize() == 0 ||
-        (rec.m_date != log[log.GetSize() - 1].m_date) ||
-        (rec.m_date == log[log.GetSize() - 1].m_date && rec.m_time != log[log.GetSize() - 1].m_time))
-    {
-        return true;
-    }
-
-    return false;
-}
-
-//----------------------------------------------------------------------------
-void StoreWeatherRecord(WeatherRecType& rec, WeatherLogType& log, Map<int, Map<int, Vector<int>>>& logMap, Vector<int>& keyStorage)
-{
-    log.PushBack(rec);
-    indexRecordInMap((log.GetSize() - 1), rec, logMap);
+    weatherData.m_weatherLog.PushBack(rec);
+    indexRecordInMap((weatherData.m_weatherLog.GetSize() - 1), rec, weatherData.m_weatherLogMap);
     keyStorage.PushBack(WeatherRecUtilities::CreateMonthYearKey(rec.m_date.GetYear(), rec.m_date.GetMonth()));
 }
 
 //----------------------------------------------------------------------------
-void CreateWeatherLog(Vector<WeatherLogType>& logs, WeatherLogType& weatherLog, Map<int, Map<int, Vector<int>>>& weatherMap, BST<int>& yearMonthBST)
+void CreateWeatherLog(Vector<WeatherLogType>& logs, WeatherDataStorage& weatherData)
 {
     Vector<int> yearMonths;
     Vector<int> lineCount = InitFileLineCountVec(logs.GetSize());
@@ -503,9 +482,10 @@ void CreateWeatherLog(Vector<WeatherLogType>& logs, WeatherLogType& weatherLog, 
         int earliestIndex = findEarliestRecordBetweenFiles(logs, lineCount);
         earliestRec = logs[earliestIndex][lineCount[earliestIndex]];
 
-        if(CheckStoreRecordConditions(earliestRec, weatherLog))
+        if(weatherData.m_weatherLog.GetSize() == 0 ||
+           earliestRec != weatherData.m_weatherLog[weatherData.m_weatherLog.GetSize() - 1])
         {
-            StoreWeatherRecord(earliestRec, weatherLog, weatherMap, yearMonths);
+            StoreWeatherRecord(earliestRec, weatherData, yearMonths);
         }
         lineCount[earliestIndex]++;
 
@@ -517,13 +497,14 @@ void CreateWeatherLog(Vector<WeatherLogType>& logs, WeatherLogType& weatherLog, 
     while(lineCount[0] < logs[0].GetSize())
     {
         earliestRec = logs[0][lineCount[0]];
-        if(CheckStoreRecordConditions(earliestRec, weatherLog))
+        if(weatherData.m_weatherLog.GetSize() == 0 ||
+           earliestRec != weatherData.m_weatherLog[weatherData.m_weatherLog.GetSize() - 1])
         {
-            StoreWeatherRecord(earliestRec, weatherLog, weatherMap, yearMonths);
+            StoreWeatherRecord(earliestRec, weatherData, yearMonths);
         }
         lineCount[0]++;
     }
 
     VectorUtilities::MergeSortVector(yearMonths);
-    BSTUtilities::InsertSortedVectorToBST(0, (yearMonths.GetSize() - 1), yearMonthBST, yearMonths);
+    BSTUtilities::InsertSortedVectorToBST(0, (yearMonths.GetSize() - 1), weatherData.m_yearMonthBST, yearMonths);
 }

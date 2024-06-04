@@ -86,7 +86,7 @@ float StatsCalcs::CalcMADOfVectorf(const Vector<float> &vec)
     float sum = 0;
     for(int i = 0; i < vec.GetSize(); i++)
     {
-        sum += abs((vec[i] - mean));
+        sum += std::abs((vec[i] - mean));
     }
 
     return sum / vec.GetSize();

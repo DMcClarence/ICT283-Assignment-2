@@ -26,7 +26,7 @@
 class Date {
     public:
             /**
-             * @brief  Constructs a Date object Day and Month set to 1 and Year set to 2000.
+             * @brief  Constructs a Date object with Day and Month set to 1 and Year set to 2000.
              *
              *
              */
@@ -34,6 +34,8 @@ class Date {
 
             /**
              * @brief  Construct a Date object from a day, month, and year.
+             *
+             * If a value is invalid, the corresponding value from default constructor is used.
              *
              *
              * @param d - The day

@@ -10,16 +10,35 @@
 #include "../Vector/Vector.h"
 
 //---------------------------------------------------------------------------------
+    /**
+	 * @namespace BSTUtilities
+	 * @brief  Defines utility functions for the BST class
+	 *
+	 *
+	 * @author 34085068
+	 * @version 01
+	 * @date 27/05/2024 Started
+	 */
 namespace BSTUtilities
 {
-    template <class T1, class T2>
-    void InsertSortedVectorToBST(int start, int end, BST<T1> &bst, Vector<T2> &vec);
+        /**
+         * @brief  Inserts a Sorted Vector into a BST
+         *
+         *
+         * @param start - Index of the start of the Vector
+         * @param end - Index of the end of the Vector
+         * @param bst - The BST to store the Data
+         * @param vec - The Vector the Data is being inserted from.
+         * @return void
+         */
+    template <class T>
+    void InsertSortedVectorToBST(int start, int end, BST<T> &bst, Vector<T> &vec);
 }
 
 //---------------------------------------------------------------------------------
 
-template <class T1, class T2>
-void BSTUtilities::InsertSortedVectorToBST(int start, int end, BST<T1> &bst, Vector<T2> &vec)
+template <class T>
+void BSTUtilities::InsertSortedVectorToBST(int start, int end, BST<T> &bst, Vector<T> &vec)
 {
     if(start > end)
     {

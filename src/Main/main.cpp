@@ -12,11 +12,8 @@
 
 #include "../../includes/WeatherMenu/WeatherMenu.h"
 #include "../../includes/WeatherRec/WeatherRecIO.h"
-#include "../../includes/Vector/VectorUtilities.h"
-#include "../../includes/WeatherRec/WeatherRecUtilities.h"
-#include "../../includes/Map/Map.h"
-// #include "../../includes/Stack/Stack.h"
-#include "../../includes/BST/BST.h"
+#include "../../includes/WeatherRec/WeatherDataStorage.h"
+#include "../../includes/Stack/Stack.h"
 
 #include <iostream>
 #include <string>
@@ -34,23 +31,21 @@ int main()
 {
     bool readSuccessful = false;
     Stack<std::string> fileStack;
-    WeatherLogType weatherLog;
     bool fileSuccess = false;
-    Map<int, Map<int, Vector<int>>> weatherMap; // Outer map key is year, inner map key is month.
-    BST<int> yearMonthBST;
+    WeatherDataStorage weatherData;
 
     readSuccessful = WeatherRecIO::GetDataFileNameFromSrcFile(fileStack);
     if(readSuccessful)
     {
-        fileSuccess = WeatherRecIO::ReadWeatherDataFromFiles(fileStack, weatherLog, weatherMap, yearMonthBST);
+        fileSuccess = WeatherRecIO::ReadWeatherDataFromFiles(fileStack, weatherData);
     }
 
     if(fileSuccess)
     {
-        // Checks weatherLog isn't empty before running Weather Menu
-        if(weatherLog.GetSize() > 0)
+            // Checks weatherLog isn't empty before running Weather Menu
+        if(weatherData.m_weatherLog.GetSize() > 0)
         {
-            WeatherMenu::RunWeatherMenu(weatherLog, weatherMap, yearMonthBST);
+            WeatherMenu::RunWeatherMenu(weatherData);
         }
     }
 

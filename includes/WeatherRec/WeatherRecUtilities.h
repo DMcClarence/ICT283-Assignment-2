@@ -141,6 +141,19 @@ namespace WeatherRecUtilities
 bool operator==(WeatherRecType &left, WeatherRecType &right);
 
     /**
+     * @brief  Compares Weather Records for inequality.
+     *
+     * Uses the Date and Time for the check. If one or the other is not equal,
+     * then they are different records.
+     *
+     *
+     * @param left - Weather Record to compare
+     * @param right - Weather Record to be compared against
+     * @return bool - Returns true if Weather Records Date and Times are not equal. Otherwise returns false.
+     */
+bool operator!=(WeatherRecType &left, WeatherRecType &right);
+
+    /**
      * @brief  Checks if a Weather Record is less than another Weather Record
      *
      * Uses the Date and Time for the check.

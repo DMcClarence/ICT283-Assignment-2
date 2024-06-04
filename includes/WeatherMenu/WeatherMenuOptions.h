@@ -1,11 +1,7 @@
 #ifndef WEATHERMENUOPTIONS_H_INCLUDED
 #define WEATHERMENUOPTIONS_H_INCLUDED
 
-#include "../WeatherRec/WeatherRec.h"
-#include "../BST/BST.h"
-#include "../Map/Map.h"
-#include "../Vector/Vector.h"
-#include "WeatherMenuOptions.h"
+#include "../WeatherRec/WeatherDataStorage.h"
 
     /**
      * @namespace WeatherMenuStrategy
@@ -24,7 +20,7 @@ namespace WeatherMenuStrategy
 {
     namespace WeatherMenuContext
     {
-        void InitWeatherMenuContext(Vector<void (*)(WeatherLogType&, Map<int, Map<int, Vector<int>>>&, BST<int>&)>& menuOptions);
+        void InitWeatherMenuContext(Vector<void (*)(WeatherDataStorage&)>& menuOptions);
     }
         /**
          * @namespace WindSpeedStrategy
@@ -37,7 +33,7 @@ namespace WeatherMenuStrategy
          */
     namespace WindSpeedStrategy
     {
-        void Execute(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst);
+        void Execute(WeatherDataStorage& weatherData);
     }
 
         /**
@@ -51,7 +47,7 @@ namespace WeatherMenuStrategy
          */
     namespace TemperatureStrategy
     {
-        void Execute(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst);
+        void Execute(WeatherDataStorage& weatherData);
     }
 
         /**
@@ -65,7 +61,7 @@ namespace WeatherMenuStrategy
          */
     namespace SolarRadiationStrategy
     {
-        void Execute(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst);
+        void Execute(WeatherDataStorage& weatherData);
     }
 
         /**
@@ -79,7 +75,7 @@ namespace WeatherMenuStrategy
          */
     namespace SPCCStrategy
     {
-        void Execute(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst);
+        void Execute(WeatherDataStorage& weatherData);
     }
 
         /**
@@ -93,7 +89,7 @@ namespace WeatherMenuStrategy
          */
     namespace PrintToFileStrategy
     {
-        void Execute(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst);
+        void Execute(WeatherDataStorage& weatherData);
     }
 }
 

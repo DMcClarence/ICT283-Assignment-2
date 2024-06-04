@@ -7,7 +7,6 @@
 //---------------------------------------------------------------------------------
 
 #include "../Vector/Vector.h"
-#include "../WeatherRec/WeatherRecIO.h"
 
 //---------------------------------------------------------------------------------
 
@@ -25,18 +24,6 @@
 	 */
 namespace VectorUtilities
 {
-    //    /**
-    //     * @brief Inserts a value at a specified location in a Vector.
-    //     *
-    //     *
-    //     * @param vec - The Vector to insert the value to
-    //     * @param value - The value to be inserted
-    //     * @param location - The index of the array
-    //     * @return bool - True if value inserted Sucessfully, False if insert fails
-    //     */
-    //template <class T>
-    //bool InsertToVector(Vector<T> &vec, const T value, int location);
-
         /**
          * @brief Removes a value at a specified location in a Vector.
          *
@@ -84,42 +71,6 @@ namespace VectorUtilities
     void MergeVector(Vector<T> &vec, int first, int middle, int last);
 }
 
-//---------------------------------------------------------------------------------
-
-//template <class T>
-//bool VectorUtilities::InsertToVector(Vector<T> &vec, const T value, int location)
-//{
-//        // Create New Vector to add old and new Values to
-//    int newVecSize = vec.GetSize() + 1;
-//    Vector<T> temp(newVecSize);
-//
-//        // Populates the Vector
-//    for(int i = 0; i < newVecSize; i++)
-//    {
-//            // Adds previous Values before the new Value Location
-//        if(i < location)
-//        {
-//            temp.PushBack(vec[i]);
-//        }
-//            // Adds New Value to Specified Location
-//        else if(i == location)
-//        {
-//            temp.PushBack(value);
-//        }
-//            // Adds Remaining Values from Original Vector after new Value
-//        else
-//        {
-//            temp.PushBack(vec[i - 1]);
-//        }
-//    }
-//
-//        // Deletes Old Vector and Copies new One into vec to return New Vector
-//    vec.~Vector();
-//    vec = temp;
-//
-//    return true;
-//}
-//
 //---------------------------------------------------------------------------------
 template <class T>
 void VectorUtilities::RemoveFromVector(Vector<T> &vec, int location)

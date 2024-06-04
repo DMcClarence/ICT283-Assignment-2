@@ -42,7 +42,7 @@ typedef struct
 
 //---------------------------------------------------------------------------------
 
-    // Defines a type of  Vector of WeatherRecType
+    /// Defines a type of  Vector of WeatherRecType
 typedef Vector<WeatherRecType> WeatherLogType;
 
 //---------------------------------------------------------------------------------

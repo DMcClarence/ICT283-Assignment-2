@@ -93,7 +93,10 @@ void WeatherRecUtilities::RemoveInvalidDataFromDataPairs(Vector<float> &data1, V
 //---------------------------------------------------------------------------------
 std::string WeatherRecUtilities::MonthToString(int month)
 {
-    assert(month > 0 && month <= 12);
+    if(month < 1 || month > 12)
+    {
+        throw std::invalid_argument("Month must be between 1 and 12");
+    }
     return months[month - 1];
 }
 
@@ -114,6 +117,17 @@ void WeatherRecUtilities::TokWh(float &solarRad)
 bool operator==(WeatherRecType &left, WeatherRecType &right)
 {
     if((left.m_date == right.m_date) && (left.m_time == right.m_time))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+//----------------------------------------------------------------------------
+bool operator!=(WeatherRecType &left, WeatherRecType &right)
+{
+    if((left.m_date != right.m_date) || (left.m_time != right.m_time))
     {
         return true;
     }

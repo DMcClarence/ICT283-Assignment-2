@@ -28,16 +28,15 @@ void DisplayWeatherMenu();
 int GetUserSelection();
 
     // Dedicated to Executing the Weather Menu Option selected by the User
-void ExecuteSelection(int selection, Vector<void (*)(WeatherLogType&, Map<int, Map<int, Vector<int>>>&, BST<int>&)>& menuOptions,
-                      WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst);
+void ExecuteSelection(int selection, Vector<void (*)(WeatherDataStorage&)>& menuOptions, WeatherDataStorage& weatherData);
 
 //----------------------------------------------------------------------------
 // Function implementations
 
-void WeatherMenu::RunWeatherMenu(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst)
+void WeatherMenu::RunWeatherMenu(WeatherDataStorage& weatherData)
 {
         // Set Up Weather Menu Strategy Context
-    Vector<void (*)(WeatherLogType&, Map<int, Map<int, Vector<int>>>&, BST<int>&)> menuOptions;
+    Vector<void (*)(WeatherDataStorage&)> menuOptions;
     WeatherMenuStrategy::WeatherMenuContext::InitWeatherMenuContext(menuOptions);
 
     int selection;
@@ -45,7 +44,7 @@ void WeatherMenu::RunWeatherMenu(WeatherLogType &weatherLog, Map<int, Map<int, V
     {
         DisplayWeatherMenu();
         selection = GetUserSelection();
-        ExecuteSelection(selection, menuOptions, weatherLog, myMap, myBst);
+        ExecuteSelection(selection, menuOptions, weatherData);
     }while(selection != 5);
 }
 
@@ -64,8 +63,7 @@ void DisplayWeatherMenu()
 }
 
 //----------------------------------------------------------------------------
-void ExecuteSelection(int selection, Vector<void (*)(WeatherLogType&, Map<int, Map<int, Vector<int>>>&, BST<int>&)>& menuOptions,
-                      WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst)
+void ExecuteSelection(int selection, Vector<void (*)(WeatherDataStorage&)>& menuOptions, WeatherDataStorage& weatherData)
 {
     if(selection == 5)
     {
@@ -74,7 +72,7 @@ void ExecuteSelection(int selection, Vector<void (*)(WeatherLogType&, Map<int, M
 
     if(selection > 0 && selection <= 4)
     {
-        menuOptions[selection - 1](weatherLog, myMap, myBst);
+        menuOptions[selection - 1](weatherData);
     }
     else
     {

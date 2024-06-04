@@ -6,9 +6,7 @@
 
 //---------------------------------------------------------------------------------
 
-#include "../WeatherRec/WeatherRec.h"
-#include "../Map/Map.h"
-#include "../BST/BST.h"
+#include "../WeatherRec/WeatherDataStorage.h"
 
 //---------------------------------------------------------------------------------
 
@@ -36,10 +34,10 @@ namespace WeatherMenu
          * This functions runs until the user chooses to exit (By entering '5').
          *
          *
-         * @param weatherLog - A Vector Containing WeatherRecType Objects
+         * @param weatherData - Structure storing Weather Data
          * @return void
          */
-    void RunWeatherMenu(WeatherLogType &weatherLog, Map<int, Map<int, Vector<int>>> &myMap, BST<int> &myBst);
+    void RunWeatherMenu(WeatherDataStorage& weatherData);
 }
 
 //---------------------------------------------------------------------------------

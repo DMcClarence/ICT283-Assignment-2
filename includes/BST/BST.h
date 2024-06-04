@@ -6,8 +6,7 @@
 
 //---------------------------------------------------------------------------------
 
-#include <cassert>
-#include <stdexcept>
+
 
 //---------------------------------------------------------------------------------
 
@@ -114,14 +113,6 @@ public:
          * @return bool - Returns true if item is found. Otherwise returns false.
          */
     bool Search(const T& item);
-
-        /**
-         * @brief  Deletes an Item from the Tree
-         *
-         *
-         * @return bool - Returns true if item is found. Otherwise returns false.
-         */
-    void Delete(const T& item);
 private:
         /**
          * @struct TreeNode
@@ -160,15 +151,6 @@ private:
          * @return void
          */
     void Copy(TreeNode<T> *&newNode, TreeNode<T> *node);
-
-        /**
-         * @brief  Deletes a Single TreeNode from a BST
-         *
-         *
-         * @param deleteNode - The node to be deleted
-         * @return void
-         */
-    void DeleteNode(TreeNode<T>*& deleteNode);
 
         /**
          * @brief  Recursively Deletes an Entire BST
@@ -228,17 +210,6 @@ private:
          * @return TreeNode - The node containing the item
          */
     TreeNode<T>* SearchTree(BST<T>& tree, const T& item);
-
-        /**
-         * @brief  Checks the Representation Invariant Property of the BST Holds True
-         *
-         * If violated the program will assert.
-         *
-         *
-         * @param node - The node being checked
-         * @return void
-         */
-    void MaintainRI(TreeNode<T> *node);
 
         /// Root Node of the Tree
     TreeNode<T>* m_root;
@@ -304,7 +275,6 @@ template <class T>
 void BST<T>::Insert(const T& data)
 {
     Insert(data, m_root);
-    //MaintainRI(m_root);
 }
 
 //----------------------------------------------------------------------------
@@ -426,145 +396,6 @@ BST<T>::TreeNode<T>* BST<T>::SearchTree(BST<T>& tree, const T& item)
     }
 
     return current;
-}
-
-//----------------------------------------------------------------------------
-template <class T>
-void BST<T>::MaintainRI(TreeNode<T> *node)
-{
-    if(node == nullptr)
-    {
-        return;
-    }
-
-    bool leftValid = true;
-    bool rightValid = true;
-    if(node->m_left != nullptr)
-    {
-        leftValid = (node->m_left->m_data < node->m_data);
-    }
-
-    if(node->m_right != nullptr)
-    {
-        rightValid = (node->m_right->m_data > node->m_data);
-    }
-
-    assert(leftValid && rightValid);
-
-    MaintainRI(node->m_left);
-    MaintainRI(node->m_right);
-}
-
-//----------------------------------------------------------------------------
-template <class T>
-void BST<T>::Delete(const T& data)
-{
-            // Implemented from: C++ Programming: Program Design Including Data Structures
-                            // By D.S. Malik
-
-    TreeNode<T>* current = nullptr;
-    TreeNode<T>* currentParent = nullptr;
-    bool found = false;
-
-    current = m_root;
-    currentParent = m_root;
-
-    while(current != nullptr && !found)
-    {
-        if(current->m_data == data)
-        {
-            found = true;
-        }
-        else
-        {
-            currentParent = current;
-            if(current->m_data > data)
-            {
-                current = current->m_left;
-            }
-            else
-            {
-                current = current->m_right;
-            }
-        }
-
-        if(found)
-        {
-            if(current == m_root)
-            {
-                DeleteNode(m_root);
-            }
-            else if(currentParent->m_data > data)
-            {
-                DeleteNode(currentParent->m_left);
-            }
-            else
-            {
-                DeleteNode(currentParent->m_right);
-            }
-        }
-    }
-
-    MaintainRI(m_root);
-}
-
-//----------------------------------------------------------------------------
-template <class T>
-void BST<T>::DeleteNode(TreeNode<T>*& deleteNode)
-{
-        // Implemented from: C++ Programming: Program Design Including Data Structures
-                            // By D.S. Malik
-
-    TreeNode<T>* current = nullptr;
-    TreeNode<T>* currentParent = nullptr;
-    TreeNode<T>* temp = nullptr;
-
-    if(deleteNode == nullptr)
-    {
-        return;
-    }
-
-        // Case 1: Node has no Children
-    if(deleteNode->m_left == nullptr && deleteNode->m_right == nullptr)
-    {
-        delete deleteNode;
-        deleteNode = nullptr;
-    }  // Case 2: Node only has Right Child
-    else if(deleteNode->m_left == nullptr)
-    {
-        temp = deleteNode;
-        deleteNode = temp->m_right;
-        delete temp;
-    }  // Case 3: Node only has Left Child
-    else if(deleteNode->m_right == nullptr)
-    {
-        temp = deleteNode;
-        deleteNode = temp->m_left;
-        delete temp;
-    }  // Case 4: Node has 2 Children
-    else
-    {
-        current = deleteNode->m_left;
-
-        while(current->m_right != nullptr)
-        {
-            currentParent = current;
-            current = current->m_right;
-        }
-
-        deleteNode->m_data = current->m_data;
-
-        if(currentParent == nullptr)
-        {
-            deleteNode->m_left = current->m_left;
-        }
-        else
-        {
-            currentParent->m_right = current->m_left;
-        }
-
-        delete current;
-    }
 }
 
 //----------------------------------------------------------------------------

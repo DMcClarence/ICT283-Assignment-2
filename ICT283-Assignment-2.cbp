@@ -43,6 +43,7 @@
 		<Unit filename="includes/Vector/VectorUtilities.h" />
 		<Unit filename="includes/WeatherMenu/WeatherMenu.h" />
 		<Unit filename="includes/WeatherMenu/WeatherMenuOptions.h" />
+		<Unit filename="includes/WeatherRec/WeatherDataStorage.h" />
 		<Unit filename="includes/WeatherRec/WeatherRec.h" />
 		<Unit filename="includes/WeatherRec/WeatherRecIO.h" />
 		<Unit filename="includes/WeatherRec/WeatherRecUtilities.h" />

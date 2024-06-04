@@ -21,6 +21,10 @@
 	 * @author 34085068
 	 * @version 02
 	 * @date 04/05/2024 34085068, Add comparison operator overloads as Times have a natural order.
+     *
+	 * @author 34085068
+	 * @version 03
+	 * @date 04/06/2024 34085068, Remove seconds as seconds are not required
 	 */
 class Time
 {
@@ -38,9 +42,8 @@ class Time
              *
              * @param  hrs - The Hours (Set to the value returned by hrs % 24)
              * @param  mins - The Minutes (Set to the value returned by mins % 60)
-             * @param  secs - The Seconds (Set to the value returned by secs % 60)
              */
-        Time(int hrs, int mins, int secs);
+        Time(int hrs, int mins);
 
             /**
              * @brief  Returns the value of Hours.
@@ -57,14 +60,6 @@ class Time
              * @return int - Value of Minutes
              */
         int GetMinutes() const;
-
-            /**
-             * @brief  Returns the value of Seconds.
-             *
-             *
-             * @return int - Value of Seconds
-             */
-        int GetSeconds() const;
 
             /**
              * @brief Sets the value of Hours
@@ -87,17 +82,6 @@ class Time
              * @return void
              */
         void SetMinutes(int mins);
-
-            /**
-             * @brief Sets the value of Seconds
-             *
-             * The Hours value is set to secs % 60.
-             * This ensures Seconds is always valid.
-             *
-             * @param secs - Value of Seconds
-             * @return voidTime
-             */
-        void SetSeconds(int secs);
 
             /**
              * @brief  Compares dates for equality.
@@ -159,9 +143,6 @@ class Time
 
             /// Minutes: Values 0-59
         int m_minutes;
-
-            /// Seconds: Values 0-59
-        int m_seconds;
 };
 
 //---------------------------------------------------------------------------------

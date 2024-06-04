@@ -26,15 +26,13 @@ Time::Time()
         // Default time Values
     m_hours = 0;
     m_minutes = 0;
-    m_seconds = 0;
 }
 
 //----------------------------------------------------------------------------
-Time::Time(int hrs, int mins, int secs)
+Time::Time(int hrs, int mins)
 {
     m_hours = hrs % 24;
     m_minutes = mins % 60;
-    m_seconds = secs % 60;
 }
 
 //----------------------------------------------------------------------------
@@ -50,12 +48,6 @@ int Time::GetMinutes() const
 }
 
 //----------------------------------------------------------------------------
-int Time::GetSeconds() const
-{
-    return m_seconds;
-}
-
-//----------------------------------------------------------------------------
 void Time::SetHours(int hrs)
 {
     m_hours = hrs % 24;
@@ -68,15 +60,9 @@ void Time::SetMinutes(int mins)
 }
 
 //----------------------------------------------------------------------------
-void Time::SetSeconds(int secs)
-{
-    m_seconds = secs % 60;
-}
-
-//----------------------------------------------------------------------------
 bool Time::operator==(Time &right) const
 {
-    if((m_hours == right.m_hours) && (m_minutes == right.m_minutes) && (m_seconds == right.m_seconds))
+    if((m_hours == right.m_hours) && (m_minutes == right.m_minutes))
     {
         return true;
     }
@@ -99,14 +85,6 @@ bool Time::operator<(Time &right) const
         if(m_minutes < right.m_minutes)
         {
             isLessThan = true;
-        }
-
-        if(m_minutes == right.m_minutes)
-        {
-            if(m_seconds < right.m_seconds)
-            {
-                isLessThan = true;
-            }
         }
     }
 
@@ -139,14 +117,6 @@ bool Time::operator>(Time &right) const
         if(m_minutes > right.m_minutes)
         {
             isGreaterThan = true;
-        }
-
-        if(m_minutes == right.m_minutes)
-        {
-            if(m_seconds > right.m_seconds)
-            {
-                isGreaterThan = true;
-            }
         }
     }
 

@@ -38,6 +38,7 @@ bool IsLeapYear(int y);
 Date::Date()
 {
         // Default Date Values
+        // Done to avoid Date being invalid when constructed.
     m_day = 1;
     m_month = 1;
     m_year = 2000;
@@ -47,6 +48,7 @@ Date::Date()
 Date::Date(int d, int m, int y)
 {
         // Sets in Order of Year, Month, Day to Accurately Check Validations
+        // If invalid, values from default constructor used.
     m_year = y;
 
     if(MonthIsValid(m))
