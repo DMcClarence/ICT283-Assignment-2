@@ -75,7 +75,7 @@ bool CheckStringToFloatConversion(float &value, const std::string &strValue);
 Vector<int> InitFileLineCountVec(int numOfLogs);
 
     // Indexes a Record by Year and Month
-void indexRecordInMap(int index, const WeatherRecType& rec, Map<int, Map<int, Vector<int>>> &indexedMap);
+Map<int, Map<int, Vector<int>>>& indexRecordInMap(int index, const WeatherRecType& rec, Map<int, Map<int, Vector<int>>> &indexedMap);
 
     // Finds the Earliest Dated/Timed Record between Logs
 int findEarliestRecordBetweenFiles(const Vector<WeatherLogType>& log, const Vector<int>& lineCount);
@@ -84,10 +84,10 @@ int findEarliestRecordBetweenFiles(const Vector<WeatherLogType>& log, const Vect
 void RemoveCompletedFiles(Vector<WeatherLogType> &logs, Vector<int> &lineCount);
 
     // Stores a WeatherRecord in the WeatherDataStorage object
-void StoreWeatherRecord(WeatherRecType& rec, WeatherDataStorage& weatherData, Vector<int>& keyStorage);
+void StoreWeatherRecord(const WeatherRecType& rec, WeatherDataStorage& weatherData, Vector<int>& keyStorage);
 
     // Stores Weather Logs into the WeatherDataStorage object.
-void CreateWeatherLog(Vector<WeatherLogType>& logs, WeatherDataStorage& weatherData);
+WeatherDataStorage& CreateWeatherLog(Vector<WeatherLogType>& logs, WeatherDataStorage& weatherData);
 
 //----------------------------------------------------------------------------
 // Function implementations
@@ -422,9 +422,11 @@ Vector<int> InitFileLineCountVec(int numOfLogs)
 }
 
 //----------------------------------------------------------------------------
-void indexRecordInMap(int index, const WeatherRecType &rec, Map<int, Map<int, Vector<int>>> &indexedMap)
+Map<int, Map<int, Vector<int>>>& indexRecordInMap(int index, const WeatherRecType &rec, Map<int, Map<int, Vector<int>>> &indexedMap)
 {
     indexedMap[rec.m_date.GetYear()][rec.m_date.GetMonth()].PushBack(index);
+
+    return indexedMap;
 }
 
 //----------------------------------------------------------------------------
@@ -461,7 +463,7 @@ void RemoveCompletedFiles(Vector<WeatherLogType> &logs, Vector<int> &lineCount)
 }
 
 //----------------------------------------------------------------------------
-void StoreWeatherRecord(WeatherRecType& rec, WeatherDataStorage& weatherData, Vector<int>& keyStorage)
+void StoreWeatherRecord(const WeatherRecType& rec, WeatherDataStorage& weatherData, Vector<int>& keyStorage)
 {
     weatherData.m_weatherLog.PushBack(rec);
     indexRecordInMap((weatherData.m_weatherLog.GetSize() - 1), rec, weatherData.m_weatherLogMap);
@@ -469,7 +471,7 @@ void StoreWeatherRecord(WeatherRecType& rec, WeatherDataStorage& weatherData, Ve
 }
 
 //----------------------------------------------------------------------------
-void CreateWeatherLog(Vector<WeatherLogType>& logs, WeatherDataStorage& weatherData)
+WeatherDataStorage& CreateWeatherLog(Vector<WeatherLogType>& logs, WeatherDataStorage& weatherData)
 {
     Vector<int> yearMonths;
     Vector<int> lineCount = InitFileLineCountVec(logs.GetSize());
@@ -507,4 +509,6 @@ void CreateWeatherLog(Vector<WeatherLogType>& logs, WeatherDataStorage& weatherD
 
     VectorUtilities::MergeSortVector(yearMonths);
     BSTUtilities::InsertSortedVectorToBST(0, (yearMonths.GetSize() - 1), weatherData.m_yearMonthBST, yearMonths);
+
+    return weatherData;
 }

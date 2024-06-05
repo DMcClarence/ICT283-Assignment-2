@@ -18,12 +18,30 @@
      */
 namespace WeatherMenuStrategy
 {
+        /**
+         * @namespace WeatherMenuStrategy::WeatherMenuContext
+         * @brief  Encapsulates the Initialisation of the Strategy Context
+         *
+         *
+         * @author 34085068
+         * @version 01
+         * @date 15/05/2024 Started
+         */
     namespace WeatherMenuContext
     {
-        void InitWeatherMenuContext(Vector<void (*)(WeatherDataStorage&)>& menuOptions);
+            /**
+             * @brief  Initialise the Weather Menu Strategy Context
+             *
+             * Adds the Menu Options to a Vector
+             *
+             *
+             * @param menuOptions - A Vector containing the Execution functions of the Weather Menu Strategy
+             * @return Vetcor<void (*)(WeatherDataStorage)&>& - The Menu Options Vector
+             */
+        Vector<void (*)(WeatherDataStorage&)>& InitWeatherMenuContext(Vector<void (*)(WeatherDataStorage&)>& menuOptions);
     }
         /**
-         * @namespace WindSpeedStrategy
+         * @namespace WeatherMenuStrategy::WindSpeedStrategy
          * @brief  Encapsulates Wind Menu's Execute Function
          *
          *
@@ -33,11 +51,18 @@ namespace WeatherMenuStrategy
          */
     namespace WindSpeedStrategy
     {
+            /**
+             * @brief  Executes the Wind Speed Menu Option
+             *
+             *
+             * @param weatherData - Data structure containing the weather data
+             * @return void
+             */
         void Execute(WeatherDataStorage& weatherData);
     }
 
         /**
-         * @namespace TemperatureStrategy
+         * @namespace WeatherMenuStrategy::TemperatureStrategy
          * @brief  Encapsulates Temperatures's Execute Function
          *
          *
@@ -47,11 +72,18 @@ namespace WeatherMenuStrategy
          */
     namespace TemperatureStrategy
     {
+            /**
+             * @brief  Executes the Temperature Menu Option
+             *
+             *
+             * @param weatherData - Data structure containing the weather data
+             * @return void
+             */
         void Execute(WeatherDataStorage& weatherData);
     }
 
         /**
-         * @namespace SolarRadiationStrategy
+         * @namespace WeatherMenuStrategy::SolarRadiationStrategy
          * @brief  Encapsulates Solar Radiations's Execute Function
          *
          *
@@ -61,11 +93,18 @@ namespace WeatherMenuStrategy
          */
     namespace SolarRadiationStrategy
     {
+            /**
+             * @brief  Executes the Solar Radiation Menu Option
+             *
+             *
+             * @param weatherData - Data structure containing the weather data
+             * @return void
+             */
         void Execute(WeatherDataStorage& weatherData);
     }
 
         /**
-         * @namespace SPCCStrategy
+         * @namespace WeatherMenuStrategy::SPCCStrategy
          * @brief  Encapsulates sPCC's Execute Function
          *
          *
@@ -75,11 +114,18 @@ namespace WeatherMenuStrategy
          */
     namespace SPCCStrategy
     {
+            /**
+             * @brief  Executes the sample Pearson Correlation Coefficient Menu Option
+             *
+             *
+             * @param weatherData - Data structure containing the weather data
+             * @return void
+             */
         void Execute(WeatherDataStorage& weatherData);
     }
 
         /**
-         * @namespace PrintToFileStrategy
+         * @namespace WeatherMenuStrategy::is PrintToFileStrategy
          * @brief  Encapsulates Print to File's Execute Function
          *
          *
@@ -89,6 +135,13 @@ namespace WeatherMenuStrategy
          */
     namespace PrintToFileStrategy
     {
+            /**
+             * @brief  Executes the Print to File Menu Option
+             *
+             *
+             * @param weatherData - Data structure containing the weather data
+             * @return void
+             */
         void Execute(WeatherDataStorage& weatherData);
     }
 }

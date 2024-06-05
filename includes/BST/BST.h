@@ -62,7 +62,7 @@ public:
          *
          *
          * @param bst - The BST to Copy
-         * @return *this - The Copied BST
+         * @return BST<T> - The Copied BST
          */
     BST<T>& operator=(const BST<T>& bst);
 
@@ -82,6 +82,8 @@ public:
          * Used for
          *
          *
+         * @param ProcessNode - A void Function Pointer that Takes T as a parameter.
+         *                       This is the function used to Process each node.
          * @return void
          */
     void InOrder(void (*ProcessNode)(T&)) const;
@@ -92,6 +94,8 @@ public:
          * Processes Nodes in the order of self, left node, right node.
          *
          *
+         * @param ProcessNode - A void Function Pointer that Takes T as a parameter.
+         *                       This is the function used to Process each node.
          * @return void
          */
     void PreOrder(void (*ProcessNode)(const T&)) const;
@@ -102,6 +106,8 @@ public:
          * Processes Nodes in the order of left node, right node, self.
          *
          *
+         * @param ProcessNode - A void Function Pointer that Takes T as a parameter.
+         *                       This is the function used to Process each node.
          * @return void
          */
     void PostOrder(void (*ProcessNode)(const T&)) const;
@@ -175,7 +181,8 @@ private:
          * @brief  Recursively Processes each Node in a BST in In Order
          *
          *
-         * @param ProcessNode - The function to Process each node
+         * @param ProcessNode - A void Function Pointer that Takes T as a parameter.
+         *                       This is the function used to Process each node.
          * @param node - The Current Node
          * @return void
          */
@@ -185,7 +192,8 @@ private:
          * @brief  Recursively Processes each Node in a BST in Pre Order
          *
          *
-         * @param ProcessNode - The function to Process each node
+         * @param ProcessNode - A void Function Pointer that Takes T as a parameter.
+         *                       This is the function used to Process each node.
          * @param node - The Current Node
          * @return void
          */
@@ -195,7 +203,8 @@ private:
          * @brief  Recursively Processes each Node in a BST in Post Order
          *
          *
-         * @param ProcessNode - The function to Process each node
+         * @param ProcessNode - A void Function Pointer that Takes T as a parameter.
+         *                       This is the function used to Process each node.
          * @param node - The Current Node
          * @return void
          */

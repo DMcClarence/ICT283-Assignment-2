@@ -39,9 +39,10 @@ const std::string months[12] = {"January",
 //----------------------------------------------------------------------------
 // Function implementations
 
-void WeatherRecUtilities::ExtractValuesFromWeatherLog(WeatherLogType &weatherLog, int month, int year,
-                                    float WeatherRecType::*p_member, Vector<float> &extractedValues)
+Vector<float> WeatherRecUtilities::ExtractValuesFromWeatherLog(WeatherLogType &weatherLog, int month, int year, float WeatherRecType::*p_member)
 {
+    Vector<float> extractedValues;
+
     for(int i = 0; i < weatherLog.GetSize(); i++)
     {
         if(weatherLog[i].m_date.GetMonth() == month && weatherLog[i].m_date.GetYear() == year)
@@ -49,19 +50,25 @@ void WeatherRecUtilities::ExtractValuesFromWeatherLog(WeatherLogType &weatherLog
             extractedValues.PushBack(weatherLog[i].*p_member);
         }
     }
+
+    return extractedValues;
 }
 
 //---------------------------------------------------------------------------------
-void WeatherRecUtilities::ExtractValuesFromWeatherLog(WeatherLogType &weatherLog, float WeatherRecType::*p_member, Vector<float> &extractedValues)
+Vector<float> WeatherRecUtilities::ExtractValuesFromWeatherLog(WeatherLogType &weatherLog, float WeatherRecType::*p_member)
 {
+    Vector<float> extractedValues;
+
     for(int i = 0; i < weatherLog.GetSize(); i++)
     {
         extractedValues.PushBack(weatherLog[i].*p_member);
     }
+
+    return extractedValues;
 }
 
 //---------------------------------------------------------------------------------
-void WeatherRecUtilities::RemoveInvalidData(Vector<float> &data)
+Vector<float>& WeatherRecUtilities::RemoveInvalidData(Vector<float> &data)
 {
     for(int i = data.GetSize() - 1; i >= 0; i--)
     {
@@ -70,22 +77,24 @@ void WeatherRecUtilities::RemoveInvalidData(Vector<float> &data)
             VectorUtilities::RemoveFromVector(data, i);
         }
     }
+
+    return data;
 }
 
 //---------------------------------------------------------------------------------
-void WeatherRecUtilities::RemoveInvalidDataFromDataPairs(Vector<float> &data1, Vector<float> &data2)
+std::pair<Vector<float>, Vector<float>>& WeatherRecUtilities::RemoveInvalidDataFromDataPairs(std::pair<Vector<float>, Vector<float>>& data)
 {
-    if(data1.GetSize() != data2.GetSize())
+    if(data.first.GetSize() != data.second.GetSize())
     {
         throw std::invalid_argument("Specified Vectors can't be a pair.");
     }
 
-    for(int i = data1.GetSize() - 1; i >= 0; i--)
+    for(int i = data.first.GetSize() - 1; i >= 0; i--)
     {
-        if(std::isnan(data1[i]) || std::isnan(data2[i]))
+        if(std::isnan(data.first[i]) || std::isnan(data.second[i]))
         {
-            VectorUtilities::RemoveFromVector(data1, i);
-            VectorUtilities::RemoveFromVector(data2, i);
+            VectorUtilities::RemoveFromVector(data.first, i);
+            VectorUtilities::RemoveFromVector(data.second, i);
         }
     }
 }
@@ -101,16 +110,18 @@ std::string WeatherRecUtilities::MonthToString(int month)
 }
 
 //---------------------------------------------------------------------------------
-void WeatherRecUtilities::ToKMperHr(float &speed)
+float& WeatherRecUtilities::ToKMperHr(float &speed)
 {
-    speed *= 3.6;
+    return speed *= 3.6;
 }
 
 //---------------------------------------------------------------------------------
-void WeatherRecUtilities::TokWh(float &solarRad)
+float& WeatherRecUtilities::TokWh(float &solarRad)
 {
     solarRad *= (1.0 / 6.0);
     solarRad /= 1000;
+
+    return solarRad;
 }
 
 //----------------------------------------------------------------------------

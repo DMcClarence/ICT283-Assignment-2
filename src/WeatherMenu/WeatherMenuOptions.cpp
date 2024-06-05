@@ -41,44 +41,58 @@ void PrintTempMeanStdDevToScreen(const Vector<float>& tempData);
 void PrintSolarRadToScreen(const Vector<float>& solarRadData);
 
     // Dedicated to Printing the sPCC of Wind Speed and Temperature to the Screen
-void PrintStToScreen(const Vector<float>& windSpeedData, const Vector<float>& tempData);
+void PrintStToScreen(const std::pair<Vector<float>, Vector<float>>& st);
 
     // Dedicated to Printing the sPCC of Wind Speed and Solar Radiation to the Screen
-void PrintSrToScreen(const Vector<float>& windSpeedData, const Vector<float>& solarRadData);
+void PrintSrToScreen(const std::pair<Vector<float>, Vector<float>>& sr);
 
     // Dedicated to Printing the sPCC of Temperature and Solar Radiation to the Screen
-void PrintTrToScreen(const Vector<float>& tempData, const Vector<float>& solarRadData);
+void PrintTrToScreen(const std::pair<Vector<float>, Vector<float>>& tr);
 
     // Dedicated to Printing Mean and Standard Deviation of float data members to a File
-void PrintMeanStdDevMadToFile(std::ofstream& output, const Vector<float>& data);
+std::ofstream& PrintMeanStdDevMadToFile(std::ofstream& output, const Vector<float>& data);
 
     // Dedicated to Printing Total Solar Radiation to a File
     // Designed to be last on each line of a CSV file (no comma printed)
-void PrintSolarRadToFile(std::ofstream& output, const Vector<float>& data);
+std::ofstream& PrintSolarRadToFile(std::ofstream& output, const Vector<float>& data);
 
     // Returns a Vector<float> of the Record Data from a Specific Month and Year for a specific Data Members
 Vector<float> GetRequestedData(WeatherDataStorage& weatherData, int month, int year, float WeatherRecType::*p_Member);
 
     // Retrieves the Record Data Pairs from a Specific Month of Every Stored Year
-void GetRequestedDataPair(WeatherDataStorage& weatherData, int month, Vector<float>& firstDataMem, Vector<float>& secondDataMem, float WeatherRecType::*p1_Member, float WeatherRecType::*p2_Member);
+void GetRequestedDataPair(WeatherDataStorage& weatherData, int month, std::pair<Vector<float>, Vector<float>>& data, float WeatherRecType::*p1_Member, float WeatherRecType::*p2_Member);
 
 //----------------------------------------------------------------------------
 // Function implementations
 
 void WeatherMenuStrategy::WindSpeedStrategy::Execute(WeatherDataStorage& weatherData)
 {
+    std::string enteredYear;
+    std::string enteredMonth;
+    std::string monthString;
     int year;
     int month;
-    std::string monthString;
 
     std::cout << "Enter a Year: ";
-    std::cin >> year;
-    std::cin.clear();
-    std::cout << "Enter a numerical Month: ";
-    std::cin >> month;
+    std::cin >> enteredYear;
     std::cin.clear();
     try
     {
+        year = std::stoi(enteredYear);
+    }
+    catch(...)
+    {
+        std::cout << std::endl;
+        std::cout << "Invalid Year" << std::endl;
+        std::cout << std::endl;
+        return;
+    }
+    std::cout << "Enter a numerical Month: ";
+    std::cin >> enteredMonth;
+    std::cin.clear();
+    try
+    {
+        month = std::stoi(enteredMonth);
         monthString = WeatherRecUtilities::MonthToString(month);
     }
     catch(...)
@@ -108,11 +122,23 @@ void WeatherMenuStrategy::WindSpeedStrategy::Execute(WeatherDataStorage& weather
 //----------------------------------------------------------------------------
 void WeatherMenuStrategy::TemperatureStrategy::Execute(WeatherDataStorage& weatherData)
 {
+    std::string enteredYear;
     int year;
 
     std::cout << "Enter a Year: " << std::endl;
-    std::cin >> year;
+    std::cin >> enteredYear;
     std::cin.clear();
+    try
+    {
+        year = std::stoi(enteredYear);
+    }
+    catch(...)
+    {
+        std::cout << std::endl;
+        std::cout << "Invalid Year" << std::endl;
+        std::cout << std::endl;
+        return;
+    }
     Vector<float> tempData;
 
     std::cout << std::endl;
@@ -138,11 +164,23 @@ void WeatherMenuStrategy::TemperatureStrategy::Execute(WeatherDataStorage& weath
 //----------------------------------------------------------------------------
 void WeatherMenuStrategy::SolarRadiationStrategy::Execute(WeatherDataStorage& weatherData)
 {
+    std::string enteredYear;
     int year;
 
-    std::cout << "Enter a Year: " << std::endl;
-    std::cin >> year;
+    std::cout << "Enter a Year: ";
+    std::cin >> enteredYear;
     std::cin.clear();
+    try
+    {
+        year = std::stoi(enteredYear);
+    }
+    catch(...)
+    {
+        std::cout << std::endl;
+        std::cout << "Invalid Year" << std::endl;
+        std::cout << std::endl;
+        return;
+    }
     Vector<float> solarRadData;
 
     std::cout << std::endl;
@@ -167,19 +205,23 @@ void WeatherMenuStrategy::SolarRadiationStrategy::Execute(WeatherDataStorage& we
 //----------------------------------------------------------------------------
 void WeatherMenuStrategy::SPCCStrategy::Execute(WeatherDataStorage& weatherData)
 {
+    std::string enteredMonth;
     int month;
     std::string monthString;
 
-    std::cout << "Enter a Numerical Month: " << std::endl;
-    std::cin >> month;
+    std::cout << "Enter a numerical Month: ";
+    std::cin >> enteredMonth;
     std::cin.clear();
     try
     {
+        month = std::stoi(enteredMonth);
         monthString = WeatherRecUtilities::MonthToString(month);
     }
     catch(...)
     {
+        std::cout << std::endl;
         std::cout << "Invalid Month" << std::endl;
+        std::cout << std::endl;
         return;
     }
 
@@ -190,17 +232,17 @@ void WeatherMenuStrategy::SPCCStrategy::Execute(WeatherDataStorage& weatherData)
     std::cout << std::endl;
     std::cout << "Sample Pearson Correlation Coefficinet for " << monthString << std::endl;
     std::cout << std::endl;
-    GetRequestedDataPair(weatherData, month, st.first, st.second, &WeatherRecType::m_s, &WeatherRecType::m_t);
-    WeatherRecUtilities::RemoveInvalidDataFromDataPairs(st.first, st.second);
-    PrintStToScreen(st.first, st.second);
+    GetRequestedDataPair(weatherData, month, st, &WeatherRecType::m_s, &WeatherRecType::m_t);
+    WeatherRecUtilities::RemoveInvalidDataFromDataPairs(st);
+    PrintStToScreen(st);
 
-    GetRequestedDataPair(weatherData, month, sr.first, sr.second, &WeatherRecType::m_s, &WeatherRecType::m_sr);
-    WeatherRecUtilities::RemoveInvalidDataFromDataPairs(sr.first, sr.second);
-    PrintSrToScreen(sr.first, sr.second);
+    GetRequestedDataPair(weatherData, month, sr, &WeatherRecType::m_s, &WeatherRecType::m_sr);
+    WeatherRecUtilities::RemoveInvalidDataFromDataPairs(sr);
+    PrintSrToScreen(sr);
 
-    GetRequestedDataPair(weatherData, month, tr.first, tr.second, &WeatherRecType::m_t, &WeatherRecType::m_sr);
-    WeatherRecUtilities::RemoveInvalidDataFromDataPairs(tr.first, tr.second);
-    PrintTrToScreen(tr.first, tr.second);
+    GetRequestedDataPair(weatherData, month, tr, &WeatherRecType::m_t, &WeatherRecType::m_sr);
+    WeatherRecUtilities::RemoveInvalidDataFromDataPairs(tr);
+    PrintTrToScreen(tr);
     std::cout << std::endl;
 }
 
@@ -208,11 +250,24 @@ void WeatherMenuStrategy::SPCCStrategy::Execute(WeatherDataStorage& weatherData)
 void WeatherMenuStrategy::PrintToFileStrategy::Execute(WeatherDataStorage& weatherData)
 {
     std::ofstream output("WindSolarTemp.csv");
+    std::string enteredYear;
     int year;
 
-    std::cout << "Enter a Year: " << std::endl;
-    std::cin >> year;
+    std::cout << "Enter a Year: ";
+    std::cin >> enteredYear;
     std::cin.clear();
+    try
+    {
+        year = std::stoi(enteredYear);
+    }
+    catch(...)
+    {
+        std::cout << std::endl;
+        std::cout << "Invalid Year" << std::endl;
+        std::cout << std::endl;
+        output.close();
+        return;
+    }
 
     bool isData = false;
     for(int month = Jan; month <= Dec; month++)
@@ -263,51 +318,51 @@ void PrintWindMeanStdDevToScreen(const Vector<float>& windSpeedData)
     float avgWindSpeed = StatsCalcs::CalcMeanOfVectorf(windSpeedData);
     float windSpeedStdDev = StatsCalcs::CalcStdDevOfVectorf(windSpeedData);
     std::cout << std::endl;
-    std::cout << std::fixed << std::showpoint << std::setprecision(2);
+    std::cout << std::fixed << std::showpoint << std::setprecision(1);
     std::cout << "Average speed: " << avgWindSpeed << " km/h" << std::endl;
     std::cout << "Sample stdev: " << windSpeedStdDev << std::endl;
 }
 
 //----------------------------------------------------------------------------
-void PrintStToScreen(const Vector<float>& windSpeedData, const Vector<float>& tempData)
+void PrintStToScreen(const std::pair<Vector<float>, Vector<float>>& st)
 {
-    if(windSpeedData.GetSize() == 0 || tempData.GetSize() == 0)
+    if(st.first.GetSize() == 0 || st.second.GetSize() == 0)
     {
         std::cout << "No Data" << std::endl;
     }
     else
     {
-        float s_t = StatsCalcs::CalcSPCCOfVectorf(windSpeedData, tempData);
+        float s_t = StatsCalcs::CalcSPCCOfVectorf(st.first, st.second);
         std::cout << std::fixed << std::showpoint << std::setprecision(2);
         std::cout << "S_T: " << s_t << std::endl;
     }
 }
 
 //----------------------------------------------------------------------------
-void PrintSrToScreen(const Vector<float>& windSpeedData, const Vector<float>& solarRadData)
+void PrintSrToScreen(const std::pair<Vector<float>, Vector<float>>& sr)
 {
-    if(windSpeedData.GetSize() == 0 || solarRadData.GetSize() == 0)
+    if(sr.first.GetSize() == 0 || sr.second.GetSize() == 0)
     {
         std::cout << "No Data" << std::endl;
     }
     else
     {
-        float s_r = StatsCalcs::CalcSPCCOfVectorf(solarRadData, windSpeedData);
+        float s_r = StatsCalcs::CalcSPCCOfVectorf(sr.first, sr.second);
         std::cout << std::fixed << std::showpoint << std::setprecision(2);
         std::cout << "S_R: " << s_r << std::endl;
     }
 }
 
 //----------------------------------------------------------------------------
-void PrintTrToScreen(const Vector<float>& tempData, const Vector<float>& solarRadData)
+void PrintTrToScreen(const std::pair<Vector<float>, Vector<float>>& tr)
 {
-    if(solarRadData.GetSize() == 0 || tempData.GetSize() == 0)
+    if(tr.first.GetSize() == 0 || tr.second.GetSize() == 0)
     {
         std::cout << "No Data" << std::endl;
     }
     else
     {
-        float t_r = StatsCalcs::CalcSPCCOfVectorf(solarRadData, tempData);
+        float t_r = StatsCalcs::CalcSPCCOfVectorf(tr.first, tr.second);
         std::cout << std::fixed << std::showpoint << std::setprecision(2);
         std::cout << "T_R: " << t_r << std::endl;
     }
@@ -318,7 +373,7 @@ void PrintTempMeanStdDevToScreen(const Vector<float>& tempData)
 {
     float avgTemp = StatsCalcs::CalcMeanOfVectorf(tempData);
     float tempStdDev = StatsCalcs::CalcStdDevOfVectorf(tempData);
-    std::cout << std::fixed << std::showpoint << std::setprecision(2);
+    std::cout << std::fixed << std::showpoint << std::setprecision(1);
     std::cout << "average: " << avgTemp << " degrees C, stdev: " << tempStdDev << std::endl;
 }
 
@@ -326,12 +381,12 @@ void PrintTempMeanStdDevToScreen(const Vector<float>& tempData)
 void PrintSolarRadToScreen(const Vector<float>& solarRadData)
 {
     float totalSR = StatsCalcs::CalcSumOfVectorf(solarRadData);
-    std::cout << std::fixed << std::showpoint << std::setprecision(2);
+    std::cout << std::fixed << std::showpoint << std::setprecision(1);
     std::cout << totalSR<< " kWh/m^2" << std::endl;
 }
 
 //----------------------------------------------------------------------------
-void PrintMeanStdDevMadToFile(std::ofstream& output, const Vector<float>& data)
+std::ofstream& PrintMeanStdDevMadToFile(std::ofstream& output, const Vector<float>& data)
 {
     if(data.GetSize() == 0)
     {
@@ -342,13 +397,15 @@ void PrintMeanStdDevMadToFile(std::ofstream& output, const Vector<float>& data)
         float avg = StatsCalcs::CalcMeanOfVectorf(data);
         float stdDev = StatsCalcs::CalcStdDevOfVectorf(data);
         float mad = StatsCalcs::CalcMADOfVectorf(data);
-        output << std::fixed << std::showpoint << std::setprecision(2);
+        output << std::fixed << std::showpoint << std::setprecision(1);
         output << avg << "(" << stdDev << ", " << mad << "),";
     }
+
+    return output;
 }
 
 //----------------------------------------------------------------------------
-void PrintSolarRadToFile(std::ofstream& output, const Vector<float>& data)
+std::ofstream& PrintSolarRadToFile(std::ofstream& output, const Vector<float>& data)
 {
     if(data.GetSize() == 0)
     {
@@ -357,20 +414,21 @@ void PrintSolarRadToFile(std::ofstream& output, const Vector<float>& data)
     else
     {
         float totalRad = StatsCalcs::CalcSumOfVectorf(data);
-        output << std::fixed << std::showpoint << std::setprecision(2);
+        output << std::fixed << std::showpoint << std::setprecision(1);
         output << totalRad;
     }
+
+    return output;
 }
 
 //----------------------------------------------------------------------------
 Vector<float> GetRequestedData(WeatherDataStorage& weatherData, int month, int year, float WeatherRecType::*p_Member)
 {
-    Vector<int> recordIndexes;
     Vector<float> data;
 
     if(weatherData.m_yearMonthBST.Search(WeatherRecUtilities::CreateMonthYearKey(year, month)))
     {
-        recordIndexes = weatherData.m_weatherLogMap[year][month];
+        Vector<int> recordIndexes = weatherData.m_weatherLogMap[year][month];
 
         WeatherLogType log;
         for(int i = 0; i < recordIndexes.GetSize(); i++)
@@ -378,14 +436,14 @@ Vector<float> GetRequestedData(WeatherDataStorage& weatherData, int month, int y
             log.PushBack(weatherData.m_weatherLog[recordIndexes[i]]);
         }
 
-        WeatherRecUtilities::ExtractValuesFromWeatherLog(log, month, year, p_Member, data);
+        data = WeatherRecUtilities::ExtractValuesFromWeatherLog(log, month, year, p_Member);
     }
 
     return data;
 }
 
 //----------------------------------------------------------------------------
-void GetRequestedDataPair(WeatherDataStorage& weatherData, int month, Vector<float>& firstDataMem, Vector<float>& secondDataMem, float WeatherRecType::*p1_Member, float WeatherRecType::*p2_Member)
+void GetRequestedDataPair(WeatherDataStorage& weatherData, int month, std::pair<Vector<float>, Vector<float>>& data, float WeatherRecType::*p1_Member, float WeatherRecType::*p2_Member)
 {
     Vector<Vector<int>> recordIndexes;
 
@@ -406,15 +464,17 @@ void GetRequestedDataPair(WeatherDataStorage& weatherData, int month, Vector<flo
         }
     }
 
-    WeatherRecUtilities::ExtractValuesFromWeatherLog(log, p1_Member, firstDataMem);
-    WeatherRecUtilities::ExtractValuesFromWeatherLog(log, p2_Member, secondDataMem);
+    data.first = WeatherRecUtilities::ExtractValuesFromWeatherLog(log, p1_Member);
+    data.second = WeatherRecUtilities::ExtractValuesFromWeatherLog(log, p2_Member);
 }
 
 //----------------------------------------------------------------------------
-void WeatherMenuStrategy::WeatherMenuContext::InitWeatherMenuContext(Vector<void (*)(WeatherDataStorage&)>& menuOptions)
+Vector<void (*)(WeatherDataStorage&)>& WeatherMenuStrategy::WeatherMenuContext::InitWeatherMenuContext(Vector<void (*)(WeatherDataStorage&)>& menuOptions)
 {
     menuOptions.PushBack(WeatherMenuStrategy::WindSpeedStrategy::Execute);
     menuOptions.PushBack(WeatherMenuStrategy::TemperatureStrategy::Execute);
     menuOptions.PushBack(WeatherMenuStrategy::SPCCStrategy::Execute);
     menuOptions.PushBack(WeatherMenuStrategy::PrintToFileStrategy::Execute);
+
+    return menuOptions;
 }

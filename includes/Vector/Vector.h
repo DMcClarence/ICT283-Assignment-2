@@ -46,7 +46,7 @@ public:
          *
          *
          * @param  index - The location of the array
-         * @return T& - Reference to value in the array
+         * @return T - Reference to value in the array
          */
     T& operator[](int index);
 
@@ -55,7 +55,7 @@ public:
          *
          *
          * @param  index - The location of the array
-         * @return T& - Const Reference to value in the array
+         * @return T - Const Reference to value in the array
          */
     const T& operator[](int index) const;
 
@@ -71,7 +71,8 @@ public:
          * @brief Inserts a value at the end of the array.
          *
          *
-         * @return void
+         * @param value - The value to insert
+         * @return bool - Returns true of the value was inserted. Otherwise returns false.
          */
     bool PushBack(const T &value);
 
@@ -79,7 +80,7 @@ public:
          * @brief Removes the value at the end of the array.
          *
          *
-         * @return void
+         * @return bool - Returns true if the element was removed. Otherwise returns false.
          */
     bool PopBack();
 private:
