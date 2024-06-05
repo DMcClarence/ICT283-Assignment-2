@@ -42,7 +42,7 @@ public:
          *
          *
          * @param  key - The location in the map
-         * @return T2& - Reference to value in the map
+         * @return T2 - Reference to value in the map
          */
     T2& operator[](T1 key);
 
@@ -53,7 +53,7 @@ public:
          *
          *
          * @param  key - The location of the map
-         * @return T2& - Const Reference to value in the map
+         * @return T2 - Const Reference to value in the map
          */
     const T2& operator[](T1 key) const;
 
@@ -61,6 +61,8 @@ public:
          * @brief Inserts a Key/Value pair into the Map.
          *
          *
+         * @param key - The location in the map
+         * @param value - The value to store
          * @return bool - Returns true if successful. Otherwise returns false
          */
     bool Insert(T1 key, T2 value);

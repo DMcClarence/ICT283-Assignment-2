@@ -29,10 +29,12 @@ public:
          * @param data - The value to add to the Stack.
          * @return bool - Returns true if successful, and false if fail.
          */
-    bool Push(T &data);
+    bool Push(const T &data);
 
         /**
          * @brief Pops a value off the top of the Stack.
+         *
+         * When removed, it returned to the client via reference parameter.
          *
          *
          * @param data - The value removed from the Stack.
@@ -44,17 +46,17 @@ public:
          * @brief Returns Empty Status of the Stack
          *
          *
-         * @return  - Returns true if empty, and false if not empty.
+         * @return bool - Returns true if empty, and false if not empty.
          */
     bool IsEmpty();
 private:
-        /// The Stack Structure
+        /// The Encapsulated STL Stack
     std::stack<T> m_stack;
 };
 
 //---------------------------------------------------------------------------------
 template <class T>
-bool Stack<T>::Push(T &data)
+bool Stack<T>::Push(const T &data)
 {
     try
     {

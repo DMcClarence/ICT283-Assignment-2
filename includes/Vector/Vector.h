@@ -71,6 +71,7 @@ public:
          * @brief Inserts a value at the end of the array.
          *
          *
+         * @param value - The value to insert
          * @return bool - Returns true of the value was inserted. Otherwise returns false.
          */
     bool PushBack(const T &value);

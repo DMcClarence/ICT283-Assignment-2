@@ -47,7 +47,6 @@ namespace WeatherRecUtilities
          *
          * @param  weatherLog - The WeatherLogType object for values to be extracted from
          * @param  WeatherRecType::*p_member - The WeatherRecType member to be extracted
-         * @param  extractedValues - float Vector to store the values in
          * @return Vector<float> - The vector of extracted float values
          */
     Vector<float> ExtractValuesFromWeatherLog(WeatherLogType &weatherLog, float WeatherRecType::*p_member);

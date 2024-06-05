@@ -67,18 +67,32 @@ void GetRequestedDataPair(WeatherDataStorage& weatherData, int month, std::pair<
 
 void WeatherMenuStrategy::WindSpeedStrategy::Execute(WeatherDataStorage& weatherData)
 {
+    std::string enteredYear;
+    std::string enteredMonth;
+    std::string monthString;
     int year;
     int month;
-    std::string monthString;
 
     std::cout << "Enter a Year: ";
-    std::cin >> year;
-    std::cin.clear();
-    std::cout << "Enter a numerical Month: ";
-    std::cin >> month;
+    std::cin >> enteredYear;
     std::cin.clear();
     try
     {
+        year = std::stoi(enteredYear);
+    }
+    catch(...)
+    {
+        std::cout << std::endl;
+        std::cout << "Invalid Year" << std::endl;
+        std::cout << std::endl;
+        return;
+    }
+    std::cout << "Enter a numerical Month: ";
+    std::cin >> enteredMonth;
+    std::cin.clear();
+    try
+    {
+        month = std::stoi(enteredMonth);
         monthString = WeatherRecUtilities::MonthToString(month);
     }
     catch(...)
@@ -108,11 +122,23 @@ void WeatherMenuStrategy::WindSpeedStrategy::Execute(WeatherDataStorage& weather
 //----------------------------------------------------------------------------
 void WeatherMenuStrategy::TemperatureStrategy::Execute(WeatherDataStorage& weatherData)
 {
+    std::string enteredYear;
     int year;
 
     std::cout << "Enter a Year: " << std::endl;
-    std::cin >> year;
+    std::cin >> enteredYear;
     std::cin.clear();
+    try
+    {
+        year = std::stoi(enteredYear);
+    }
+    catch(...)
+    {
+        std::cout << std::endl;
+        std::cout << "Invalid Year" << std::endl;
+        std::cout << std::endl;
+        return;
+    }
     Vector<float> tempData;
 
     std::cout << std::endl;
@@ -138,11 +164,23 @@ void WeatherMenuStrategy::TemperatureStrategy::Execute(WeatherDataStorage& weath
 //----------------------------------------------------------------------------
 void WeatherMenuStrategy::SolarRadiationStrategy::Execute(WeatherDataStorage& weatherData)
 {
+    std::string enteredYear;
     int year;
 
-    std::cout << "Enter a Year: " << std::endl;
-    std::cin >> year;
+    std::cout << "Enter a Year: ";
+    std::cin >> enteredYear;
     std::cin.clear();
+    try
+    {
+        year = std::stoi(enteredYear);
+    }
+    catch(...)
+    {
+        std::cout << std::endl;
+        std::cout << "Invalid Year" << std::endl;
+        std::cout << std::endl;
+        return;
+    }
     Vector<float> solarRadData;
 
     std::cout << std::endl;
@@ -167,19 +205,23 @@ void WeatherMenuStrategy::SolarRadiationStrategy::Execute(WeatherDataStorage& we
 //----------------------------------------------------------------------------
 void WeatherMenuStrategy::SPCCStrategy::Execute(WeatherDataStorage& weatherData)
 {
+    std::string enteredMonth;
     int month;
     std::string monthString;
 
-    std::cout << "Enter a Numerical Month: " << std::endl;
-    std::cin >> month;
+    std::cout << "Enter a numerical Month: ";
+    std::cin >> enteredMonth;
     std::cin.clear();
     try
     {
+        month = std::stoi(enteredMonth);
         monthString = WeatherRecUtilities::MonthToString(month);
     }
     catch(...)
     {
+        std::cout << std::endl;
         std::cout << "Invalid Month" << std::endl;
+        std::cout << std::endl;
         return;
     }
 
@@ -208,11 +250,24 @@ void WeatherMenuStrategy::SPCCStrategy::Execute(WeatherDataStorage& weatherData)
 void WeatherMenuStrategy::PrintToFileStrategy::Execute(WeatherDataStorage& weatherData)
 {
     std::ofstream output("WindSolarTemp.csv");
+    std::string enteredYear;
     int year;
 
-    std::cout << "Enter a Year: " << std::endl;
-    std::cin >> year;
+    std::cout << "Enter a Year: ";
+    std::cin >> enteredYear;
     std::cin.clear();
+    try
+    {
+        year = std::stoi(enteredYear);
+    }
+    catch(...)
+    {
+        std::cout << std::endl;
+        std::cout << "Invalid Year" << std::endl;
+        std::cout << std::endl;
+        output.close();
+        return;
+    }
 
     bool isData = false;
     for(int month = Jan; month <= Dec; month++)
@@ -263,7 +318,7 @@ void PrintWindMeanStdDevToScreen(const Vector<float>& windSpeedData)
     float avgWindSpeed = StatsCalcs::CalcMeanOfVectorf(windSpeedData);
     float windSpeedStdDev = StatsCalcs::CalcStdDevOfVectorf(windSpeedData);
     std::cout << std::endl;
-    std::cout << std::fixed << std::showpoint << std::setprecision(2);
+    std::cout << std::fixed << std::showpoint << std::setprecision(1);
     std::cout << "Average speed: " << avgWindSpeed << " km/h" << std::endl;
     std::cout << "Sample stdev: " << windSpeedStdDev << std::endl;
 }
@@ -318,7 +373,7 @@ void PrintTempMeanStdDevToScreen(const Vector<float>& tempData)
 {
     float avgTemp = StatsCalcs::CalcMeanOfVectorf(tempData);
     float tempStdDev = StatsCalcs::CalcStdDevOfVectorf(tempData);
-    std::cout << std::fixed << std::showpoint << std::setprecision(2);
+    std::cout << std::fixed << std::showpoint << std::setprecision(1);
     std::cout << "average: " << avgTemp << " degrees C, stdev: " << tempStdDev << std::endl;
 }
 
@@ -326,7 +381,7 @@ void PrintTempMeanStdDevToScreen(const Vector<float>& tempData)
 void PrintSolarRadToScreen(const Vector<float>& solarRadData)
 {
     float totalSR = StatsCalcs::CalcSumOfVectorf(solarRadData);
-    std::cout << std::fixed << std::showpoint << std::setprecision(2);
+    std::cout << std::fixed << std::showpoint << std::setprecision(1);
     std::cout << totalSR<< " kWh/m^2" << std::endl;
 }
 
@@ -342,7 +397,7 @@ std::ofstream& PrintMeanStdDevMadToFile(std::ofstream& output, const Vector<floa
         float avg = StatsCalcs::CalcMeanOfVectorf(data);
         float stdDev = StatsCalcs::CalcStdDevOfVectorf(data);
         float mad = StatsCalcs::CalcMADOfVectorf(data);
-        output << std::fixed << std::showpoint << std::setprecision(2);
+        output << std::fixed << std::showpoint << std::setprecision(1);
         output << avg << "(" << stdDev << ", " << mad << "),";
     }
 
@@ -359,7 +414,7 @@ std::ofstream& PrintSolarRadToFile(std::ofstream& output, const Vector<float>& d
     else
     {
         float totalRad = StatsCalcs::CalcSumOfVectorf(data);
-        output << std::fixed << std::showpoint << std::setprecision(2);
+        output << std::fixed << std::showpoint << std::setprecision(1);
         output << totalRad;
     }
 
@@ -414,10 +469,12 @@ void GetRequestedDataPair(WeatherDataStorage& weatherData, int month, std::pair<
 }
 
 //----------------------------------------------------------------------------
-void WeatherMenuStrategy::WeatherMenuContext::InitWeatherMenuContext(Vector<void (*)(WeatherDataStorage&)>& menuOptions)
+Vector<void (*)(WeatherDataStorage&)>& WeatherMenuStrategy::WeatherMenuContext::InitWeatherMenuContext(Vector<void (*)(WeatherDataStorage&)>& menuOptions)
 {
     menuOptions.PushBack(WeatherMenuStrategy::WindSpeedStrategy::Execute);
     menuOptions.PushBack(WeatherMenuStrategy::TemperatureStrategy::Execute);
     menuOptions.PushBack(WeatherMenuStrategy::SPCCStrategy::Execute);
     menuOptions.PushBack(WeatherMenuStrategy::PrintToFileStrategy::Execute);
+
+    return menuOptions;
 }
