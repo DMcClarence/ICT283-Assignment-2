@@ -62,7 +62,7 @@ public:
          *
          *
          * @param bst - The BST to Copy
-         * @return *this - The Copied BST
+         * @return BST<T> - The Copied BST
          */
     BST<T>& operator=(const BST<T>& bst);
 

@@ -50,6 +50,7 @@ namespace StatsCalcs
         /**
          * @brief  Calculates sample Pearson Correlation Coefficient of two Vectors of floats
          *
+         *
          * @param vec1 - The First Vector of floats
          * @param vec2 - The Second Vector of floats
          * @return float - The sample Peason Correlation Coefficient

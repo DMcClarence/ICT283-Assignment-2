@@ -68,6 +68,8 @@ public:
         /**
          * @brief Defines an iterator for the Encapsulated STL map Class.
          *
+         * Required to be able to traverse the elements of the map.
+         *
          *
          */
     typedef typename std::map<T1, T2>::iterator iterator;
@@ -99,7 +101,7 @@ private:
 template <class T1, class T2>
 Map<T1, T2>::Map()
 {
-
+    m_map.clear();
 }
 //---------------------------------------------------------------------------------
 template <class T1, class T2>

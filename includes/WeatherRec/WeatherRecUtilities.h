@@ -37,11 +37,9 @@ namespace WeatherRecUtilities
          * @param  month - The month of values to be extracted
          * @param  year - The year of values to be extracted
          * @param  WeatherRecType::*p_member - The WeatherRecType member to be extracted
-         * @param  extractedValues - float Vector to store the values in
-         * @return void
+         * @return Vector<float> - The vector of extracted float values
          */
-    void ExtractValuesFromWeatherLog(WeatherLogType &weatherLog, int month, int year,
-                                        float WeatherRecType::*p_member, Vector<float> &extractedValues);
+    Vector<float> ExtractValuesFromWeatherLog(WeatherLogType &weatherLog, int month, int year, float WeatherRecType::*p_member);
 
         /**
          * @brief  Extracts float values from a WeatherLogType object.
@@ -50,9 +48,9 @@ namespace WeatherRecUtilities
          * @param  weatherLog - The WeatherLogType object for values to be extracted from
          * @param  WeatherRecType::*p_member - The WeatherRecType member to be extracted
          * @param  extractedValues - float Vector to store the values in
-         * @return void
+         * @return Vector<float> - The vector of extracted float values
          */
-    void ExtractValuesFromWeatherLog(WeatherLogType &weatherLog, float WeatherRecType::*p_member, Vector<float> &extractedValues);
+    Vector<float> ExtractValuesFromWeatherLog(WeatherLogType &weatherLog, float WeatherRecType::*p_member);
 
         /**
          * @brief  Removes any Data values that aren't valid.
@@ -60,9 +58,9 @@ namespace WeatherRecUtilities
          * Looks specifically for values of NaN
          *
          * @param  data - Vector of Data Values
-         * @return void
+         * @return Vector<float> - The modified Vector
          */
-    void RemoveInvalidData(Vector<float> &data);
+    Vector<float>& RemoveInvalidData(Vector<float> &data);
 
         /**
          * @brief  Removes any Data values that aren't valid from a pair of Data Vectors.
@@ -72,18 +70,17 @@ namespace WeatherRecUtilities
          *
          * Looks specifically for values of NaN.
          *
-         * @param  data1 - Vector of Data Values
-         * @param  data2 - Vector of Data Values
-         * @return void
+         * @param  data - The pair of Vectors of Data Values
+         * @return std::pair<Vector<float>, Vector<float>> - The modified Pair of Vectors
          */
-    void RemoveInvalidDataFromDataPairs(Vector<float> &data1, Vector<float> &data2);
+    std::pair<Vector<float>, Vector<float>>& RemoveInvalidDataFromDataPairs(std::pair<Vector<float>, Vector<float>>& data);
 
         /**
          * @brief  Converts a month from an int to a string
          *
          *
          * @param  month - The numerical month to be converted
-         * @return string
+         * @return std::string - The numerical month as an English String
          */
     std::string MonthToString(int month);
 
@@ -92,18 +89,18 @@ namespace WeatherRecUtilities
          *
          *
          * @param  speed - The Speed in m/s
-         * @return string
+         * @return float - The Speed in km/hr
          */
-    void ToKMperHr(float &speed);
+    float& ToKMperHr(float &speed);
 
         /**
          * @brief  Converts Solar Radiation from W/m^2 to kWh/m^2
          *
          *
-         * @param  solarRad - The Solar Radiation on W/m^2
-         * @return string
+         * @param  solarRad - The Solar Radiation in W/m^2
+         * @return float - The Solar Radiation in kWh/m^2
          */
-    void TokWh(float &solarRad);
+    float& TokWh(float &solarRad);
 
         /**
          * @brief  Removes duplicate Weather Records from a Weather Log

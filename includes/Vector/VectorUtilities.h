@@ -30,10 +30,10 @@ namespace VectorUtilities
          *
          * @param vec - The Vector for the value to be removed from
          * @param location - The index of the array
-         * @return void
+         * @return Vector<T> - The modified Vector
          */
     template <class T>
-    void RemoveFromVector(Vector<T> &vec, int location);
+    Vector<T>& RemoveFromVector(Vector<T> &vec, int location);
 
         /**
          * @brief Sorts a Vector using the Merge Sort Algorithm
@@ -73,7 +73,7 @@ namespace VectorUtilities
 
 //---------------------------------------------------------------------------------
 template <class T>
-void VectorUtilities::RemoveFromVector(Vector<T> &vec, int location)
+Vector<T>& VectorUtilities::RemoveFromVector(Vector<T> &vec, int location)
 {
     for(int i = location; i < vec.GetSize() - 1; i++)
     {
@@ -81,6 +81,8 @@ void VectorUtilities::RemoveFromVector(Vector<T> &vec, int location)
     }
 
     vec.PopBack();
+
+    return vec;
 }
 
 //---------------------------------------------------------------------------------

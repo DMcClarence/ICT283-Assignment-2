@@ -57,7 +57,7 @@ namespace WeatherRecIO
      *
      * @param input - The std::istream object
      * @param d - The date object
-     * @return std::istream& - The std::istream object
+     * @return std::istream - The std::istream object
      */
 std::istream& operator>>(std::istream& input, Date& d);
 
@@ -70,7 +70,7 @@ std::istream& operator>>(std::istream& input, Date& d);
      *
      * @param input - The std::istream object
      * @param t - The time object
-     * @return std::istream& - The std::istream object
+     * @return std::istream - The std::istream object
      */
 std::istream& operator>>(std::istream& input, Time& t);
 
@@ -80,7 +80,7 @@ std::istream& operator>>(std::istream& input, Time& t);
          *
          * @param input - The std::istream object
          * @param data - Vector of WeatherRecType
-         * @return std::istream& - The std::istream object
+         * @return std::istream - The std::istream object
          */
 std::istream& operator>>(std::istream& input, WeatherLogType& data);
 

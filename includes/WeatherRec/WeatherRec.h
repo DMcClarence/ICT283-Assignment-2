@@ -37,7 +37,6 @@ typedef struct
 
         /// Average Solar Radiation Recorded in W/m^2
     float m_sr;
-
 }WeatherRecType;
 
 //---------------------------------------------------------------------------------
